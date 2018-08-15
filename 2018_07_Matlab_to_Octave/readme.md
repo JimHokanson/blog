@@ -50,7 +50,9 @@ uicontrol(gcf,'Style','listbox','Units','pixels','Position',[0 0 500 70],...
 
 ```
 
-<img src="listbox_table.svg" />
+<img src="listbox_table.svg" height="200"/>
+
+In the above image the text in the listbox rows have been aligned to look like a table.
 
 Finally, Octave doesn't support graphics handles as objects. Instead graphics handles are returned as numeric values, similar to Matlab behavior prior to 2014b. Prior to 2014b, working with properties of graphics handles required the use of set() and get() functions, rather than the new behavior of dot access notation. 
 
