@@ -378,7 +378,7 @@ Here are some additional things that could make this code go faster, as well as 
 2. This parser is generic. One alternative is to use code that generates code for parsing a specific JSON file (e.g, [https://google.github.io/flatbuffers/](https://google.github.io/flatbuffers/)). 
 3. I'm working with Matlab memory management which slows things down considerably. Here's the time to parse "1.json", a file that is used to do speed testing ([https://github.com/kostya/benchmarks#json](https://github.com/kostya/benchmarks#json)] - into tokens. It takes 558 ms to process the file on my desktop, of which 170 ms is from string allocation time. Ideally with strings you would only need to return a pointer (C,C++) to the start of the sub-string located in the larger file string (so called in-situ processing). This avoids a lot of memory allocation work but doesn't work so well for returning strings to users in Matlab.
 
-    ```   
+```   
              elapsed_read_time: 0.1210 
             elapsed_parse_time: 0.2500 
                elapsed_pp_time: 0.3080 
@@ -391,7 +391,7 @@ Here are some additional things that could make this code go faster, as well as 
           %------------------------------ 
         total_elapsed_time_mex: 0.6790
                  non_read_time: 0.5580       
-    ```
+```
     
 4. To assist with later processing I determine if objects are homogenous (object_parsing_time). I also determine if arrays are homogenous (all numeric, all strings, all logical) and their type (e.g. 1d array, 2d array, jagged array, etc.) (array_parsing_time). Neither of these have been parallelized, even though it should be possible to do so.
 
