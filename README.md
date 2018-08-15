@@ -1,6 +1,3 @@
-# blog
-Jim Hokanson's Blog
-
 **July 2018 - "Porting" a Simple Matlab Program for Octave** 
 
 [article link](2018_07_Matlab_to_Octave/readme.md)
