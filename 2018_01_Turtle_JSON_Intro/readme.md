@@ -155,8 +155,6 @@ Parsing a primitive value, such as a number or string, does not depend on whethe
 </pre>
 </div>
 
-I am currently using hilite.me ([http://hilite.me/](http://hilite.me/)) to highlight the code. Even it knows that the closing object character '}' is invalid.
-
 At some point I decided to keep track of whether or not I was parsing something in an array or object. This knowledge let's us know if these closing tags are valid or invalid without checking some other temporary variable. In other words, if my state is parsing a number in an array, then I don't need to check some variable like 'is_object' or 'is_array' to tell me that the '}' character is invalid.
 
 I was worried about doing this at first. Was I over-optimizing? In the end I think it made the code even cleaner and easier to follow. Here's an example of this type of code, for a string:
