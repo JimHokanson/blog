@@ -163,20 +163,20 @@ At some point I decided to keep track of whether or not I was parsing something 
 
 I was worried about doing this at first. Was I over-optimizing? In the end I think it made the code even cleaner and easier to follow. Here's an example of this type of code, for a string:
 
-<div style="background: #f0f0f0; border-width: 0.1em 0.1em 0.1em 0.8em; border: solid gray; overflow: auto; padding: 0.2em 0.6em; width: auto;">
-<pre style="line-height: 125%; margin: 0;"><span style="color: #002070; font-weight: bold;">S_PARSE_STRING_IN_ARRAY:</span>
-    
-    INCREMENT_PARENT_SIZE;
-    PROCESS_STRING;
-    PROCESS_END_OF_ARRAY_VALUE;
+```
+//=============================================================
+S_PARSE_STRING_IN_ARRAY:
+	INCREMENT_PARENT_SIZE;
+    PROCESS_STRING
+	PROCESS_END_OF_ARRAY_VALUE;
 
-<span style="color: #60a0b0; font-style: italic;">//====================</span>
-<span style="color: #002070; font-weight: bold;">S_PARSE_STRING_IN_KEY:</span>
-
-    STORE_TAC_KEY_SIMPLE;
+//=============================================================
+S_PARSE_STRING_IN_KEY:
+    STORE_NEXT_SIBLING_KEY_SIMPLE;
     PROCESS_STRING;
-    PROCESS_END_OF_KEY_VALUE_SIMPLE;</pre>
-</div>
+	PROCESS_END_OF_KEY_VALUE_SIMPLE
+
+```
 
 ## Step 3: Parent updates only for complex values ##
 
@@ -240,42 +240,41 @@ The use case suggested by RapidJSON is to skip whitespace. In particular, this i
 
 This code in C is as follows:
 
-<div style="background: #ffffff; border-width: 0.1em 0.1em 0.1em 0.8em; border: solid gray; overflow: auto; padding: 0.2em 0.6em; width: auto;">
-<pre style="line-height: 125%; margin: 0;"><span style="color: #888888;">//Hex of 9,     10,     13,     32</span>
-<span style="color: #888888;">//      htab    \n      \r     space</span>
-<span style="color: #557799;">#define INIT_LOCAL_WS_CHARS \</span>
-<span style="color: #557799;">    const __m128i whitespace_characters = _mm_set1_epi32(0x090A0D20);</span>
+```
+//Hex of 9,     10,     13,     32
+//      htab    \n      \r     space
+#define INIT_LOCAL_WS_CHARS \
+    const __m128i whitespace_characters = _mm_set1_epi32(0x090A0D20);
 
-<span style="color: #888888;">//We are trying to get to the next non-whitespace character as fast as possible</span>
-<span style="color: #888888;">//Ideally, there are 0 or 1 whitespace characters to the next value</span>
-<span style="color: #888888;">//</span>
-<span style="color: #888888;">//With human-readable JSON code there may be many spaces for indentation</span>
-<span style="color: #888888;">//e.g.    </span>
-<span style="color: #888888;">//          {</span>
-<span style="color: #888888;">//                   "key1":1,</span>
-<span style="color: #888888;">//                   "key2":2,</span>
-<span style="color: #888888;">// -- whitespace --  "key3":3, etc.</span>
-<span style="color: #888888;">//</span>
-<span style="color: #557799;">#define ADVANCE_TO_NON_WHITESPACE_CHAR  \</span>
-<span style="color: #557799;">    </span><span style="color: #888888;">/* Ideally, we want to quit early with a space, and then no-whitespace */</span><span style="color: #557799;"> \</span>
-<span style="color: #557799;">    if (*(++p) == ' '){ \</span>
-<span style="color: #557799;">        ++p; \</span>
-<span style="color: #557799;">    } \</span>
-<span style="color: #557799;">    </span><span style="color: #888888;">/* All whitespace are less than or equal to the space character (32) */</span><span style="color: #557799;"> \</span>
-<span style="color: #557799;">    if (*p &lt;= ' '){ \</span>
-<span style="color: #557799;">        chars_to_search_for_ws = _mm_loadu_si128((__m128i*)p); \</span>
-<span style="color: #557799;">        ws_search_result = _mm_cmpistri(whitespace_characters, chars_to_search_for_ws, SIMD_SEARCH_MODE); \</span>
-<span style="color: #557799;">        p += ws_search_result; \</span>
-<span style="color: #557799;">        if (ws_search_result == 16) { \</span>
-<span style="color: #557799;">            while (ws_search_result == 16){ \</span>
-<span style="color: #557799;">                chars_to_search_for_ws = _mm_loadu_si128((__m128i*)p); \</span>
-<span style="color: #557799;">                ws_search_result = _mm_cmpistri(whitespace_characters, chars_to_search_for_ws, SIMD_SEARCH_MODE); \</span>
-<span style="color: #557799;">                p += ws_search_result; \</span>
-<span style="color: #557799;">            } \</span>
-<span style="color: #557799;">        } \</span>
-<span style="color: #557799;">    } \</span>
-</pre>
-</div>
+//We are trying to get to the next non-whitespace character as fast as possible
+//Ideally, there are 0 or 1 whitespace characters to the next value
+//
+//With human-readable JSON code there may be many spaces for indentation
+//e.g.    
+//          {
+//                   "key1":1,
+//                   "key2":2,
+// -- whitespace --  "key3":3, etc.
+//
+#define ADVANCE_TO_NON_WHITESPACE_CHAR  \
+    /* Ideally, we want to quit early with a space, and then no-whitespace */ \
+    if (*(++p) == ' '){ \
+        ++p; \
+    } \
+    /* All whitespace are less than or equal to the space character (32) */ \
+    if (*p <= ' '){ \
+        chars_to_search_for_ws = _mm_loadu_si128((__m128i*)p); \
+        ws_search_result = _mm_cmpistri(whitespace_characters, chars_to_search_for_ws, SIMD_SEARCH_MODE); \
+        p += ws_search_result; \
+        if (ws_search_result == 16) { \
+            while (ws_search_result == 16){ \
+                chars_to_search_for_ws = _mm_loadu_si128((__m128i*)p); \
+                ws_search_result = _mm_cmpistri(whitespace_characters, chars_to_search_for_ws, SIMD_SEARCH_MODE); \
+                p += ws_search_result; \
+            } \
+        } \
+    } \
+```
 
 Note that we first try and match a space and then we also check if the next character could be a whitespace (the whitespace characters are all less than or equal to ' ') before calling the SIMD code.
 
