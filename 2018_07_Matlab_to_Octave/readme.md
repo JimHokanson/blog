@@ -1,6 +1,7 @@
 # "Porting" a Simple Matlab Program for Octave #
 
 ** Started July 11, 2018 **
+
 ** Finalized ... **
 
 For someone who has continuously had a Matlab license for over 15 years now I had given relatively little thought to using GNU Octave, a programming language and environment that has spent considerable effort to be mostly compatible with Matlab code.
@@ -30,7 +31,26 @@ As a workaround I found the function [fig2m.m](https://www.mathworks.com/matlabc
 
 Octave also doesn't support GUI tables (uitable). Fortunately it supports listboxes. As a workaround I create strings which are concatenations of all columns in a row spaced out so that it looks like columns are present. This approach looks pretty good and works in the case where only row selection is necessary. The one sort of ugly thing about this approach is that headers are not well supported. Either a separate listbox is needed for the headers - which doesn't do horizontal scrolling with the table - or the headers can be placed in the main listbox - and then the headers disappear on vertical scrolling.
 
-TODO: Show diagram and link to code
+The following code generates the image shown below (when exported as SVG).
+
+```matlab
+headers = {'Name' 'Computer' 'Favorite Food' 'Favorite Animal'};
+data = {
+    'Jim'   'Bob'      'Cheese'  'Vulture'
+    'Tyler' 'Turtle'   'Pizza' 'Sea Otter'
+    'Josh'  'Drumkit'  'Taco Bell Tacos' 'four-headed dragon'
+    'Sally Sunshine' 'Speedy' 'Avocado Rolls' 'Liger'};
+
+display_data = sl.gui.cellToListbox(data,'headers',headers,'merge_header',true);
+
+figure
+set(gcf,'Units','pixels','Position',[100 100 500 70])
+uicontrol(gcf,'Style','listbox','Units','pixels','Position',[0 0 500 70],...
+    'String',display_data.row_data,'FontName','FixedWidth');
+
+```
+
+<img src="listbox_table.svg" />
 
 Finally, Octave doesn't support graphics handles as objects. Instead graphics handles are returned as numeric values, similar to Matlab behavior prior to 2014b. Prior to 2014b, working with properties of graphics handles required the use of set() and get() functions, rather than the new behavior of dot access notation. 
 
