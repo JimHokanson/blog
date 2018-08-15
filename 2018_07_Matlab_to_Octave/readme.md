@@ -1,8 +1,6 @@
 # "Porting" a Simple Matlab Program for Octave #
 
-** Started July 11, 2018 **
-
-** Finalized ... **
+**Finalized August 14, 2018**
 
 For someone who has continuously had a Matlab license for over 15 years now I had given relatively little thought to using GNU Octave, a programming language and environment that has spent considerable effort to be mostly compatible with Matlab code.
 
