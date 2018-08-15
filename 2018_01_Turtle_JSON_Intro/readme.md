@@ -115,28 +115,26 @@ In practical terms, this means I started using GOTO statements in my C code. Nor
 
 In some cases there are relatively few states that can occur from a given state. For example, there are only three things to do after opening an object: 1) open a key; 2) close the object; or 3) throw an error. For arrays and keys there are a few more. Here I decided to index into an array of "labels" using the character to parse. This eliminates delays caused by processing logic. No matter what the character, I always do two things: 1) index into the array using the character; and 2) GOTO the address stored at that index. Note this is unfortunately only supported by certain compilers, so at this point I switched from Visual Studio to using TDM-GCC. The setup code looks like this:
 
-
-<div style="background: #f0f0f0; border-width: 0.1em 0.1em 0.1em 0.8em; border: solid gray; overflow: auto; padding: 0.2em 0.6em; width: auto;">
-<pre style="line-height: 125%; margin: 0;">   <span style="color: #007020; font-weight: bold;">const</span> <span style="color: #902000;">void</span> <span style="color: #666666;">*</span>array_jump[<span style="color: #40a070;">256</span>] <span style="color: #666666;">=</span> {
-        [<span style="color: #40a070;">0</span> ... <span style="color: #40a070;">33</span>]  <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">34</span>]        <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_PARSE_STRING_IN_ARRAY,            <span style="color: #60a0b0; font-style: italic;">// "</span>
-        [<span style="color: #40a070;">35</span> ... <span style="color: #40a070;">44</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">45</span>]        <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_PARSE_NUMBER_IN_ARRAY,            <span style="color: #60a0b0; font-style: italic;">// -</span>
-        [<span style="color: #40a070;">46</span> ... <span style="color: #40a070;">47</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">48</span> ... <span style="color: #40a070;">57</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_PARSE_NUMBER_IN_ARRAY,            <span style="color: #60a0b0; font-style: italic;">// #</span>
-        [<span style="color: #40a070;">58</span> ... <span style="color: #40a070;">90</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">91</span>]        <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_OPEN_ARRAY_IN_ARRAY,              <span style="color: #60a0b0; font-style: italic;">// [</span>
-        [<span style="color: #40a070;">92</span> ... <span style="color: #40a070;">101</span>]  <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">102</span>]         <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_PARSE_FALSE_IN_ARRAY,           <span style="color: #60a0b0; font-style: italic;">// false</span>
-        [<span style="color: #40a070;">103</span> ... <span style="color: #40a070;">109</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">110</span>]         <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_PARSE_NULL_IN_ARRAY,            <span style="color: #60a0b0; font-style: italic;">// null</span>
-        [<span style="color: #40a070;">111</span> ... <span style="color: #40a070;">115</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">116</span>]         <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_PARSE_TRUE_IN_ARRAY,            <span style="color: #60a0b0; font-style: italic;">// true</span>
-        [<span style="color: #40a070;">117</span> ... <span style="color: #40a070;">122</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
-        [<span style="color: #40a070;">123</span>]         <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_OPEN_OBJECT_IN_ARRAY,           <span style="color: #60a0b0; font-style: italic;">// {</span>
-        [<span style="color: #40a070;">124</span> ... <span style="color: #40a070;">255</span>] <span style="color: #666666;">=</span> <span style="color: #666666;">&amp;&amp;</span>S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY};
-</pre>
-</div>
+```
+    const void *array_jump[256] = {
+        [0 ... 33]  = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [34]        = &&S_PARSE_STRING_IN_ARRAY,            // "
+        [35 ... 44] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [45]        = &&S_PARSE_NUMBER_IN_ARRAY,            // -
+        [46 ... 47] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [48 ... 57] = &&S_PARSE_NUMBER_IN_ARRAY,            // #
+        [58 ... 90] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [91]        = &&S_OPEN_ARRAY_IN_ARRAY,              // [
+        [92 ... 101]  = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [102]         = &&S_PARSE_FALSE_IN_ARRAY,           // false
+        [103 ... 109] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [110]         = &&S_PARSE_NULL_IN_ARRAY,            // null
+        [111 ... 115] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [116]         = &&S_PARSE_TRUE_IN_ARRAY,            // true
+        [117 ... 122] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY,
+        [123]         = &&S_OPEN_OBJECT_IN_ARRAY,           // {
+        [124 ... 255] = &&S_ERROR_TOKEN_AFTER_COMMA_IN_ARRAY};
+```
 
 Here && is used to get the address of the label. The '...' is a nice feature for filling in lots of array values. In my labels the leading 'S' represents "State". You'll note that most of the character options jump into an error state indicating that these characters are invalid given the current processing state of the parser.
 
@@ -218,17 +216,16 @@ The key insight was that we didn't care about managing parent information if we 
 
 To allow ourselves not to care about these primitive values, we hold off on updating depth and parents until we start parsing the value that the key holds, rather than when parsing the key string. This places extra work on parsing values in "objects" (really in the key of an object), but it speeds things up nicely. This is the opening part of the depth code that is now completely avoided when parsing primitives (as values in objects):
 
-<div style="background: #f0f0f0; border-width: 0.1em 0.1em 0.1em 0.8em; border: solid gray; overflow: auto; padding: 0.2em 0.6em; width: auto;">
-<pre style="line-height: 125%; margin: 0;"><span style="color: #007020;">#define INITIALIZE_PARENT_INFO(x) \</span>
-<span style="color: #007020;">        ++current_depth; \</span>
-<span style="color: #007020;">        if (current_depth &gt; 200){\</span>
-<span style="color: #007020;">            goto S_ERROR_DEPTH_EXCEEDED; \</span>
-<span style="color: #007020;">        }\</span>
-<span style="color: #007020;">        parent_types[current_depth] = x; \</span>
-<span style="color: #007020;">        parent_indices[current_depth] = current_data_index; \</span>
-<span style="color: #007020;">        parent_sizes[current_depth] = 0;</span>
-</pre>
-</div>
+```
+#define INITIALIZE_PARENT_INFO_OA(x) \
+        ++current_depth; \
+        if (current_depth > MAX_DEPTH){\
+            goto S_ERROR_DEPTH_EXCEEDED; \
+        }\
+        parent_types[current_depth] = x; \
+        parent_indices[current_depth] = current_data_index; \
+        parent_sizes[current_depth] = 0;
+```
 
 This isn't the fanciest optimization but I really like it. It is an example of optimizing code by removing unnecessary logic. Ideally the compiler could do this as well but my experience has been that it often does not.
 
@@ -294,29 +291,28 @@ I decided not to use SIMD for finding the end of a string because it can be slow
 
 I decided to use the [OPENMP library](https://en.wikipedia.org/wiki/OpenMP) for doing the post-processing of numbers and strings (unicode and escape character handling). This made writing parallel code extremely easy. Here is the parallel code that parses numbers. Simply by adding the pragma statement iterations of this loop get split amongst all available cores/threads. On my 5 year old desktop, and on my 3 year old laptop, this is 2 cores (4 threads, hyperthreads?), which should be a decent speedup for number (and string) parsing. I should mention in general I'm assuming most machines have two cores (or more) and that in general it is faster to use this two step approach (skip/log first then process later) rather than doing processing right away using a single thread.
 
-<div style="background: #ffffff; border-width: 0.1em 0.1em 0.1em 0.8em; border: solid gray; overflow: auto; padding: 0.2em 0.6em; width: auto;">
-<pre style="line-height: 125%; margin: 0;">  #pragma omp parallel
+```c
+    #pragma omp parallel
     {
-        <span style="color: #333399; font-weight: bold;">int</span> tid <span style="color: #333333;">=</span> omp_get_thread_num();
-        <span style="color: #333399; font-weight: bold;">int</span> error_location <span style="color: #333333;">=</span> <span style="color: #0000dd; font-weight: bold;">0</span>;
-        <span style="color: #333399; font-weight: bold;">int</span> error_value;
+        int tid = omp_get_thread_num();
+        int error_location = 0;
+        int error_value;
 
         #pragma omp for
-        <span style="color: #008800; font-weight: bold;">for</span> (<span style="color: #333399; font-weight: bold;">int</span> i <span style="color: #333333;">=</span> <span style="color: #0000dd; font-weight: bold;">0</span>; i <span style="color: #333333;">&lt;</span> n_numbers; i<span style="color: #333333;">++</span>){
-            <span style="color: #888888;">//NaN values occupy an index space in numeric_p but have a null</span>
-            <span style="color: #888888;">//value to indicate that they are NaN</span>
-            <span style="color: #008800; font-weight: bold;">if</span> (numeric_p[i]){
-                string_to_double_v3(<span style="color: #333333;">&amp;</span>numeric_p_double[i],numeric_p[i],i,<span style="color: #333333;">&amp;</span>error_location,<span style="color: #333333;">&amp;</span>error_value);
-            }<span style="color: #008800; font-weight: bold;">else</span>{
-                numeric_p_double[i] <span style="color: #333333;">=</span> MX_NAN;
+        for (int i = 0; i < n_numbers; i++){
+            //NaN values occupy an index space in numeric_p but have a null
+            //value to indicate that they are NaN
+            if (numeric_p[i]){
+                string_to_double_v3(&numeric_p_double[i],numeric_p[i],i,&error_location,&error_value);
+            }else{
+                numeric_p_double[i] = MX_NAN;
             }
         }  
         
-        <span style="color: #333333;">*</span>(error_locations <span style="color: #333333;">+</span> tid) <span style="color: #333333;">=</span> error_location;
-        <span style="color: #333333;">*</span>(error_values <span style="color: #333333;">+</span> tid) <span style="color: #333333;">=</span> error_value;
+        *(error_locations + tid) = error_location;
+        *(error_values + tid) = error_value;
     }
-</pre>
-</div>
+```
 
 Briefly, one clarification on the code above. My code throws errors when parsing, rather than passing out an error value to the caller. However Matlab states that no Matlab based calls, like mexErrMsgIdAndTxt() which is used to throw errors, should be used in parallel code. Thus, each thread keeps track of its own errors, and these are later combined.
 
@@ -340,30 +336,37 @@ By placing the '\' character between a null character and our '"' character, we 
 
 Finally, by adding sufficient characters to our buffer we ensure that we never read past the end of the stream when using SIMD.
 
-<div style="background: #ffffff; border-width: 0.1em 0.1em 0.1em 0.8em; border: solid gray; overflow: auto; padding: 0.2em 0.6em; width: auto;">
-<pre style="line-height: 125%; margin: 0;"><span style="color: #997700; font-weight: bold;">STRING_SEEK:</span>    
-
-    <span style="color: #008800; font-weight: bold;">while</span> (<span style="color: #333333;">*</span>p <span style="color: #333333;">!=</span> <span style="color: #0044dd;">'"'</span>){
-      <span style="color: #333333;">++</span>p;    
+```c
+STRING_SEEK:    
+    //Old code - strchr apparently will check for null, but currently
+    //we are padding to ensure we only need to look for '"'
+    //p = strchr(p+1,'"');
+    
+    //TODO: We could try more complicated string instructions
+    //1) SIMD
+    //2) Keys vs string values - assume keys are shorter
+    
+    
+    while (*p != '"'){
+      ++p;    
     }
     
-    <span style="color: #888888;">//Back up to verify that we aren't escaped</span>
-    <span style="color: #008800; font-weight: bold;">if</span> (<span style="color: #333333;">*</span>(<span style="color: #333333;">--</span>p) <span style="color: #333333;">==</span> <span style="color: #0044dd;">'\\'</span>){
-        <span style="color: #888888;">//See documentation on the buffer we've added to the string</span>
-        <span style="color: #008800; font-weight: bold;">if</span> (<span style="color: #333333;">*</span>(<span style="color: #333333;">--</span>p) <span style="color: #333333;">==</span> <span style="color: #0000dd; font-weight: bold;">0</span>){
-            mexErrMsgIdAndTxt(<span style="background-color: #fff0f0;">"turtle_json:unterminated_string"</span>, 
-                    <span style="background-color: #fff0f0;">"JSON string is not terminated with a double-quote character"</span>);
+    //Back up to verify
+    if (*(--p) == '\\'){
+        //See documentation on the buffer we've added to the string
+        if (*(--p) == 0){
+            mexErrMsgIdAndTxt("turtle_json:unterminated_string", 
+                    "JSON string is not terminated with a double-quote character");
         }
-        <span style="color: #888888;">//At this point, we either have a true end of the string, or we've</span>
-        <span style="color: #888888;">//escaped the escape character</span>
-        <span style="color: #888888;">//</span>
-        <span style="color: #888888;">//for example:</span>
-        <span style="color: #888888;">//1) "this is a test\"    =&gt; so we need to keep going</span>
-        <span style="color: #888888;">//2) "testing\\"          =&gt; all done</span>
-        <span style="color: #888888;">//</span>
-        <span style="color: #888888;">//This of course could keep going ... \\\\"</span>
-</pre>
-</div>
+        //At this point, we either have a true end of the string, or we've
+        //escaped the escape character
+        //
+        //for example:
+        //1) "this is a test\"    => so we need to keep going
+        //2) "testing\\"          => all done
+        //
+        //This of course could keep going ...
+```
 
 I rewrote this section multiple times to try and keep this simple. At the end of the day the main message is as follows, by using the buffer we chose we can avoid a lot of unnecessary checks on every character on a string, while also making sure we catch errors and properly handle escaped double-quote characters.
 
@@ -399,9 +402,3 @@ Here are some additional things that could make this code go faster, as well as 
 Even though I could make the code slightly faster, I'm ready to move on. At this point the parser is useable (i.e. it doesn't take 10s of seconds to load a 75 MB file). On my 2016 1.1 GHz m3 Macbook that 75 MB file parses in about 0.7 seconds (versus 0.73s for the mat file). On my i5-3570 3.4 GHz processor (released in Quarter 2 of 2012) it takes only 0.3 seconds, which is actually faster than the 0.55s it takes to read in the same data as a mat file (using '-v6').
 
 I'm not entirely convinced of the utility of using JSON for scientific data exchange, especially compared to HDF5. Perhaps it allows easier editing of meta-data, but it requires a lot of extra processing to parse. The one feature that I think is really missing from this parser is the ability to work with schemas. Without schemas, there can be a lot of extra work on the user's end to verify that the data are delivered as expected.
-
-
-
-
-
-
