@@ -20,4 +20,4 @@ Ever try plotting 20 minutes of data sampled at 20 kHz in Matlab? It's not a lot
 
 [article link](2018_01_Turtle_JSON_Intro/readme.md)
 
-This post introduces a JSON parser I wrote for speeding up parsing of JSON in Matlab. This post focuses on the C code I wrote to do the majority of the parsing work. It focuses on techniques I used to make the parsing as fast as possible.
+This post introduces a JSON parser I wrote for speeding up parsing of JSON in Matlab. This post focuses on the C code I wrote to do the majority of the parsing work. It focuses on techniques I used to make the parsing fast.
