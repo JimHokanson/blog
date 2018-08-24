@@ -1,4 +1,4 @@
-**August 18, 2018 - Blog version 3**
+##August 18, 2018 - Blog version 3##
 
 [article link](2018_08_Blog_Version3/readme.md)
 
