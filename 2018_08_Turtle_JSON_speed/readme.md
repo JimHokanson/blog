@@ -60,7 +60,7 @@ Here's the parse time results from my computer named Turtle. Turtle JSON was nam
 
 ![Turtle Computer Times](Turtle_Comp_TJ_Bench.svg)
 
-Nearly raw data (rounded to nearest 0.1 ms) are available at [Turtle_Comp_TJ_Bench.csv].
+Nearly raw data (rounded to nearest 0.1 ms) are available at [Turtle_Comp_TJ_Bench.csv](Turtle_Comp_TJ_Bench.csv).
 
 Three things should be noted from this figure:
 
@@ -72,13 +72,13 @@ Third, Turtle JSON is well designed for heavy number parsing. In particular, it 
 
 Here are the results for the other computers where the story is fairly similar:
 
+[Paladin times - figure below:](Paladin_Comp_TJ_Bench.csv)
+
 ![Paladin Computer Times](Paladin_Comp_TJ_Bench.svg)
 
+[Jim MacBook times - figure below:](Turtle_Comp_TJ_Bench.csv)
+
 ![Jim Mac Computer Times](Jim_Mac_TJ_Bench.svg)
-
-[Paladin_Comp_TJ_Bench.csv]
-
-[Turtle_Comp_TJ_Bench.csv]
 
 ## 1.json speed ##
 
