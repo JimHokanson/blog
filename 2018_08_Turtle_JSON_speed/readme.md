@@ -1,12 +1,13 @@
 # Turtle JSON Speed #
 
-September 23, 2018 - Status: Incomplete
+October 1, 2018 - Status: Incomplete - I'm currently working on testing a structure based memory approach instead of arrays, as well as parallelizing some of the post-processing. Once completed I plan on updating this article to reflect these changes.
+
 
 In a previous article I documented [a JSON parser that I wrote in C for Matlab](../2018_01_Turtle_JSON_Intro).
 
-The previous article focused on techniques I used to make the parser fast, but didn't include any performance information. For those writing performant C code, that post might be interesting, but I realized that many people probably wanted to know how well the parser performs relative to other Matlab JSON parsers.
+The previous article focused on techniques I used to make the parser fast, but didn't include any performance information. For those writing performant C code, that post might be interesting, but I realized that many people probably wanted to know how just how fast (or slow!) the parser really is, and how well the parser performs relative to other Matlab JSON parsers.
 
-For now the only test I'm showing is how long it takes to read a JSON structure into Matlab objects. I've included a variety of JSON files that I've found over the web. These files encompass a variety of sizes and types (mostly strings, lots of objects, lots of numbers, etc.).
+For now the only test I'm showing is how long it takes to read a JSON structure into Matlab objects. I've included a variety of JSON files that I've found over the web. These files encompass a variety of sizes and types (e.g. files with mostly strings, files with lots of objects, lots of numbers, etc.).
 
 
 ## The Parsers ##
