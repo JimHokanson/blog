@@ -1,3 +1,5 @@
+//Place at end of turtle_json_mex.c for parsing 1.json file
+
 //-----------------------------------------------
 //                             json_string: [1×224698929 uint8]
 //                                   types: [1×15000005 uint8]
@@ -22,6 +24,8 @@
 //                                    slog: [376×1 uint8]   
     
     
+    TIC(c_parse_init_time);
+
     uint8_t *types = mxGetData(mxGetFieldByNumber(plhs[0],0,E_types));
     int32_t *d1 = mxGetData(mxGetFieldByNumber(plhs[0],0,E_d1));
     double *numeric_data = mxGetData(mxGetFieldByNumber(plhs[0],0,E_numeric_p));
@@ -104,6 +108,8 @@
 //             mexPrintf("z: %0.5f\n",z);
 //         }
     }
+    
+    TOC(c_parse_init_time,time__c_parse_init_time); 
     
 //     mexPrintf("x: %0.5f\n",x);
 //     mexPrintf("y: %0.5f\n",y);
