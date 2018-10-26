@@ -134,7 +134,7 @@ Note, this file is generated dynamically on the benchmarking site using a ruby s
 
 ** Warning: the following is a bit hand wavy. Feel free to be a bit skeptical. **
 
-The current top (best) values (October 2018) are as follows for reading and summing the numbers are as follows. For reference I've added on the time it takes me to execute these same tests on Turtle (my computer), averaging the time it takes to execute 10 runs.
+The current top (best) values (October 2018) are as follows for reading and summing the numbers. For reference I've added on the time it takes me to execute these same tests on Turtle (my computer), averaging the time it takes to execute 10 runs.
 
 | Language        | Time, s | Memory, MiB | Turtle, s|
 | --------------- | ------- | ----------- |---------|
@@ -148,31 +148,46 @@ The current top (best) values (October 2018) are as follows for reading and summ
 | Scala           | 1.44    | 457.2       |         |
 | Rust Value      | 1.82    | 1675.8      |         |
 | Turtle JSON     | *0.59   | ~350        | 0.85    | 
+| Turtle JSON V2  | *0.35   |             | 0.5     |
 
-Since Rapid JSON is header only, it is relatively easy to compile. I compiled the code using MS Visual C++ 2015 Professional with SSE4.2 enabled. Tests from the benchmark website were modified to run as mex files (more on this later) with printouts removed. The relevant cpp files can be found in this directory. I did not try the Rust options. I'd like to try the D GDC version but I don't think GDC targets Windows. These two results suggest that to translate my times to the table's times, I need to multiply my execution times by 0.69 (Again, a bit of hand waving is going on here).
+*See text for details
 
-To execute this task in Mex C (i.e. in C but with Matlab memory management) takes 0.85 seconds. This includes adding on some additional code to add the relevant numbers. This code can be found in `add_1_values_snippet.c` which I copied into the end of the main mex function for Turtle JSON. The code skips a few checks that would take precious microseconds (I'm being a bit lazy since the code is designed to be worked with in Matlab. The task of adding the 3 million numbers (1 million each for x,y,and z) was not explicitly timed (just added to total time) but appears to be minor (.   Using the aforementioned scaling factor, this would equate to 0.59 seconds to complete this task.
+Since Rapid JSON is header only, it is relatively easy to compile. I compiled the code using MS Visual C++ 2015 Professional with SSE4.2 enabled. Tests from the benchmark website were modified to run as mex files with printouts removed. The relevant cpp files can be found in this directory. I did not try the Rust options. I'd like to try the D GDC version but I don't think GDC targets Windows. These two results suggest that to translate my times to the table's times, I need to multiply my execution times by 0.69 (Again, a bit of hand waving is going on here).
 
-Internal execution timing is as follows:
+To execute this task in C-mex (i.e. in C but with Matlab memory management) takes 0.85 seconds. This includes adding on some additional code to the parser to add the relevant numbers. This code can be found in `add_1_values_snippet.c` which I copied into the end of the main mex function for Turtle JSON. The code skips a few checks that would take precious microseconds (sarcasm - I'm being a bit lazy since the code is designed to be worked with in Matlab - I did not write C wrapper functions). The task of adding the 3 million numbers (1 million each for x,y,and z) is not timed below but took 6 ms. Using the aforementioned scaling factor, parsing this file in the benchmark should show up at around 0.59 seconds (roughly).
+
+Internal execution timing is as follows (in ms, averaged):
 
 ```
-                elapsed_read_time: 112.5511
+                elapsed_read_time: 112.5511   %time to read the file
                 c_parse_init_time: 0.0564
-                     c_parse_time: 295.8875
+                     c_parse_time: 295.8875   %1
          parsed_data_logging_time: 0.0122
          total_elapsed_parse_time: 295.9566
-              object_parsing_time: 93.4250
+              object_parsing_time: 93.4250    %2
                  object_init_time: 0.0225
-               array_parsing_time: 29.8845
-              number_parsing_time: 22.2562
-    string_memory_allocation_time: 180.5333
-              string_parsing_time: 27.9706
-            total_elapsed_pp_time: 354.1021
-           total_elapsed_time_mex: 762.6190
+               array_parsing_time: 29.8845    %3
+              number_parsing_time: 22.2562    %4
+    string_memory_allocation_time: 180.5333   %5
+              string_parsing_time: 27.9706    %6
+            total_elapsed_pp_time: 354.1021   
+           total_elapsed_time_mex: 762.6190   %7
 ```
 
+1. ** Parse Time: 296 ms ** It takes roughly 300 ms to do a first pass through the data. After recently learning about anonymous unions in structures I started to write a second version of the code that has only 1 main structure array in the main parser, rather than different arrays for numbers, arrays, objects, etc. This change reduced the execution time to 220 ms.  Unfortunately this would require rewriting the code that translates the tokenized data into Matlab, which I don't really want to spend my time on right now. (possible time savings: 75 ms)
+2. ** Object Parsing: 93 ms ** When parsing objects every object gets assigned to an ID based on the field names. This later allows me to find homogenous arrays which is a huge time saver in memory allocation when translating to Matlab. This could presumably be made faster with OpenMP, but it is low priority for now.
+3. ** Array Parsing: 30 ms ** Array parsing aims to find homogenous arrays of objects or numbers, which is important for how the data are returned to Matlab. A parser which did this analysis only on request could skip the analysis of all the "1" arrays which are not part of the benchmark. (possible time savings: maybe 15 ms )
+4. ** Number Parsing: 22 ms ** This code was written to be fast at working with large amounts of number data. To do this I postpone number parsing until after the first pass and then parse all numbers at once using OpenMP. For my computer the execution time is reduced to roughly 25% of the time it takes to run without OpenMP.
+5. ** String Allocation: 181 ms ** String allocation is killer for my code. Keys are allocated differently than strings, so this is the time it takes to allocate the 1 million "name" entries. In C we could just set the pointer to the first character and then modify the ending quote to be a null character to make it a null terminated string. (possible time savings: 180 ms)
+6. ** String Validation and Parsing: 28 ms ** String parsing involves removing escaped characters and converting UTF-8 to UTF-16. This could also be passed through OpenMP and probably optimized slightly.
+7. ** Total Execution Time: 762 ms ** This is the total execution time of the code. This time does not include time to call the mex function. More importantly, it does not include the time required to clear the managed memory. A loop to a simple mex file takes 4 ms, which means roughly 80 ms is spent clearing memory. I have no idea how long it takes to free memory (using `free`) but in some testing this seems to be on the order of 1 ms for all the data that I might have allocated if I were using `malloc()` instead of `mxMalloc`. (possible time savings: 80 ms)
 
+Again, there's lot of hand waving going on but this suggests this code if it were written slightly differently, and notably without Matlab memory management, might save 350 ms in Turtle time which is 242 ms in translated time (maybe...)
+
+This would put the estimated execution time at 0.35s which is the same as the D parser time. The D parser makes some assumptions about JSON validity which I'm avoiding (I think). Regardless, the point is not to make the claim that this code is the fastest since that would require some additional changes and better head to head comparisons. ** Instead, the point is to indicate that this parser is on par with these other faster parsers. **
+
+It is possible to make the parsing even faster, although that's a discussion for another post. 
 
 ## Conclusions ##
 
-Turtle JSON is consistently the fastest parser out of the available options. It provides additional customization options for returning data in the desired format. Give it a try!
+Turtle JSON is consistently the fastest parser out of the available options for Matlab. It provides additional customization options for returning data in the desired format for improved flexibility. The underlying C-mex parser is competitive with other non-Matlab parsers. Give it a try!

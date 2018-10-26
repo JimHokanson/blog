@@ -1,3 +1,9 @@
+## October 25, 2018 - Turtle JSON Benchmarking ##
+
+[article link](2018_08_Turtle_JSON_speed/readme.md)
+
+Which parser is up to 10x faster than other fast Matlab JSON parsers? This one! Benchmark data are provided for comparisons to other Matlab parsers as well as a comparison to JSON parsers in other languages.
+
 ## August 18, 2018 - Blog version 3 ##
 
 [article link](2018_08_Blog_Version3/readme.md)
