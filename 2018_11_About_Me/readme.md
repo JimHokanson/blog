@@ -1,8 +1,8 @@
 # About Me #
 
-<img src="jim_photo.jpg" alt="Photo of Jim">
+<img src="jim_photo.jpg" alt="Photo of Jim" height="300">
 
-My name is James (Jim) Hokanson. I'm currently a postdoc in biomedical engineering at Duke University working with Dr. Warren Grill on urological dysfunction.
+My name is James (Jim) Hokanson. I'm currently a postdoc in biomedical engineering at Duke University working with Dr. Warren Grill on treatments for urological dysfunction.
 
 In my free time I like programming, reading books, and running, although with 3 kids and a hectic work schedule it has been tough to find free time lately. 
 
