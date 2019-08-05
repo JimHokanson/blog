@@ -1,6 +1,6 @@
 ## February 17, 2019 - MCS Stimulator Library ##
 
-[article link](2019_01_MCS_Matlab/readme.md)
+[article link](2019/2019_01_MCS_Matlab/readme.md)
 
 This article discusses the development of a Matlab wrapper for use with MultiChannel System's electrical stimulators. I've also created code that can be used to design stimulus patterns for the MCS stimulator as well as other stimulators (e.g. something driven by a NI-DAQ). 
 
