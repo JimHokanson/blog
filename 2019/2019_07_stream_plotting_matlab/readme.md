@@ -149,7 +149,7 @@ Code available at: [speed_example_01.m]
 
 Note, all results are from my macbook running Matlab 2019a.
 
-Interestingly, if I specify the axis limits ahead of plotting, then the plotBig times drop to ~0.20 s (see limitations for more on this).
+Interestingly, if I specify the axis limits ahead of plotting, then the plotBig times drop to ~0.20 s (see potential improvements below for more on this).
 
 The main point of the above example is that animatedline isn't designed to be super fast at plotting, but rather to handle streaming data more efficiently as new data are added compared to other plotting strategies.
 
