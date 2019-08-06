@@ -28,6 +28,11 @@ xy.addData(new_data);
 set(gca,'xlim',[0 2])
 ```
 
+![big plot streaming example](big_plot_streaming_limited.gif)
+
+One thing to note I've created these animated gifs using Chad Greene's `gif` function [available here](https://www.mathworks.com/matlabcentral/fileexchange/63239-gif) which is a wrapper around Matlab's `imwrite` function.
+
+
 This is similar to the usage of Matlab's animatedline() function.
 
 ```matlab
@@ -43,10 +48,13 @@ addpoints(xy,x,new_data)
 set(gca,'xlim',[0 2])
 ```
 
+![animatedline example](animated_line_limited.gif)
+
+
 Other than different names the usage is fairly similar. Some important usage differences are:
 
 1. This implementation doesn't automatically render added data points until the object is plotted using plotBig(). See the above example.
-2. This implementation doesn't automatically change the x axis limits as data points are added. The user most set it manually.
+2. This implementation doesn't automatically change the x axis limits as data points are added. The user must set it manually.
 
 Note, this example is not typical, as generally data gets added as it is "acquired."
 
@@ -79,6 +87,8 @@ There are two main benefits to using this code instead of animatedline.
 
 1. Expansion of underlying data arrays if more space is needed.
 2. Faster plotting than animatedline.
+
+Additionally, since data must be evenly sampled, no time vector is required, halving memory requirements compared to animatedline.
 
 ## Data Expansion ##
 
@@ -212,11 +222,92 @@ Code for the above is available at: [speed_example_03.m]
 
 # Implementation Details #
 
-# Limitations & Future Extensions #
+Internally the streaming data object preallocates a buffer of a given size. When new data points are added, they are added to the internal buffer. If the added data would cause the buffer to overflow, the buffer is resized based on a specified growth rate (the default is to double the buffer size).
 
-At this point no further development is planned. 
+When plotting via the `plotBig` function, the streaming data class is detected and a data reduction call is made to the streaming class, rather than being handled by the default class that operates on normal arrays. 
 
-1. Memory limits
-2. Evenly spaced numbers
-3. Support of min/max on subset of data.
-4. How to speed up plot rendering for a standard line
+As a reminder from the other [blog post](../../2018/2018_01_PlotBig_Matlab) on this library, the plotting speedup comes from only plotting a subset of data points that appears the same as plotting all of the data points. More specifically I only plot min and max values at approximately one pair per pixel. In other words if we had 1 million data points per pixel, I would only plot 2 values for those 1 million data points, the min of those 1 million values and the max (see other blog post for more details).
+
+The streaming class has three things that it does which is different from the default behavior. 
+
+1. The size of the buffer is not necessarily the same as the size of the valid data. This needs to be kept in mind when doing the data reduction.
+2. I decided to also compute a reduced data set, when data points are added, to speed up future data reduction. For example, from 1 million data points, I only hold on to 1000 data points, or more specifically 500 pairs of min/max values as a second smaller buffer. If we plot enough data (10 of millions of points or more), then the data reduction is computed on this smaller buffer, rather than on the larger original data. This was meant to help when streaming extreme amounts of data - data close to memory limits - although I haven't fully tested its utility relative to reducing the original array.
+3. I wanted the ability to change the scaling of the data after it had been collected. In other words, I wanted the ability to calibrate the data. This technically could be done for the default `big_plot` class, but so far I've only implemented it in the streaming data. Since a linear calibration (what is implemented) doesn't change which indices are selected as max/min pairs, I currently perform the calibration after the data reduction. Note inverting the data in the calibration would only flip the max/min values, but they'd still be the same pair (min would become max, max would become min). Note, I also don't care which is plotted first, max or min, you can't tell when "zoomed" out and by the time you can tell, the library just plots all the relevant data in the zoomed in region.
+
+Below is some sample code which is designed to demonstrate some of this functionality.
+
+```
+fs = 1e5; %sampling rate
+n_samples_init = 1e6; %how many samples to initially allocate 
+data_type = 'int16';
+
+%1) Initialization of the object
+xy = big_plot.streaming_data(1/fs,n_samples_init,'data_type',data_type);
+m = 10/double(intmax('int16')); %10 V == intmax
+b = 0;
+xy.setCalibration(m,b);
+
+close all
+plotBig(xy)
+set(gca,'ylim',[-3 3])
+
+elapsed_times = zeros(1,100);
+
+%2) "Adding" data
+for i = 1:100
+    if i == 50
+        %a "recalibration example
+        m = -2*m;
+        xy.setCalibration(m,b);
+    end
+    
+    x = (i-1):1/fs:(i-1/fs);
+    r = 0.1*rand(1,length(x));
+    if mod(i,3) == 0
+    	%I add an artifact that should always be plotted
+        r(1) = 0.5;
+    end
+    new_data = int16(3277*(sin(x)+r));
+	xy.addData(new_data);
+	set(gca,'xlim',[i-20 i]);
+	drawnow()
+end
+```
+
+![internals example plot](internals_demo.gif)
+
+If we display the object, we see the following info at the end:
+```
+xy =>
+ 		...
+       n_add_events: 100
+      n_grow_events: 4
+              t_add: 0.2343
+           t_reduce: 0.0667
+     n_small_reduce: 92
+   n_regular_reduce: 8
+```
+
+- **n_add_events:** # of times the addData() function was called
+- **n_grow_events:** # of times the internal buffer was resized
+- **t_add:** total time in seconds to process adding new data points, this includes buffer resizing and adding min/max pairs to the smaller buffer
+- **t_reduce:** total time in seconds spent on reducing data for plotting, not including the small buffer setup.
+- **n_small_reduce:** # of times a reduce call was made that operated on the smaller buffer (min/max pairs)
+- **n_regular_reduce:** # of times "  "   "  on the original dataset
+
+Note for reference the total plotting time for the above example was 5.4s. This means internal processing to add and reduce data took about 5% of the total time for plotting. This result matches with a previous result above that demonstrated only a small difference in time between stream plotting using this library and stream plotting of lines that consisted of only 2 data points using basic Matlab code. In other words, the slow part of this code is the rendering process used by Matlab (see limitations below).
+
+# Limitations & Future Improvements #
+
+At this point no further development is planned. The library works well enough. Here are just a few things that came to mind regarding limitations and future extensions that could be done.
+
+## Limitations ##
+
+1. Currently the code does not have a memory limit and assumes you can fit all the data to plot in memory. Note in the above internals example we actually captured raw int16 values and calibrated them on the fly, which could save some memory relative to singles or doubles while still allowing scaled plotting of capture DAQ data. Unfortunately I seem to remember that Matlab's DAQ toolbox doesn't support returning raw data ....
+2. The code requires evenly spaced samples. Since continuously sampled data tends to be evenly sampled in time, at least for my data (!), removing this limitation is not a priority for me.
+
+## Future Improvements ##
+
+1. When replotting a window where there is partial overlap with a previous render it is conceivable that some time could be saved by only calculating the data reduction on the new data. For example if we have a 100 second window and we have previously plotted data from time 10 to 110, and now we want to plot from 20 to 120, we should only need to calculate the data reduction from 110 to 120. This is maybe not as critical given point #2 below.
+2. It is pretty clear now that most of the speed restrictions come from how Matlab renders plots, not from a slow data reduction step. It is not clear exactly how this would occur. I was surprised to find out that plotting data out of the axes ranges does slow down plotting (see Yair's thread [here](https://www.mathworks.com/matlabcentral/answers/252979-increase-the-plotting-performance-in-the-matlab-level-drawmode-optimizing-rendering-down-sampling)). Some performance improvement may also come from manually controlling the tick marks and reducing the # of tick marks shown. Big picture I think the best way to improve plotting would likely be to write a custom OpenGL library, but that's obviously a tremendous undertaking. A while back there was a product called Jacket which was offering code that would render graphics but there was some dispute with the Mathworks about the product and it is no longer for sale.
+3. Finally, perhaps the most meaningful improvement that could actually be accomplished would be to support only keeping a subset of the data in memory for plotting, and using the disk as necessary when scrolling to fetch data. Unfortunately this is non-trivial and I have lots of other things I want to accomplish more at this point!
