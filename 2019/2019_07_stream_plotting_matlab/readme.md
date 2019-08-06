@@ -101,7 +101,9 @@ for i = 1:200
 end
 ```
 
-![big plot streaming example](big_plot_streaming_limited.gif)
+<p align="center">
+<img src="big_plot_streaming_limited.gif" width="400">
+</p>
 
 One thing to note I've created these animated gifs using Chad Greene's `gif` function [available here](https://www.mathworks.com/matlabcentral/fileexchange/63239-gif) which is a wrapper around Matlab's `imwrite` function.
 
@@ -128,13 +130,17 @@ for i = 1:200
 end
 ```
 
-![animatedline example](animated_line_limited.gif)
+<p align="center">
+<img src="animated_line_limited.gif" width="400">
+</p>
 
 ## Speed ##
 
 The main reason for implementing this code was to increase speed of plotting. animatedline handles adding data points to memory efficiently, but it is not clear that it actually has anyway of speeding up normal plotting. For example if we simply use animatedline to plot the following figure, it is the slowest out of four plot options tested.
 
-![data for plotting](speed_example_01.svg)
+<p align="center">
+<img src="speed_example_01.svg" width="400">
+</p>
 
 In the above figure I'm plotting a sine wave sampled at 20 kHz for 20 minutes of data, a duration and sampling rate that might be reasonable for my work. 
 
@@ -157,11 +163,15 @@ In the next example we add on data in 1 second increments, keeping visible one m
 
 This is an example with animatedline():
 
-![streaming gif using animated line plotting](animated_line.gif)
+<p align="center">
+<img src="animated_line.gif" width="400">
+</p>
 
 This is an example with the plotBig library:
 
-![streaming gif using big_plot.streaming_data](big_plot_streaming.gif)
+<p align="center">
+<img src="big_plot_streaming.gif" width="400">
+</p>
 
 In addition to comparing Matlab's standard approach to my code, I also tried three other options. First, I tried plotting a line  with only 2 points for each window, rather than the 1.2 million I'm plotting in the above examples. This option provides an indication of how long it takes simply to plot anything. Second, I tried initializing a vector with NaNs, then replacing NaNs with relevant data as it is "collected." Finally, I tried only copying over the data that was within range. These latter options are naive ways of implementing streaming. Relevant code for these latter two is shown below.
 
@@ -205,7 +215,9 @@ Code for the above is available at: [speed_example_02.m]
 
 The time difference between animatedline and plotBig depends on how points are being plotted. Plotting more data will make the difference in execution times larger. Interestingly, execution time for animatedline grows at a non-linear rate as more data are added to the object, even if the same amount of data is plotted in any given plot render. This is shown below. This is not true for plotBig, where execution time (as we saw in the previous example), is largely driven by the time necessary to render a simple plot.
 
-![execution time as a function of # of data points added](speed_example_03.svg)
+<p align="center">
+<img src="speed_example_03.svg" width="400">
+</p>
 
 My guess is that the non-linear increase in time with animatedline comes from it supporting a non-monotonic, non-evenly spaced time vector. More specifically, plotBig is able to determine relevant samples to be plotted from a simple calculation (based on start time and sampling rate), whereas I am assuming that animatedline needs to do a search over all the data points in its memory to determine which ones are valid for plotting. This makes animatedline more versatile than plotBig, at the cost of being slower. The above example also illustrates that the relative speedup between plotBig and animatedline depends on a variety of factors, including # of data points in memory (shown here), as well as # of data points plotted. This latter point is not tested in this post but comes from: 1) the point above that animatedline isn't designed to be fast at plotting, rather to not be super slow with streaming, and 2) details on how fast plotBig is at plotting relative to Matlab ([see previous blog post for more details]((../../2018/2018_01_PlotBig_Matlab)).
 
@@ -269,7 +281,9 @@ for i = 1:100
 end
 ```
 
-![internals example plot](internals_demo.gif)
+<p align="center">
+<img src="internals_demo.gif" width="400">
+</p>
 
 If we display the `xy` object, we see the following info at the end:
 ```
