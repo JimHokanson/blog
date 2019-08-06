@@ -173,6 +173,8 @@ This is an example with the plotBig library:
 <img src="big_plot_streaming.gif" width="400">
 </p>
 
+Note, I'm not sure that Matlab is actually respecting the delay times between frames in the above plots. Also, the delay resolution is limited to hundreths of a second per gif spec, which may also be causing problems.
+
 In addition to comparing Matlab's standard approach to my code, I also tried three other options. First, I tried plotting a line  with only 2 points for each window, rather than the 1.2 million I'm plotting in the above examples. This option provides an indication of how long it takes simply to plot anything. Second, I tried initializing a vector with NaNs, then replacing NaNs with relevant data as it is "collected." Finally, I tried only copying over the data that was within range. These latter options are naive ways of implementing streaming. Relevant code for these latter two is shown below.
 
 ```matlab
