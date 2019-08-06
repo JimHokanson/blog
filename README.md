@@ -1,3 +1,9 @@
+## August 6, 2019 - Plotting of Streaming Data in Matlab ##
+
+[article link](2019/2019_07_stream_plotting_matlab/readme.md)
+
+This article describes a class I wrote for my plotBig library which allows the user to plot data as it is collected. This code has similar functionality to Matlab's animatedline function but is often much faster.
+
 ## February 17, 2019 - MCS Stimulator Library ##
 
 [article link](2019/2019_01_MCS_Matlab/readme.md)
