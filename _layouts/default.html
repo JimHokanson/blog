@@ -10,9 +10,14 @@
   </head>
   <body>
     <div class="container-lg px-3 my-5 markdown-body">
-      {% if site.title and site.title != page.title %}
-      <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
-      {% endif %}
+      <h3 style="text-align: left; width:49%; display: inline-block;">
+        <a href="{{ "/" | absolute_url }}">{{ site.title }}</a>
+      </h3>
+      <h3 style="text-align: right; width:50%;  display: inline-block;">
+        <a href="/blog/">blog</a>
+      </h3>
+      <hr>
+      
 
       {{ content }}
 
