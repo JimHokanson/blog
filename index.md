@@ -1,3 +1,0 @@
-# About Me #
-
-Hi mom.
