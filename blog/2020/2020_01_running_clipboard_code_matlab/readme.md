@@ -136,12 +136,12 @@ In addition to not telling us where the error occurred, it doesn't stop executio
 
 If instead our code were executed as a function or script, rather than by evaluating, we would stop at the line of our error:
 
-<p align="center">
 <figure>
-	<img src="debugging1.png" height="500">
-<figcaption> The debugger has stopped at the line of the error (see green arrow) and is ready for debugging in the command window as indicated by 'K>>'. This occurs because we ran our code as its own function. If the code were only part of a function than a different approach would be needed to engage the debugger - as evaluating the selection would not trigger the debugger</figcaption>
+<img src="debugging1.png" height="500" border="1"/>
+<figcaption>
+The debugger has stopped at the line of the error (see green arrow) and is ready for debugging in the command window as indicated by 'K>>'. This occurs because we ran our code as its own function. If the code were only part of a function than a different approach would be needed to engage the debugger - as evaluating the selection would not trigger the debugger.
+</figcaption>
 </figure>
-</p>
 
 Importantly, the part you are evaluating might not be the entirety of a function or script, but rather a part of one. 
 
@@ -149,13 +149,12 @@ Thus our goal is to somehow get debugging at the point of an error when evaluati
 
 If we copy the highlighted lines, then type runc, we get the debugging we are looking for:
 
-<p align="center">
-<img src="debugging2.png" height="500">
-<br>
-	<div style="text-align: left;>
+<figure>
+<img src="debugging2.png" height="500" border="1"/>
+<figcaption>
 <b>Figure:</b> Like the above image, we are stopped in the debugger. If you look at the printed stack trace the error didn't come from the file we highlighted, but rather from a file called `z_runc_exec_file`. How this works is discussed in the next section. Importantly though, we get debugging from highlighting and "executing" the selected/copied code.
-	</div>
-</p>
+</figcaption>
+</figure>
 
 ## Execution Details ##
 
