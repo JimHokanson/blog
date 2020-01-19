@@ -4,84 +4,58 @@ This post will discuss a function, `runc` that I use daily when writing Matlab c
 
 The code is kept my ["Matlab Standard Library" repo](https://github.com/JimHokanson/matlab_standard_library). The library was started in June 2013 as a way of organizing reusable Matlab functions and classes that I write. This library is a topic for another post ... In the mean time it is just useful to know that `runc` is located in this library [link](https://github.com/JimHokanson/matlab_standard_library/blob/master/global_namespace_functions/runc.m)
 
+I also made a standalone version available here:
+https://github.com/JimHokanson/blog/tree/master/blog/2020/2020_01_running_clipboard_code_matlab
+
+
 ## Running example code ##
 
-Initially `runc` was written to run example code that had been commented out. This isn't necessary for functions when using Matlab's "help" function since it (the help function) removes all comments. However, when inspecting code in the editor the comments remain and copying and pasting won't run the copied code. Here's an example of `runc` in action. 
+Initially `runc` was written to run example code that had been commented out. This isn't necessary for functions when using Matlab's `help` function since `help` removes all comments. However, when inspecting code in the editor the comments remain and evaluating highlighted code with comments won't run the copied code. For example:
 
-Note that:
-- **##** indicates a comment to the reader
-- **>>** indicates something that was typed in the command window
+<figure>
+<img src="evaluate_comment.png" height="500">
+<figcaption>The example above has been highlighted and evaluated (right-click => evaluate selection). Not surprisingly the command window only displays the comments, it doesn't run the code.
+</figcaption>
+</figure>
 
+Now, if instead of evaluating the selection we copy it to the clipboard, we can use `runc` at the command window to evaluate the commented code:
 
-```matlab
-	function testCode()
-	%
-	%	Some documentation ...
-	%	
-	%	--- Examples --- %Don't copy this line ...
-	%	a = 3; %Copy this line and the next line
-	%	fprintf('The value of a is %d\n',a) %Copy this line too
-	
-	## This (copying and pasting) doesn't do anything, because the code is commented!
-	>> 	%	a = 3; %Copy this line and the next line
-	    %	fprintf('The value of a is %d\n',a) %Copy this line too
-	
-	## However running 'runc' uncomments and executes the lines (from the clipboard)
-	>> runc
-	The value of a is 3
-	>> 
-```
+<figure>
+<img src="run_example.png" height="500">
+<figcaption>The example above has been highlighted and evaluated (right-click => evaluate selection). Not surprisingly the command window only displays the comments, it doesn't run the code.
+</figcaption>
+</figure>
 
-The above isn't the greatest example, since `fprintf` is a builtin and generally the goal of my examples is to demonstrate how to use functions I've written. For example, consider the function `sl.io.fileRead`. The examples in the documentation are as follows:
-
-```matlab
-%   Examples:
-%   ---------
-%   1) Read and return as uint8
-%   out = sl.io.fileRead(file_path,'*uint8');
-%
-%   2) Read and return as characters
-%   out = sl.io.fileRead(file_path,'*char');
-```
-
-These examples rely on a variable `file_path` that is not defined in the examples. Fortunately `runc` executes in the caller's workspace so something like the following will work.
-
-```
-##If you want to run this example, modify this file path to your own file (of any type)
->> file_path = 'C:\Users\RNEL\Desktop\usb_temp\ADI6500.tmp';
-## Make sure you copy the line below the the clipboard (including the '%' character)
-##   %  out = sl.io.fileRead(file_path,'*uint8');
->> runc                
-## Note that 'out' is now defined in the current workspace
->> disp(length(out))
-   314572800
-```
-
-In this example, copying and pasting the single line without the comment would be just as easy to do, rather than copying the line and running `runc`. For multi-line examples however this can be useful. 
-
-An alternative approach to running commented examples is to uncomment multiple lines of code, copy the resulting uncommented code, and then re-comment (or more typically to undo/ctrl-z the uncommenting). This approach works but I don't like making changes to the file, particularly if I forget to recomment the code and then I try and run the function and now it fails because it tries to execute the uncommented example.
+An alternative approach to running commented examples is to uncomment multiple lines of code, copy the resulting uncommented code, and then re-comment (or more typically to undo/ctrl-z the uncommenting). This approach works but I don't like making changes to the file, particularly if I forget to recomment the code and then I try and run the function and now it fails because it tries to execute the uncommented example (stack overflow!).
 
 Another approach for examples is to use multi-line comments (by using `%{` and `%}` character groups) . For example:
 
 ```matlab
-function testCode()
+function dispRatio()
+%
+%	some documentation ...
 %{
 %Start of comment
 
 %Example
---------
-%Note, we can highlight the "commented" lines below and execute them no problem
-a = 3; 
-fprintf('The value of a is %d\n',a)
+%-------
+%1) Let's try 3/2!
+numerator = 3;
+denominator = 2;
+dispRatio(numerator,denominator);
 
-%End of comment
+%End of multiline comment
 %}
+
+result = numerator/denominator;
+fprintf('%g/%g is %g\n',numerator,denominator,result)
+
 end
 ```
 
-In the above example, the example in the multi-line comment can simply be copied and pasted into the command window and run. However, Matlab doesn't support multi-line comments for documentation, so typing `help testCode` will not show the example! Thus multi-line comments are really only useful for internal examples.
+In the above example, the example in the multi-line comment can simply be copied and pasted into the command window and run. However, Matlab doesn't support multi-line comments for documentation, so typing `help dispRatio` will not show the example! Thus multi-line comments are really only useful for internal examples.
 
-So in summary: One function of `runc`is to allow evaluation of commented lines that have been copied to the clipboard.
+So in summary: One function of `runc` is to allow evaluation of commented lines that have been copied to the clipboard.
 
 ## Better debugging ##
 
