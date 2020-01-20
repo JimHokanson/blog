@@ -1,5 +1,10 @@
 ## August 6, 2019 - Plotting of Streaming Data in Matlab ##
 
+
+[article link](2020/2020_01_running_clipboard_code_matlab/)
+
+The other day I was helping someone with some Matlab code. They had highlighted 30ish lines and evaluated the selection. Matlab told him there was an error, but where? **runc()** to the rescue! 
+
 [article link](2019/2019_07_stream_plotting_matlab/readme.md)
 
 This article describes a class I wrote for my plotBig library which allows the user to plot data as it is collected. This code has similar functionality to Matlab's animatedline function but is often much faster.
