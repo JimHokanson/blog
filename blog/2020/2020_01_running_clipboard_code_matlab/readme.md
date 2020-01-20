@@ -5,7 +5,7 @@ This post will discuss a Matlab function, `runc` I created. The function helps w
 The code is kept my ["Matlab Standard Library" repo](https://github.com/JimHokanson/matlab_standard_library). The library was started in June 2013 as a way of organizing reusable Matlab functions and classes that I write. The code library is a topic for another post. In the mean time it is just useful to know that `runc` is located in this library [link](https://github.com/JimHokanson/matlab_standard_library/blob/master/global_namespace_functions/runc.m)
 
 I also made a standalone version available in this article's directory:
-https://github.com/JimHokanson/blog/tree/master/blog/2020/2020_01_running_clipboard_code_matlab
+<https://github.com/JimHokanson/blog/tree/master/blog/2020/2020_01_running_clipboard_code_matlab>
 
 
 ## Running example code ##
@@ -155,4 +155,4 @@ Installing using the standard library should be done as follows:
 2) Calling `sl.initialize` on startup (this is currently a bit heavier than I would like - downloads additional files ...)
 
 Alternatively, I've removed the dependencies and placed the single 'runc' file in the folder that holds this article:
-https://github.com/JimHokanson/blog/tree/master/blog/2020/2020_01_running_clipboard_code_matlab
+<https://github.com/JimHokanson/blog/tree/master/blog/2020/2020_01_running_clipboard_code_matlab>
