@@ -1,4 +1,4 @@
-This website is currently under development.
+February 2020: This website is currently under development.
 
 January 19, 2020: Check out [my latest blog post](blog/2020/2020_01_running_clipboard_code_matlab/) describing some Matlab code I use to help with debugging.
 
@@ -6,7 +6,13 @@ January 19, 2020: Check out [my latest blog post](blog/2020/2020_01_running_clip
 
 <img src="jim_photo.jpg" alt="Photo of Jim" height="300">
 
-My name is James (Jim) Hokanson. I'm currently a research scientist in biomedical engineering at Duke University working with Drs. Warren Grill (PhD) and Cindy Amundsen (MD) on treatments for urological dysfunction.
+My name is James (Jim) Hokanson. I'm currently a research scientist in biomedical engineering at Duke University working with [Drs. Warren Grill (PhD)](https://bme.duke.edu/faculty/warren-grill) and [Cindy Amundsen (MD)](https://obgyn.duke.edu/about/our-faculty/cindy-louise-amundsen-md) on treatments for urological dysfunction.
+
+As an undergraduate at Washington University in St. Louis I worked in [Dr. Dan Moran's](https://engineering.wustl.edu/Profiles/Pages/Daniel-Moran.aspx) lab where I conducted electrocorticography (ECoG) research. The ultimate goal of that work is to allow individuals with paralysis or neuromuscular disorders to control devices by extracting motor intent signals directly from the brain (using ECoG recordings).
+
+I did my graduate work at the University of Pittsburgh with [Dr. Doug Weber](http://www.rnel.pitt.edu/people/douglas-j-weber-phd). My focus was on developing an animal model to study artificial somatosensory feedback via electrical stimulation of dorsal root ganglia. The ultimate goal of that work is to develop a prosthetic that not only allows the user to move/control the prosthetic, but that also provides somatosensory feedback.
+
+You can find out more about my current research on my (forthcoming) research page.
 
 You can find me elsewhere on the internet at:
 - [Google Scholar](https://scholar.google.com/citations?user=g0JsPnwAAAAJ&hl=en&oi=sra)
