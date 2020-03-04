@@ -42,7 +42,7 @@ TODO: Insert figure
 
 Studies have suggested that in some people, just before they have an incontinence episode, their urethra relaxes inappropriately. This is similar to what we would expect if someone were volitionally voiding. Although this has been known for decades no therapy directly addresses this observation.
 
-In many cases of incontinence people have some advanced warning, they just are not able to make it to the bathroom in time. I hypothesized that it may be possible to electrically stimulate the urethra to either cause it to contract, or simply to prevent it from relaxing, while ambulating to the bathroom to prevent incontinence. I conducted a feasibility study in eleven patients to determine if a particular approach to stimulating the urethra, intraurethral stimulation, showed any evidence of elevating urethral pressures. This approach is desirable because it is relatively straightforward to do and minimally invasive compared to other approaches. Unfortunately, the intraurethral stimulation approach did not work, but I think we learned some interesting things along the way, and the study is an important first step in pursuing this novel therapy.
+In many cases of incontinence people have some advanced warning, they just are not able to make it to the bathroom in time. I hypothesized that it may be possible to electrically stimulate the urethra to either cause it to contract, or simply to prevent it from relaxing, while ambulating to the bathroom to prevent incontinence. I conducted a feasibility study in eleven patients to determine if a particular approach to stimulating the urethra, intraurethral stimulation, showed any evidence of elevating urethral pressures. This approach is desirable because it is relatively straightforward to do and minimally invasive compared to other approaches. Unfortunately, the intraurethral stimulation approach did not work, but I think we learned some interesting things along the way, and the study is an important first step in pursuing this novel therapy. I'm currently revising a paper based on reviewer comments.
 
 Development of this novel therapy also highlights the importance of 1) improved physiological testing to understand patients that exhibit variations of this particular phenotype and 2) analysis of which of these patients, if any, are already well treated using current therapies. 
 
@@ -58,7 +58,7 @@ I'm currently not doing any pudendal nerve stimulation work, but I've been think
 
 You can read about my initial work with pudendal nerve stimulation [here](http://www.ncbi.nlm.nih.gov/pubmed/29141938) as well as similar work we've done with stimulation of another nerve, the pelvic nerve, [here](http://www.ncbi.nlm.nih.gov/pubmed/28615244). Three more followup papers will hopefully be coming out soon related to peripheral nerve stimulation to treat bladder dysfunction.
 
-## Prostaglandin E2 ##
+## Intravesical Prostaglandin E2 ##
 
 TODO: Insert figure
 
