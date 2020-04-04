@@ -186,7 +186,7 @@ One thing to be careful of is that equal effect sizes does not mean equal test s
 I think this comes from comparing a single distribution to a fixed value, which we might think of as being more robust than comparing that same distribution not to a fixed value, but to a distribution with its own standard deviation. Here's something I ran into recently.
 
 <p align="center">
-<img src="fig6.svg" width="400">
+<img src="fig6.svg" width="400px">
 </p>
 
 In the above figure, we have two distributions. If we compare the blue distribution to the red, or the line (a constant), we might expect that it is more likely we'll get a low p-value when comparing to the red distribution (p1). However, even though the effect size is larger in the red case, on average the p-value is lower when comparing to the line (p2). This example highlights that you can't directly compare different effect sizes, when the type of the effect size is different.
@@ -204,15 +204,19 @@ From these equations you should note that d<sub>z</sub> will result in a t-stati
 
 So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems that I don't think are super important to discuss. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back.
 
-$$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$
+The setup for creating correlated normal distributions is as follows:
 
-k_{n+1} = n^2 + k_n^2 - k_{n-1}
+1. Create standard normal distributions $X_1 $ and $X_2$
+2. Create $X_3$ where $X_3 = \rho X_1 + \sqrt{1-\rho^2}\,X_2$
+3. Compute $Y_1$ and $Y_2$ where $$ Y_1 = \mu_1  + \sigma_1 X_1, \quad Y_2 = \mu_2 + \sigma_2 X_3$$
 
-testing, testing, testing
+$Y_1$ and $Y_2$ will now have correlation $\rho$.
 
+Above we had determined that simply switching from a unpaired to a paired t-test in Matlab doesn't do anything because we haven't changed the correlation. Below we set $\rho$ to 0.5, which is the point at which the effect size $d_z$ is equivalent to our original effect size, d. This means that if our correlation code is correct, running a paired test with $\rho=0.5$ on a data set where $d=1$ will result in the same statistical outcome as if we were comparing to a constant using $d_z=1$. It turns out that this is exactly what we see.
 
-8 - correlations
-9 - verifying transfer function
+<p align="center">
+<img src="fig8.svg" width="600px">
+</p>
 
 ## Conclusions ##
 

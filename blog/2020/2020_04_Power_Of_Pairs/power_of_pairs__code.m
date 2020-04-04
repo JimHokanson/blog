@@ -310,8 +310,14 @@ for group_size = n_min:n_max
         I2 = I2 + group_size;
         s1 = r1(I1:I2);
         s2 = r2(I1:I2);
-        is_different(i) = ttest(s1,s2,'alpha',alpha);
+        %Paired test
+        is_different(i)  = ttest(s1,s2,'alpha',alpha);
+        
+        %Unpaired test
         is_different2(i) = ttest2(s1,s2,'alpha',alpha);
+        
+        %Difference relative to constant
+        %What a paired test eventually becomes
         is_different3(i) = ttest(s2,0,'alpha',alpha);
     end
     pct_different(group_size) = sum(is_different)/n_sims;
