@@ -195,18 +195,15 @@ The figure below shows our increase in power from using an effect size that is b
 
 ## Translating Effect Sizes Via Correlation ##
 
-The observation that I was using different effect sizes doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article (DOI:10.1037/1082-989X.7.1.105) by Morris and DeShon (2002) suggest you can translate between d and d<sub>z</sub> by using the equation (#12):
+The observation that I was using different effect sizes doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article (DOI:10.1037/1082-989X.7.1.105) by Morris and DeShon (2002) suggests you can translate between $d$ and $d_z$ by using the equation (#12 in the paper):
 
-```matlab
-d_z = d/sqrt(2*(1-rho));
-%rho => correlation
-```
+$$d_z = \frac{d}{sqrt{2*(1-\rho)}}
 
-Note the authors use different notation where d<sub>z</sub> is referred to as d<sub>RM</sub> for repeated measures and d becomes d<sub>IG</sub> for independent groups.
+Note the authors use different notation where $d_z$ is referred to as $d_RM$ for Repeated Measures and $d$ becomes $d_IG$ for Independent Groups.
 
-It is a bit surprising that no derivation is given of this equation. Perhaps this, or more specifically, the change in standard deviations due to correlation (see equation 7 in that same paper) is something that is well known from elsewhere?
+It is a bit surprising that no derivation is given of this equation or the derivation that links standard deviations (equation 7). My guess is that these equations can be derived from the equations used to force two signals to have a specific correlation (see below).
 
-Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated that pre and post test samples are, the more subtracting them will remove variance and thus increase the effect size.
+Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated that pre and post test samples are, the more subtracting them will reduce variance and thus increase the effect size.
 
 ## Equal effect sizes, different t-statistics ##
 
@@ -214,20 +211,25 @@ One thing to be careful of is that equal effect sizes does not mean equal test s
 
 I think this comes from comparing a single distribution to a fixed value, which we might think of as being more robust than comparing that same distribution not to a fixed value, but to a distribution with its own standard deviation. Here's something I ran into recently.
 
-<p align="center">
-<img src="fig6.svg" width="400px">
-</p>
+<figure>
+<img src="fig6.svg" width="600px">
+<figcaption> Distributions of two groups with means at 0.8 and -0.2. Unit standard deviations for each means the effect size, $d$, between the two groups is 1. The effect size, $d_z$ of the first distribution relative to a constant, 0, is 0.8. Even though the first effect size is larger than the second effect size, our power is higher in the second case. This leads to on average lower p-values (p=0.043) in the second case, as compared to the first (p=0.064). 
+</figcaption>
+</figure>
 
-In the above figure, we have two distributions. If we compare the blue distribution to the red, or the line (a constant), we might expect that it is more likely we'll get a low p-value when comparing to the red distribution (p1). However, even though the effect size is larger in the red case, on average the p-value is lower when comparing to the line (p2). This example highlights that you can't directly compare different effect sizes, when the type of the effect size is different.
+In the above figure, we have two distributions. If we compare the blue distribution to the red and to the line (a constant), we might expect that it is more likely we'll get a low p-value when comparing to the red distribution (p1) than the line. However, even though the effect size is larger in the red case, on average the p-value is lower when comparing to the line (p2). This example highlights that you can't directly compare different effect sizes, when the type of the effect size is different.
 
-The t-statistic equations from Wikipedia for [unpaired](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test) and [paired](https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples) indicates the following equations:
+I ran into this exact example recently when comparing normalized data. A group was being compared to controls (value = 1) and to another group, that had a mean less than 1. However, statistically, it was more likely that the original group was different than 1 than it was that it was different than the second group with the lower mean.
 
-```
-t_unpaired = effect_size_d * sqrt(n/2);
-t_paired = effect_size_dz * sqrt(n);
-```
+The t-statistic for the unpaired test is as follows:
 
-From these equations you should note that d<sub>z</sub> will result in a t-statistic that is ~40% higher (square root of 2) than a similarly valued d value. Although a t-statistic needs to be translated to a p-value, the big picture here is that you get an advantage for "equal" effect sizes if you are comparing to a constant than if you are comparing to a second distribution.
+$$ t = \frac{\bar{X}_1 - \bar{X}_2}{s_p \sqrt\frac{2}{n}} = d*\frac{\sqrt{n}}{\sqrt{2}} $$
+
+and for the paired test is:
+
+$$ t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} = d_z*\sqrt{n} $$
+
+These equations say that if $d_z = d$, then the statistic from the paired test will be $\sqrt{2}$ or ~40 larger than the unpaired test. Although the t-statistic is not a linear mapping to a p-value and/or power, so you don't get a 40% boost on either of those (you actually get more), the big picture here is that you get an advantage for equal effect sizes if you are comparing to a constant than if you are comparing to a second distribution.
 
 ## Simulating Correlations ##
 
