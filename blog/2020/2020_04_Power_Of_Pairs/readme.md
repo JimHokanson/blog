@@ -8,13 +8,13 @@ In this post I describe how I stumbled upon a "hidden" parameter involved in doi
 
 So the most useful thing out of this entire post might be the following; for straightforward power analyses, I use a program called [G*Power](http://www.psychologie.hhu.de/arbeitsgruppen/allgemeine-psychologie-und-arbeitspsychologie/gpower.html).
 
-Let's use G\*Power to compute the # of samples we need with an effect size of 1 and standard error parameters (&alpha;=0.05 and power=(1-&beta;)=0.8). Note, I like using the effect size when doing power analyses, since I think it is a nice straightforward way of specifying how strong an effect I expect to see. This is where some people get all worked up about power analyses, "power analyses are a bunch of baloney since you're making things up." It is true that when you don't have much data on which to base your power analysis, there is a bit more freedom to choose your parameters. However, I think that the real point of power analysis is to tell you what sample sizes are reasonable for your study, so if you fudge the numbers at the beginning, you're really lying to yourself about how big a task you're taking on. Anyway, onto the results.
+Let's use G\*Power to compute the # of samples we need with an effect size of 1 and standard error parameters ($\alpha=0.05$ and $ \text{power}=(1-\beta)=0.8$). Note, I like using the effect size when doing power analyses, since I think it is a nice straightforward way of specifying how strong an effect I expect to see. This is where some people get all worked up about power analyses, "power analyses are a bunch of baloney since you're making things up." It is true that when you don't have much data on which to base your power analysis, there is a bit more freedom to choose your parameters. However, I think that the real point of power analysis is to tell you what sample sizes are reasonable for your study. If you fudge the numbers at the beginning, you're really lying to yourself about how big a task you're taking on. Anyway, onto the results.
 
 If we start with an unpaired analysis, this is what we get:
 
 <figure>
 <img src="unpaired.png">
-<figcaption>Results of power analysis for unpaired t-test. 
+<figcaption>Results of power analysis for unpaired t-test - G*Power. 
 </figcaption>
 </figure>
 
