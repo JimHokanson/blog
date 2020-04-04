@@ -219,21 +219,202 @@ legend({'d_z=1','d=1'})
 
 
 %% 6 Demo of two distributions versus one distribution
+%----------------------------------------------------------
+n = 14;
+mean1 = -0.2;
+mean2 = 0.8;
+std1 = 1;
+std2 = 1;
+r1 = mean1 + std1*randn(n,1);
+r2 = mean2 + std2*randn(n,1);
+x = -3:0.1:3;
+x2 = x(end:-1:1);
+x3 = -2:0.1:2;
+x4 = x3(end:-1:1);
+y0 = zeros(1,length(x));
+y0_2 = zeros(1,length(x3));
+
+figure(6)
+clf
+y1 = normpdf(x,mean1,std1);
+y2 = normpdf(x,mean2,std2);
+p1 = patch([x x2],[y1 y0],'r');
+p1.FaceAlpha = 0.5;
+hold on
+p2 = patch([x x2],[y2 y0],'b');
+p2.FaceAlpha = 0.5;
+hold off
+ylim = get(gca,'ylim');
+line([0 0],ylim,'Color','k','Linewidth',2)
+
+p1 = zeros(1,1e4);
+p2 = zeros(1,1e4);
+for i = 1:1e4
+    r1 = mean1 + std1*randn(n,1);
+    r2 = mean2 + std2*randn(n,1);
+    [~,p1(i)] = ttest2(r1,r2);
+    [~,p2(i)] = ttest(r2,0);
+end
+title(sprintf('p1 = %0.3f, p2 = %0.3f',mean(p1), mean(p2)))
+set(gca,'FontSize',16)
+
+
 
 
 %% 7 t-statistics
 %----------------------------------------------------------
+%paired, single
+%t = sqrt(n)*(x-u)/(s) OR effect_size*sqrt(n)
+
+%unpaired
+%t = sqrt(n/2)*(x1-x2)/s or effect_size * sqrt(n/2)
 
 
+%d_z = d/sqrt(2*(1-rho));
 
 
-%JAH TODO: Show two distributions and do the tests to see which
-%gives you the better result ...
-%one with a single distribution vs 1, and another with a value less than
-%1 vs > 1
+%% 8 Correlations
+%---------------------------------------------------------
+alpha = 0.05;
+mean1 = 0;
+mean2 = 1;
+std_dev = 1;
+
+rho = 0.5; %Corresponds to dz = 1
+n_sims = 10000;
+n_max = 25; %The maximum group size we'll test
+n_min = 5; %The minimum group size tested
+
+%randn is slow to call in a loop, we'll grab a lot of samples
+%all at once
+r1 = mean1 + std_dev*randn(n_sims*sum(n_min:n_max),1);
+
+r0 = mean2 + std_dev*randn(n_sims*sum(n_min:n_max),1);
+
+r2 = rho*r1 + sqrt(1-rho^2)*r0;
+r2 = r2 - mean(r2) + mean2;
+
+I2 = 0;
+pct_different = NaN(1,n_max);
+pct_different2 = NaN(1,n_max);
+pct_different3 = NaN(1,n_max);
+pct_greater = NaN(1,n_max);
+for group_size = n_min:n_max
+    fprintf('Running group size: %d\n',group_size);
+    is_different = false(1,n_sims);
+    is_different2 = false(1,n_sims);
+    is_different3 = false(1,n_sims);
+    is_greater = false(1,n_sims);
+    for i = 1:n_sims
+        I1 = I2 + 1;
+        I2 = I2 + group_size;
+        s1 = r1(I1:I2);
+        s2 = r2(I1:I2);
+        is_different(i) = ttest(s1,s2,'alpha',alpha);
+        is_different2(i) = ttest2(s1,s2,'alpha',alpha);
+        is_different3(i) = ttest(s2,0,'alpha',alpha);
+    end
+    pct_different(group_size) = sum(is_different)/n_sims;
+    pct_different2(group_size) = sum(is_different2)/n_sims;
+    pct_different3(group_size) = sum(is_different3)/n_sims;
+end
+
+figure(8)
+clf
+plot(pct_different,'o-')
+hold on
+plot(pct_different2,'o-')
+plot(pct_different3,'o-')
+hold off
+ylabel('Power')
+xlabel('Group Size')
+set(gca,'FontSize',18)
+legend({'Paired','Unpaired','dz'})
+
+%% 9 - Verifying translation of correlation to effect size
+%--------------------------------------------------------
+%tstat1 = 1.4*tstat2 for same effect size
+%
+%Fix d at 1
+%- calculate tstat2
+%- calculate tstat1/1.4
+%
+%What makes these equal?
+
+mean1 = 0;
+mean2 = 1;
+std_dev = 1;
+
+rhos = [0.01 0.05:0.05:0.95 0.99];
+n_sims = 10000;
+
+group_sizes = [10 20 30 60 100 200];
 
 
-%% 6
+n_groups = length(group_sizes);
+legend_strs = cell(1,n_groups);
+
+n_rhos = length(rhos);
+dz = NaN(n_groups,n_rhos);
+for k = 1:n_groups
+    group_size = group_sizes(k);
+    legend_strs{k} = sprintf('%d',group_size);
+    fprintf('Running group size: %d\n',group_size);
+    for j = 1:n_rhos
+        rho = rhos(j);
+        fprintf('Running rho: %g\n',rho);
+        r1 = mean1 + std_dev*randn(n_sims*group_size,1);
+        r0 = mean2 + std_dev*randn(n_sims*group_size,1);
+        r2 = rho*r1 + sqrt(1-rho^2)*r0;
+        r2 = r2 - mean(r2) + mean2;
+        I2 = 0;
+
+        temp_dz = zeros(1,n_sims);
+        for i = 1:n_sims
+            I1 = I2 + 1;
+            I2 = I2 + group_size;
+            s1 = r1(I1:I2);
+            s2 = r2(I1:I2);
+            s3 = s2-s1;
+            temp_dz(i) = mean(s3)/std(s3);
+        end
+        dz(k,j) = mean(temp_dz);
+    end
+end
+
+figure(9)
+clf
+subplot(1,2,1)
+plot(rhos,-0.5./dz.^2+1,'-o')
+hold on
+plot([0 1],[0 1],'k')
+hold off
+axis square
+ylabel('-0.5./dz.^2 + 1')
+xlabel('correlation (rho)')
+legend(legend_strs)
+title('rho versus d ratio - should be equal')
+set(gca,'FontSize',18)
+
+
+subplot(1,2,2)
+plot(rhos,-0.5./dz.^2+1,'-o')
+hold on
+plot([0 1],[0 1],'k')
+hold off
+axis square
+ylabel('-0.5./dz.^2 + 1')
+xlabel('correlation (rho)')
+set(gca,'ylim',[0 0.3],'xlim',[0 0.3],'FontSize',18)
+title('zoomed in')
+
+% d_z = d/sqrt(2*(1-rho));
+% 2-2rho = d^2/d_z^2
+% -2rho = 1/dz^2 - 2
+% rho = 0.5*d^2/dz^2 + 1
+
+
+%% 10 - the broken correlation code
 %-------------------------------------------
 alpha = 0.05;
 mean1 = 0;
