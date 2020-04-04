@@ -91,7 +91,7 @@ end
 
 So if we look at where this plot crosses our target power of 0.80, we see this occurs at 17 samples with an achieved power of 0.807. So everything is matching up with G*Power.
 
-## Simulations - Part 2 - "Paired Testing"##
+## Simulations - Part 2 - "Paired Testing" ##
 
 So now that the unpaired testing is matching up, let's try paired testing.
 
@@ -202,7 +202,12 @@ From these equations you should note that d<sub>z</sub> will result in a t-stati
 
 ## Simulating Correlations ##
 
-So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. 
+So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems that I don't think are super important to discuss. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back.
+
+
+
+8 - correlations
+9 - verifying transfer function
 
 ## Conclusions ##
 

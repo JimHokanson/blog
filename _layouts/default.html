@@ -9,6 +9,18 @@
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
   </head>
   <body>
+  <!-- http://zjuwhw.github.io/2017/06/04/MathJax.html -->
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    processEscapes: true
+  }
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
     <div class="container-lg px-3 my-5 markdown-body">
       <div style="text-align: left;">
         <a href="{{ "/" | absolute_url }}">home</a>
