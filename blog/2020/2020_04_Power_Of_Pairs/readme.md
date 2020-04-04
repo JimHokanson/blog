@@ -204,6 +204,11 @@ From these equations you should note that d<sub>z</sub> will result in a t-stati
 
 So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems that I don't think are super important to discuss. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back.
 
+$$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$
+
+k_{n+1} = n^2 + k_n^2 - k_{n-1}
+
+testing, testing, testing
 
 
 8 - correlations
