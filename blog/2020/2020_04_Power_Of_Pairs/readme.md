@@ -89,11 +89,14 @@ for group_size = n_min:n_max
 end
 ```
 
-<p align="center">
-<img src="power1.svg" width="400">
-</p>
 
-So if we look at where this plot crosses our target power of 0.80, we see this occurs at 17 samples with an achieved power of 0.807. So everything is matching up with G*Power.
+<figure>
+<img src="power1.svg" width="600px">
+<figcaption>Power as a function of group size for an unpaired test.
+</figcaption>
+</figure>
+
+So if we look at where this plot crosses our target power of 0.80, we see this occurs at 17 samples per group (so n=34 total) with an achieved power of 0.807. Thus far everything is matching up with G\*Power.
 
 ## Simulations - Part 2 - "Paired Testing" ##
 
@@ -104,22 +107,39 @@ So my first thought was, this should be easy ...
 Let's take this:
 
 ```matlab
+%ttest2() <= unpaired t-test
 is_different(i) = ttest2(s1,s2,'alpha',alpha);
 ```
 
 to this:
 
 ```matlab
+%ttest() <= paired t-test
 is_different(i) = ttest(s1,s2,'alpha',alpha);
 ```
 
-<p align="center">
-<img src="power2.svg" width="400">
-</p>
+Note, internally, for `ttest()`:
 
-Well, that didn't work!
+```matlab
+is_different(i) = ttest(s1,s2,'alpha',alpha);
+```
 
-And in retrospect, there was really no reason that it should have.
+is equivalent to:
+
+```matlab
+%Comparing the differences of the paired values to 0
+is_different(i) = ttest(s1-s2,0,'alpha',alpha);
+```
+
+
+<figure>
+<img src="power2.svg" width="600px">
+<figcaption>Power as a function of group size for both paired and unpaired tests. Note, as currently simulated we don't get a boost in power from simply switching to a paired test. This lack of an effect will be explored below.
+</figcaption>
+</figure>
+
+
+Well, that didn't work! And in retrospect, there was really no reason that it should have.
 
 ## What's Missing ##
 

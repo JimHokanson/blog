@@ -36,7 +36,11 @@ clf
 plot(pct_different,'o-')
 ylabel('Power')
 xlabel('Group Size')
+xlim = get(gca,'xlim');
+ylim = get(gca,'ylim');
+line(xlim,[0.8 0.8],'Color','k');
 set(gca,'FontSize',18)
+
 
 
 %2) Repeat, but now with both paired and unpaired testing
