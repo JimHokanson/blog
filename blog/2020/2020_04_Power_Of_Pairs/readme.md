@@ -118,19 +118,18 @@ to this:
 is_different(i) = ttest(s1,s2,'alpha',alpha);
 ```
 
-Note, internally, for `ttest()`:
+Note, for `ttest()`, these two approaches are equivalent:
 
 ```matlab
 is_different(i) = ttest(s1,s2,'alpha',alpha);
-```
-
-is equivalent to:
-
-```matlab
 %Comparing the differences of the paired values to 0
+%Do we have a non-zero change?
 is_different(i) = ttest(s1-s2,0,'alpha',alpha);
 ```
 
+The second form is necessary if you aren't starting with paired distributions, but instead if you simply want to know if a distribution is different from a constant. The first form is simply there for convenience.
+
+Note, there is no second version for `ttest2()` since it doesn't make sense to compute differences between random samples that are not intrinsically paired.
 
 <figure>
 <img src="power2.svg" width="600px">
@@ -138,59 +137,65 @@ is_different(i) = ttest(s1-s2,0,'alpha',alpha);
 </figcaption>
 </figure>
 
-
 Well, that didn't work! And in retrospect, there was really no reason that it should have.
 
 ## What's Missing ##
 
-A paired test can increase your power relative to an unpaired test if the values are correlated. For some reason this has always made sense to me with the following set of data. Consider the following distribution (left panel) where the effect size looks to be relatively small.
+A paired test can increase your power relative to an unpaired test if the values are correlated. For some reason this has always made sense to me with the following set of data. Consider the following distribution (left panel) where the effect size looks to be relatively small. However, if you look at the changes of individual samples, every sample is going up. These changes are summarized in the distribution on the right. The values at the top represent the unpaired p-value (left), the correlation (middle), and paired p-value (right). Obviously, in this case, given the high correlation value, the paired testing was quite helpful.
 
-<p align="center">
-<img src="fig3.svg" width="400">
-</p>
-
-However, if you look at the changes of individual samples, every sample is going up. These changes are summarized in the distribution on the right. The values at the top represent the unpaired p-value (left), the correlation (middle), and paired p-value (right). Obviously, in this case, given the high correlation value, the paired testing was quite helpful.
+<figure>
+<img src="fig3.svg" width="600px">
+<figcaption>Statistical testing using an unpaired and paired test with two groups that are highly correlated.
+</figcaption>
+</figure>
 
 Below is another example where the correlation has been reduced, and the resulting paired test is not as effective. 
 
-<p align="center">
-<img src="fig4.svg" width="400">
-</p>
+<figure>
+<img src="fig4.svg" width="600px">
+<figcaption>Statistical testing using an unpaired and paired test with less highly correlated values than the previous example (r=0.31).
+</figcaption>
+</figure>
 
 ## Two Different Effect Sizes ##
 
-I had initially planned on providing code that demonstrated how to simulate results that took correlation into account. However, I ran into a lot of difficulty which I'll discuss below. So instead I went back to G\*Power and started poking around more closely. Eventually I had a hunch that they must be calculating sample size based on a **single** distribution of the differences, rather than on the two original distributions. Most likely this was a normal distribution, because well, why not.  In other words, our statistical test was now going to be whether the distribution created by calculating differences within each pair was different than 0 (where being equal to 0 means there is no difference in values between the two groups). 
+I had initially planned on providing code that demonstrated how to simulate results that took correlation into account. However, I ran into a lot of difficulty. So instead I went back to G\*Power and started looking around for inspiration. Eventually I had a hunch that the effect size in the paired case meant something different than the effect size in the unpaired case.
 
-Thus the question became, how do we calculate an effect size when we're comparing a single distribution to a fixed value. After a bit of googling I found this [page](http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/) detailing 5 different versions "Cohen's d" (the effect size we've been using here) for within-subject designs (which I took to mean paired testing). One of the options is described in that blog post as follows:
+After a bit of googling I found this [page](http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/) detailing 5 different versions "Cohen's d" (the effect size we've been using here) for within-subject designs (which I took to mean paired testing). One of the options is described in that blog post as follows:
 
 > A third way to compute a d-like effect size is to reduce each subject’s data to a single difference score—the mean difference between their responses in each condition—and then use the standard deviation of these difference scores as the denominator of d. Cohen actually discusses this statistic in his power analysis textbook (Cohen, 1988, p. 48), where he carefully distinguishes it from the classical Cohen’s d by calling it dz.
 
-Basically d<sub>z</sub> is simply the mean of the difference distribution divided by it's standard deviation. In Matlab, if we compare our second distribution, which has had both a mean and standard deviation of 1, to 0, we're essentially using an effect size (d<sub>z</sub>) of 1. Also of note, when I go back and look at G\*Power it clearly indicates it is using d<sub>z</sub> instead of d (obviously, no one besides me would ignore that little subscript!)
+Basically $d_z$ is simply the mean of the difference distribution divided by it's standard deviation. In Matlab, if we compare our second distribution, which has had both a mean and standard deviation of 1, to 0, we're essentially using an effect size $d_z$ of 1. Also of note, when I go back and look at G\*Power it clearly indicates it is using $d_z$ instead of $d$ (obviously, no one besides me would ignore that little subscript!)
 
-In Matlab our test goes from:
+To see if we can replicate this behavior in Matlab, we change:
 
 ```matlab
+%Unpaired test
 is_different(i) = ttest2(s1,s2,'alpha',alpha);
 ```
 
 to this:
 
 ```matlab
-%Comparing to 0, i.e. is there a change?
+%Paired test
+%s2 has a d_z = 1 relative to the constant 0
+%s2 has a d = 1 relative to s1
 is_different(i) = ttest(s2,0,'alpha',alpha);
 ``` 
 
-As a reminder, is_different is tracking whether random samplings of our distributions result in a positive test outcome when we know there should be a positive outcome because we've specified the true distributions. How often this happens is our statistical power.
+Note, this isn't doing anything with correlation yet. We're not subtracting the two groups, we're simply seeing if we use a $d_z = 1$ in our simulations if we see the same boost in power that we are getting in G\*Power. As a reminder, "is_different" is tracking whether random samplings of our distributions result in a positive statistical test (rejection of the null hypothesis) when we know there should be a positive statistical test because we've specified the true distributions. How often this happens is our statistical power.
 
-The figure below shows our increase in power from using an effect size that is based on the original distributions (d=1) versus one that is based on the distribution resulting from the differences (d<sub>z</sub>=1).
+The figure below shows our increase in power from using an effect size that is based on the original distributions ($d=1$) versus one that is based on the distribution resulting from the differences ($d_z = 1$).
 
-<p align="center">
-<img src="fig5.svg" width="400">
-</p>
+<figure>
+<img src="fig5.svg" width="600px">
+<figcaption>Power analysis with two different effect sizes, both of which are equal to 1. $d_z$ describes a distribution relative a constant and $d$ describes the relationship between two separate distributions.
+</figcaption>
+</figure>
 
-## Translating effect sizes via correlation ##
+## Translating Effect Sizes Via Correlation ##
 
-The observation that I was using different effect sizes  doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article (DOI:10.1037/1082-989X.7.1.105) by Morris and DeShon (2002) suggest you can translate between d and d<sub>z</sub> by using the equation (#12):
+The observation that I was using different effect sizes doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article (DOI:10.1037/1082-989X.7.1.105) by Morris and DeShon (2002) suggest you can translate between d and d<sub>z</sub> by using the equation (#12):
 
 ```matlab
 d_z = d/sqrt(2*(1-rho));
