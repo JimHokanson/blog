@@ -18,7 +18,7 @@ If we start with an unpaired analysis, this is what we get:
 </figcaption>
 </figure>
 
-If we split our samples evenly, G*Power tells us that we need 34 samples, 17 from each group, to get our desired parameters. In some cases 34 may not be a lot, but for me 34 is often a lot. We can reduce this number if we design our experiments such that we have paired samples. For example with my work this means getting both measurements from the same animal. For example, we might ask how giving a drug compares to not giving a drug, where we first collect data without the drug in an animal, and then we give the drug to the animal to see what happens. This is repeated for multiple animals. Because we are interested in the change from this manipulation - is it different from zero - we can remove noise that might come in from animal to animal variability. In other words, the alternative is to not give the drug tp one group of animals and to give the drug to another group of animals. This latter "unpaired" approach tends to require more samples/subjects/animals because we don't get to remove variability in the same way that we do when we calculate changes within sample (as will be shown in a figure below).
+If we split our samples evenly, G*Power tells us that we need 34 samples, 17 from each group, to get our desired parameters. In some cases 34 may not be a lot, but for me 34 is often a lot. We can reduce this number if we design our experiments such that we have paired samples. For example with my work this means getting both measurements from the same animal. For example, we might ask how giving a drug compares to not giving a drug, where we first collect data without the drug in an animal, and then we give the drug to the animal to see what happens. This is then repeated for multiple animals. Each animal has its own variability, its own starting point, but by looking at the changes within an animal, we remove some of this variability. The alternative is to not give the drug to one group of animals and to give the drug to another group of animals. This latter "unpaired" approach tends to require more samples/subjects/animals because we don't get to remove variability in the same way that we do when we calculate changes within sample (as will be shown in a figure below).
 
 Anyway, if we switch to a paired analysis, then we get:
 
@@ -33,22 +33,26 @@ Switching to a paired test gets us a large reduction in the sample size, from 34
 
 ## Simulations - Part 1 - Unpaired Testing ##
 
-A project I was working on required something a bit more complicated than what G*Power provided, so I decided to run numerical simulations to calculate the required sample size. Numerical simulations are useful when it is difficult to work out the analytical solutions. I personally like simulations because they tend to be more intuitively obvious to me.
+A project I was working on required something a bit more complicated than what G\*Power provided, so I decided to run numerical simulations to calculate the required sample size. Numerical simulations are useful when it is difficult to work out the analytical solutions. I personally like simulations because they tend to be more intuitively obvious to me.
 
-Before getting started on the complicated analysis, I wanted to practice by making sure I could replicate some simple examples. In this case, I was going to replicate the G*Power results from above.
+Before getting started on the complicated analysis, I wanted to practice by making sure I could replicate some simple examples. In this case, I was going to replicate the G\*Power results from above.
 
 If you're comfortable running simulations for power analyses, feel free to skip down to the next section.
 
-In this example we'll use an effect size of 1. More on the effect size can be found [here](https://en.wikipedia.org/wiki/Effect_size#Cohen's_d). An effect size of 1 means that the difference in means is equal to the pooled standard deviation. If we assume the standard deviations of the groups to be equal, then the pooled standard deviation is simply the standard deviation of the groups.
+In this example we'll use an effect size $d$ of 1. There are lots of different effect sizes, but we'll be using "Cohen's d", which is:
+
+$$d=\frac{\bar{x}_1 - \bar{x}_2}{s}$$
+
+where $\bar{x}_1$ and $\bar{x}_1$ are sample means for two different groups and $s$ is the pooled standard deviation. More on the effect size can be found [here](https://en.wikipedia.org/wiki/Effect_size#Cohen's_d). An effect size of 1 means that the difference in means is equal to the pooled standard deviation. If we assume the standard deviations of the groups to be equal, then the pooled standard deviation is simply the standard deviation of the groups.
 
 Thus the numbers I've chosen are:
-- mean1 = 0
-- mean2 = 1
-- standard_deviation = 1
+- $\bar{x}_1=0$
+- $\bar{x}_2=1$
+- $s = 1$
 
-**The Intuition:** For power, the question is, if we sampled from our expected data, in this case normal distributions, how often would we get a significant result. If we sampled infinitely many samples, we would always get a significant result. Similarly, if we use only a few samples, it is unlikely that we will have a significant result.
+**The Intuition:** For power, the question is, if we sampled from our true distributions, in this case normal distributions with the above parameters, we wish to know how often we would expect to get a statistically significant result. If we sampled infinitely many samples, we would always get a significant result. Similarly, if we use only a few samples, it is unlikely that we will have a significant result due to random chance.
 
-So basically we draw some samples and run our test. We repeat this process a lot (thousands of times), and keep track of the percentage of times we got a statistically significant test. That percentage is our power.
+So basically we draw a set number of samples and run our test. We repeat this process a lot (thousands of times), and keep track of the percentage of times we got a statistically significant test given the number of samples per group that we chose to use. That percentage of statistically significant results is our power.
 
 Here's the code:
 
