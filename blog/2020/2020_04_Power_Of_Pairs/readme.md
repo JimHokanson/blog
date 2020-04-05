@@ -145,7 +145,7 @@ A paired test can increase your power relative to an unpaired test if the values
 
 <figure>
 <img src="fig3.svg" width="600px">
-<figcaption>Statistical testing using an unpaired and paired test with two groups that are highly correlated.
+<figcaption>Statistical testing using an unpaired (left) and paired (right) test with two groups that are highly correlated (middle).
 </figcaption>
 </figure>
 
@@ -153,7 +153,7 @@ Below is another example where the correlation has been reduced, and the resulti
 
 <figure>
 <img src="fig4.svg" width="600px">
-<figcaption>Statistical testing using an unpaired and paired test with less highly correlated values than the previous example (r=0.31).
+<figcaption>Statistical testing using an unpaired and paired test with less highly correlated values than the previous example ($\rho=0.31$).
 </figcaption>
 </figure>
 
@@ -165,7 +165,7 @@ After a bit of googling I found this [page](http://jakewestfall.org/blog/index.p
 
 > A third way to compute a d-like effect size is to reduce each subject’s data to a single difference score—the mean difference between their responses in each condition—and then use the standard deviation of these difference scores as the denominator of d. Cohen actually discusses this statistic in his power analysis textbook (Cohen, 1988, p. 48), where he carefully distinguishes it from the classical Cohen’s d by calling it dz.
 
-Basically $d_z$ is simply the mean of the difference distribution divided by it's standard deviation. In Matlab, if we compare our second distribution, which has had both a mean and standard deviation of 1, to 0, we're essentially using an effect size $d_z$ of 1. Also of note, when I go back and look at G\*Power it clearly indicates it is using $d_z$ instead of $d$ (obviously, no one besides me would ignore that little subscript!)
+Basically $d_z$ is simply the mean of the difference distribution divided by it's standard deviation. In Matlab, if we compare our second distribution, which has had both a mean and standard deviation of 1, to 0, we're essentially using an effect size, $d_z$, of 1. Also of note, when I go back and look at G\*Power it clearly indicates it is using $d_z$ instead of $d$ (obviously, no one besides me would ignore that little subscript!)
 
 To see if we can replicate this behavior in Matlab, we change:
 
@@ -183,25 +183,25 @@ to this:
 is_different(i) = ttest(s2,0,'alpha',alpha);
 ``` 
 
-Note, this isn't doing anything with correlation yet. We're not subtracting the two groups, we're simply seeing if we use a $d_z = 1$ in our simulations if we see the same boost in power that we are getting in G\*Power. As a reminder, "is_different" is tracking whether random samplings of our distributions result in a positive statistical test (rejection of the null hypothesis) when we know there should be a positive statistical test because we've specified the true distributions. How often this happens is our statistical power.
+Note, this isn't doing anything with correlation yet. We're not subtracting the two groups, we're simply seeing if we use a $d_z = 1$ in our simulations if we see the same boost in power that we are getting in G\*Power. As a reminder, "*is_different*" is tracking whether random samplings of our distributions result in a positive statistical test (rejection of the null hypothesis) when we know there should be a positive statistical test because we've specified the true distributions. How often this happens, which ideally would be all the time, is our statistical power.
 
 The figure below shows our increase in power from using an effect size that is based on the original distributions ($d=1$) versus one that is based on the distribution resulting from the differences ($d_z = 1$).
 
 <figure>
 <img src="fig5.svg" width="600px">
-<figcaption>Power analysis with two different effect sizes, both of which are equal to 1. $d_z$ describes a distribution relative a constant and $d$ describes the relationship between two separate distributions.
+<figcaption>Power analysis with two different effect sizes, both of which are equal to 1. $d_z$ describes a distribution relative to a constant and $d$ describes the relationship between two separate distributions.
 </figcaption>
 </figure>
 
 ## Translating Effect Sizes Via Correlation ##
 
-The observation that I was using different effect sizes doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article (DOI:10.1037/1082-989X.7.1.105) by Morris and DeShon (2002) suggests you can translate between $d$ and $d_z$ by using the equation (#12 in the paper):
+The observation that I was using different effect sizes doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article ([DOI:10.1037/1082-989X.7.1.105](https://doi.org/10.1037/1082-989X.7.1.105)) by Morris and DeShon (2002) suggests you can translate between $d$ and $d_z$ by using the equation (#12 in the paper):
 
-$$d_z = \frac{d}{sqrt{2*(1-\rho)}}
+$$ d_z = \frac{d}{sqrt{2*(1-\rho)}} $$
 
-Note the authors use different notation where $d_z$ is referred to as $d_RM$ for Repeated Measures and $d$ becomes $d_IG$ for Independent Groups.
+Note the authors use different notation where $d_z$ is referred to as $d_{RM}$ for Repeated Measures and $d$ becomes $d_{IG}$ for Independent Groups.
 
-It is a bit surprising that no derivation is given of this equation or the derivation that links standard deviations (equation 7). My guess is that these equations can be derived from the equations used to force two signals to have a specific correlation (see below).
+It is a bit surprising that no derivation is given of this equation or the derivation that links standard deviations (equation 7).
 
 Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated that pre and post test samples are, the more subtracting them will reduce variance and thus increase the effect size.
 
