@@ -197,29 +197,29 @@ The figure below shows our increase in power from using an effect size that is b
 
 The observation that I was using different effect sizes doesn't explain how we go from an effect size that's based on our original groups to one that is based on the distribution of differences. It turns out there is a formula you can use. An article ([DOI:10.1037/1082-989X.7.1.105](https://doi.org/10.1037/1082-989X.7.1.105)) by Morris and DeShon (2002) suggests you can translate between $d$ and $d_z$ by using the equation (#12 in the paper):
 
-$$ d_z = \frac{d}{sqrt{2*(1-\rho)}} $$
+$$ d_z = \frac{d}{\sqrt{2*(1-\rho)}} $$
 
 Note the authors use different notation where $d_z$ is referred to as $d_{RM}$ for Repeated Measures and $d$ becomes $d_{IG}$ for Independent Groups.
 
-It is a bit surprising that no derivation is given of this equation or the derivation that links standard deviations (equation 7).
+It is a bit surprising that no derivation is given of this equation or an equation that links standard deviations (equation 7).
 
 Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated that pre and post test samples are, the more subtracting them will reduce variance and thus increase the effect size.
 
 ## Equal effect sizes, different t-statistics ##
 
-One thing to be careful of is that equal effect sizes does not mean equal test statistics. Indeed, at the beginning of this post I specified equal effect sizes (values of 1), but got very different sample sizes needed to get my desired power. This can also be seen in one of the figures above where we compare power as a function of group size for the two effect sizes. Thus, it is important to remember that for different types of effect sizes, equal values does not mean equal statistical results (i.e. equal t-statistics).
+One thing to be careful of is that equal effect sizes does not mean equal test statistics. Indeed, at the beginning of this post I specified equal effect sizes (values of 1), but got very different sample sizes (34 vs. 10) needed to get my desired power. This can also be seen in the previous figure where we show power as a function of group size for the two effect sizes. Thus, it is important to remember that for different types of effect sizes, equal values does not mean equal statistical results (i.e. equal t-statistics).
 
 I think this comes from comparing a single distribution to a fixed value, which we might think of as being more robust than comparing that same distribution not to a fixed value, but to a distribution with its own standard deviation. Here's something I ran into recently.
 
 <figure>
 <img src="fig6.svg" width="600px">
-<figcaption> Distributions of two groups with means at 0.8 and -0.2. Unit standard deviations for each means the effect size, $d$, between the two groups is 1. The effect size, $d_z$ of the first distribution relative to a constant, 0, is 0.8. Even though the first effect size is larger than the second effect size, our power is higher in the second case. This leads to on average lower p-values (p=0.043) in the second case, as compared to the first (p=0.064). 
+<figcaption> Distributions of two groups with means at 0.8 and -0.2. Unit standard deviations for each means the effect size, $d$, between the two groups is 1. The effect size, $d_z$ of the first distribution relative to a constant, 0, is 0.8. Even though the first effect size is larger than the second effect size, our power is higher in the second case. This leads to on average lower p-values (p=0.043) in the second case, as compared to the first (p=0.064). Averages are from 10000 simulations with n=14 per group.
 </figcaption>
 </figure>
 
 In the above figure, we have two distributions. If we compare the blue distribution to the red and to the line (a constant), we might expect that it is more likely we'll get a low p-value when comparing to the red distribution (p1) than the line. However, even though the effect size is larger in the red case, on average the p-value is lower when comparing to the line (p2). This example highlights that you can't directly compare different effect sizes, when the type of the effect size is different.
 
-I ran into this exact example recently when comparing normalized data. A group was being compared to controls (value = 1) and to another group, that had a mean less than 1. However, statistically, it was more likely that the original group was different than 1 than it was that it was different than the second group with the lower mean.
+I ran into this exact example recently when comparing normalized data. A group was being compared to controls (value = 1) and to another group, that had a mean less than 1. However, statistically, it was more likely that the original group was different than 1 than it was that it was different than the second group, even though the second group had a mean less than 1.
 
 The t-statistic for the unpaired test is as follows:
 
@@ -229,25 +229,51 @@ and for the paired test is:
 
 $$ t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} = d_z*\sqrt{n} $$
 
-These equations say that if $d_z = d$, then the statistic from the paired test will be $\sqrt{2}$ or ~40 larger than the unpaired test. Although the t-statistic is not a linear mapping to a p-value and/or power, so you don't get a 40% boost on either of those (you actually get more), the big picture here is that you get an advantage for equal effect sizes if you are comparing to a constant than if you are comparing to a second distribution.
+These equations say that if $d_z = d$, then the statistic from the paired test will be $\sqrt{2}$ or ~40 larger than the unpaired test. Note, there is not a linear mapping between the t-statistic and a p-value and/or power, and I think you actually tend to get a larger boost than 40% for a p-value or power. The big picture here is that you get an advantage for equal effect sizes if you are comparing to a constant than if you are comparing to a second distribution.
 
 ## Simulating Correlations ##
 
-So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems that I don't think are super important to discuss. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back.
+So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems with the simulations that I don't think are super important to discuss. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back and to perhaps try a different approach or work on something related but slightly tangential.
 
 The setup for creating correlated normal distributions is as follows:
 
-1. Create standard normal distributions $X_1 $ and $X_2$
+1. Create standard normal ($\mu=0, \sigma=1$) distributions $X_1 $ and $X_2$
 2. Create $X_3$ where $X_3 = \rho X_1 + \sqrt{1-\rho^2}\,X_2$
-3. Compute $Y_1$ and $Y_2$ where $$ Y_1 = \mu_1  + \sigma_1 X_1, \quad Y_2 = \mu_2 + \sigma_2 X_3$$
+3. Compute $Y_1$ and $Y_2$ where $$ Y_1 = \mu_1  + \sigma_1 X_1, Y_2 = \mu_2 + \sigma_2 X_3$$
 
 $Y_1$ and $Y_2$ will now have correlation $\rho$.
 
-Above we had determined that simply switching from a unpaired to a paired t-test in Matlab doesn't do anything because we haven't changed the correlation. Below we set $\rho$ to 0.5, which is the point at which the effect size $d_z$ is equivalent to our original effect size, d. This means that if our correlation code is correct, running a paired test with $\rho=0.5$ on a data set where $d=1$ will result in the same statistical outcome as if we were comparing to a constant using $d_z=1$. It turns out that this is exactly what we see.
+Above we had determined that simply switching from a unpaired to a paired t-test in Matlab doesn't do anything because we hadn't changed the correlation. Below we set $\rho$ to 0.5, which is the point at which the effect size $d_z$ is equivalent to our original effect size, d. This means that if our correlation code is correct, running a paired test with $\rho=0.5$ on a data set where $d=1$ will result in the same statistical outcome as if we were comparing to a constant using $d_z=1$. It turns out that this is exactly what we see.
 
-<p align="center">
+<figure>
 <img src="fig8.svg" width="600px">
-</p>
+<figcaption>In this figure we verify that we're able to correctly simulate correlations in data. We're using $\rho$ = 0.5 which should result in $d_z$ being equal to $d$. Unlike my initial efforts where I simply swapped functions and the resulting power curves for paired and unpaired testing overlapped, here a correlation in the data has been successfully added so that the correlated data matches what we would expect if we had instead analytically converted to $d_z$.
+</figcaption>
+</figure>
+
+This means that if we weren't aware of the equation to convert $d$ to $d_z$, we could simply simulate our correlation and compute the resulting power.
+
+## Is the Equation Correct ##
+
+Being reasonably certain that our simulations of correlation are correct, we can use these simulations to check the analytical solution that translates $d$ to $d_z$. To do this we'll calculate $d_z$ on our data while varying the correlation between our two groups which themselves will have a fixed effect size of $d=1$.
+
+If we rearrange variables that equate $d_z$ and $d$ we get:
+
+$$ \rho = 0.5\frac{d^2}{d_z^2} + 1 $$
+
+Plotting $\rho$ versus the right hand side of the equation yields the following data:
+
+<figure>
+<img src="fig9.svg" width="600px">
+<figcaption>TODO: Fill this in.
+</figcaption>
+</figure>
+
+Note, our simulations deviate from what should be a 1 to 1 relationship at low correlations and for low group sizes. TODO
+
 
 ## Conclusions ##
+
+- summary of what has been shown
+- simulations, what's next?
 

@@ -259,7 +259,9 @@ for i = 1:1e4
     [~,p1(i)] = ttest2(r1,r2);
     [~,p2(i)] = ttest(r2,0);
 end
-title(sprintf('p1 = %0.3f, p2 = %0.3f',mean(p1), mean(p2)))
+v1 = sprintf('%0.3f',mean(p1));
+v2 = sprintf('%0.3f',mean(p2));
+title(sprintf('(blue vs. red, unpaired) $\\bar{p}_1$ = %0.3f \n(blue vs. 0, paired) $\\bar{p}_2$ = %0.3f',mean(p1), mean(p2)),'Interpreter','latex')
 set(gca,'FontSize',16)
 
 
