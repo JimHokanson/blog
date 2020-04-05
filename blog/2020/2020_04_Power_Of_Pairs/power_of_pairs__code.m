@@ -402,10 +402,12 @@ hold on
 plot([0 1],[0 1],'k')
 hold off
 axis square
-ylabel('-0.5./dz.^2 + 1')
-xlabel('correlation (rho)')
+ylabel('$\frac{-0.5*d}{d_z^2} + 1$','Interpreter','latex')
+
+%ylabel('-0.5./dz.^2 + 1')
+xlabel('$\rho$','Interpreter','latex')
 legend(legend_strs)
-title('rho versus d ratio - should be equal')
+title('$\rho$ versus $d$ ratio - should be equal','Interpreter','latex')
 set(gca,'FontSize',18)
 
 
@@ -415,8 +417,8 @@ hold on
 plot([0 1],[0 1],'k')
 hold off
 axis square
-ylabel('-0.5./dz.^2 + 1')
-xlabel('correlation (rho)')
+ylabel('$\frac{-0.5*d}{d_z^2} + 1$','Interpreter','latex')
+xlabel('$\rho$','Interpreter','latex')
 set(gca,'ylim',[0 0.3],'xlim',[0 0.3],'FontSize',18)
 title('zoomed in')
 
@@ -424,6 +426,12 @@ title('zoomed in')
 % 2-2rho = d^2/d_z^2
 % -2rho = 1/dz^2 - 2
 % rho = 0.5*d^2/dz^2 + 1
+
+
+
+
+
+
 
 
 %% 10 - the broken correlation code
