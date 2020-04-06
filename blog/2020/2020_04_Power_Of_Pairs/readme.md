@@ -1,16 +1,14 @@
 # The (Statistical) Power of Pairs #
 
-WORK IN PROGRESS
-
 In this post I describe how I stumbled upon a "hidden" parameter involved in doing a power analysis with paired data.
 
 ## Problem Setup ##
 
 So the most useful thing out of this entire post might be the following; for straightforward power analyses, I use a program called [G*Power](http://www.psychologie.hhu.de/arbeitsgruppen/allgemeine-psychologie-und-arbeitspsychologie/gpower.html).
 
-Let's use G\*Power to compute the # of samples we need with an effect size of 1 and standard error parameters ($\alpha=0.05$ and $ \text{power}=(1-\beta)=0.8$). Note, I like using the effect size when doing power analyses, since I think it is a nice straightforward way of specifying how strong an effect I expect to see. This is where some people get all worked up about power analyses, "power analyses are a bunch of baloney since you're making things up." It is true that when you don't have much data on which to base your power analysis, there is a bit more freedom to choose your parameters. However, I think that the real point of power analysis is to tell you what sample sizes are reasonable for your study. If you fudge the numbers at the beginning, you're really lying to yourself about how big a task you're taking on. Anyway, onto the results.
+Let's use G\*Power to compute the number of samples/subjects we need with an effect size of 1 and standard error parameters ($\alpha=0.05$ and $ \text{power}=(1-\beta)=0.8$). Note, I like using the effect size when doing power analyses, since I think it is a nice way of specifying how strong an effect I expect to see. This is where some people get all worked up about power analyses, "power analyses are a bunch of baloney since you're making things up." It is true that when you don't have much data on which to base your power analysis there is a bit more freedom to choose your parameters. However, I think that the real point of power analysis is to tell you what sample sizes are reasonable for your study. If you fudge the numbers at the beginning, you're really lying to yourself about how big a task you're taking on which may cause problems later on. Anyway, onto the results.
 
-If we start with an unpaired analysis, this is what we get:
+If we start with an unpaired analysis, this is what we get in G\*Power:
 
 <figure>
 <img src="unpaired.png">
@@ -18,7 +16,7 @@ If we start with an unpaired analysis, this is what we get:
 </figcaption>
 </figure>
 
-If we split our samples evenly, G*Power tells us that we need 34 samples, 17 from each group, to get our desired parameters. In some cases 34 may not be a lot, but for me 34 is often a lot. We can reduce this number if we design our experiments such that we have paired samples. For example with my work this means getting both measurements from the same animal. For example, we might ask how giving a drug compares to not giving a drug, where we first collect data without the drug in an animal, and then we give the drug to the animal to see what happens. This is then repeated for multiple animals. Each animal has its own variability, its own starting point, but by looking at the changes within an animal, we remove some of this variability. The alternative is to not give the drug to one group of animals and to give the drug to another group of animals. This latter "unpaired" approach tends to require more samples/subjects/animals because we don't get to remove variability in the same way that we do when we calculate changes within sample (as will be shown in a figure below).
+If we split our samples evenly between the two groups, G*Power tells us that we need 34 samples, 17 from each group, to get our desired parameters. In some cases 34 may not be a lot but other times it can be quite a large number. We can reduce this number if we design our experiments such that we have paired sampling. For example with my work this means getting both measurements from the same animal. For example, we might ask how giving a drug compares to not giving a drug, where we first collect data without the drug in an animal (the baseline), and then we give the drug to the animal to see what happens. This is then repeated for multiple animals. Each animal has its own variability, its own starting point, but by looking at the changes within an animal, we remove some of this variability. The alternative is to not give the drug to one group of animals and to give the drug to another group of animals. This latter "unpaired" approach tends to require more samples/subjects/animals because we don't get to remove variability in the same way that we do when we calculate changes within sample (as will be shown in a figure below).
 
 Anyway, if we switch to a paired analysis, then we get:
 
@@ -28,12 +26,12 @@ Anyway, if we switch to a paired analysis, then we get:
 </figcaption>
 </figure>
 
-Switching to a paired test gets us a large reduction in the sample size, from 34 to 10 samples! If you don't think about it for too long, it seems almost magical. But in retrospect it is a bit surprising that the parameters are "exactly the same" and there is such a large reduction in the sample number. But if you think about it a bit longer, or if you try to simulate this, then you might begin to wonder where exactly that reduction comes from. This wasn't obvious to me and I explore this question below.
+Switching to paired testing gets us a large reduction in the sample size, from 34 to 10 samples! If you don't think about it for too long, it seems almost magical. But in retrospect it is a bit surprising that the parameters are "exactly the same" and there is such a large reduction in the sample number. But if you think about it a bit longer, or if you try to simulate this, then you might begin to wonder where exactly that reduction comes from. This wasn't obvious to me and is the topic of the remainder of this post.
 
 
 ## Simulations - Part 1 - Unpaired Testing ##
 
-A project I was working on required something a bit more complicated than what G\*Power provided, so I decided to run numerical simulations to calculate the required sample size. Numerical simulations are useful when it is difficult to work out the analytical solutions. I personally like simulations because they tend to be more intuitively obvious to me.
+A project I was working on required something a bit more complicated than what G\*Power provided, so I decided to run numerical simulations to calculate the required sample size. Numerical simulations are useful when it is difficult to work out the analytical solutions. I personally like simulations because they tend to make more sense to me than an equation that is just handed down.
 
 Before getting started on the complicated analysis, I wanted to practice by making sure I could replicate some simple examples. In this case, I was going to replicate the G\*Power results from above.
 
@@ -43,16 +41,16 @@ In this example we'll use an effect size $d$ of 1. There are lots of different e
 
 $$d=\frac{\bar{x}_1 - \bar{x}_2}{s}$$
 
-where $\bar{x}_1$ and $\bar{x}_1$ are sample means for two different groups and $s$ is the pooled standard deviation. More on the effect size can be found [here](https://en.wikipedia.org/wiki/Effect_size#Cohen's_d). An effect size of 1 means that the difference in means is equal to the pooled standard deviation. If we assume the standard deviations of the groups to be equal, then the pooled standard deviation is simply the standard deviation of the groups.
+where $\bar{x}_1$ and $\bar{x}_1$ are sample means for two different groups and $s$ is the pooled standard deviation. More on the effect size can be found [here](https://en.wikipedia.org/wiki/Effect_size#Cohen's_d). An effect size of 1 means that the difference in means is equal to the pooled standard deviation. The pooled standard deviation combines the standard deviations from each group (equation not shown). If we assume the standard deviations of the groups to be equal, then the pooled standard deviation is simply the standard deviation of the groups.
 
 Thus the numbers I've chosen are:
 - $\bar{x}_1=0$
 - $\bar{x}_2=1$
 - $s = 1$
 
-**The Intuition:** For power, the question is, if we sampled from our true distributions, in this case normal distributions with the above parameters, we wish to know how often we would expect to get a statistically significant result. If we sampled infinitely many samples, we would always get a significant result. Similarly, if we use only a few samples, it is unlikely that we will have a significant result due to random chance.
+**The Intuition:** For power, the question is, if we sampled from our true distributions, in this case normal distributions with the above parameters, we wish to know how often we would expect to get a statistically significant result. If we sampled infinitely many samples, we would always get a significant result since the means are different. Similarly, if we use only a few samples, it is unlikely that we will have a significant result because of variability in the sampled means.
 
-So basically we draw a set number of samples and run our test. We repeat this process a lot (thousands of times), and keep track of the percentage of times we got a statistically significant test given the number of samples per group that we chose to use. That percentage of statistically significant results is our power.
+So basically we draw a specified number of samples and run our test. We repeat this process a lot (thousands of times), and keep track of the percentage of times we got a statistically significant test given the number of samples per group that we chose to use. That percentage of statistically significant results is our power.
 
 Here's the code:
 
@@ -100,7 +98,7 @@ So if we look at where this plot crosses our target power of 0.80, we see this o
 
 ## Simulations - Part 2 - "Paired Testing" ##
 
-So now that the unpaired testing is matching up, let's try paired testing.
+So now that the unpaired testing is matching, let's try paired testing.
 
 So my first thought was, this should be easy ...
 
@@ -111,14 +109,14 @@ Let's take this:
 is_different(i) = ttest2(s1,s2,'alpha',alpha);
 ```
 
-to this:
+and switch the function call to this:
 
 ```matlab
 %ttest() <= paired t-test
 is_different(i) = ttest(s1,s2,'alpha',alpha);
 ```
 
-Note, for `ttest()`, these two approaches are equivalent:
+Note, for `ttest()`, the two approaches below are equivalent:
 
 ```matlab
 is_different(i) = ttest(s1,s2,'alpha',alpha);
@@ -127,7 +125,7 @@ is_different(i) = ttest(s1,s2,'alpha',alpha);
 is_different(i) = ttest(s1-s2,0,'alpha',alpha);
 ```
 
-The second form is necessary if you aren't starting with paired distributions, but instead if you simply want to know if a distribution is different from a constant. The first form is simply there for convenience.
+The second form of `ttest()` is necessary if you aren't starting with paired distributions, but instead if you simply want to know if a distribution is different from a constant. The first form is simply there for convenience.
 
 Note, there is no second version for `ttest2()` since it doesn't make sense to compute differences between random samples that are not intrinsically paired.
 
@@ -139,9 +137,9 @@ Note, there is no second version for `ttest2()` since it doesn't make sense to c
 
 Well, that didn't work! And in retrospect, there was really no reason that it should have.
 
-## What's Missing ##
+## What's Missing? ##
 
-A paired test can increase your power relative to an unpaired test if the values are correlated. For some reason this has always made sense to me with the following set of data. Consider the following distribution (left panel) where the effect size looks to be relatively small. However, if you look at the changes of individual samples, every sample is going up. These changes are summarized in the distribution on the right. The values at the top represent the unpaired p-value (left), the correlation (middle), and paired p-value (right). Obviously, in this case, given the high correlation value, the paired testing was quite helpful.
+A paired test can increase your power relative to an unpaired test if the values are positively correlated. For some reason this has always made sense to me with the following set of data. Consider the following distribution (left panel) where the effect size looks to be relatively small. However, if you look at the changes of individual samples, every sample is going up. These changes are summarized in the distribution on the right. The values at the top represent the unpaired p-value (left), the correlation (middle), and paired p-value (right). Obviously, in this case, given the high correlation value, the paired testing was quite helpful.
 
 <figure>
 <img src="fig3.svg" width="600px">
@@ -161,11 +159,11 @@ Below is another example where the correlation has been reduced, and the resulti
 
 I had initially planned on providing code that demonstrated how to simulate results that took correlation into account. However, I ran into a lot of difficulty. So instead I went back to G\*Power and started looking around for inspiration. Eventually I had a hunch that the effect size in the paired case meant something different than the effect size in the unpaired case.
 
-After a bit of googling I found this [page](http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/) detailing 5 different versions "Cohen's d" (the effect size we've been using here) for within-subject designs (which I took to mean paired testing). One of the options is described in that blog post as follows:
+After a bit of googling I found this [page](http://jakewestfall.org/blog/index.php/2016/03/25/five-different-cohens-d-statistics-for-within-subject-designs/) describing 5 different versions of "Cohen's d" (the effect size we've been using here) for within-subject designs (which I took to mean paired testing). One of the options is described in that blog post as follows:
 
 > A third way to compute a d-like effect size is to reduce each subject’s data to a single difference score—the mean difference between their responses in each condition—and then use the standard deviation of these difference scores as the denominator of d. Cohen actually discusses this statistic in his power analysis textbook (Cohen, 1988, p. 48), where he carefully distinguishes it from the classical Cohen’s d by calling it dz.
 
-Basically $d_z$ is simply the mean of the difference distribution divided by it's standard deviation. In Matlab, if we compare our second distribution, which has had both a mean and standard deviation of 1, to 0, we're essentially using an effect size, $d_z$, of 1. Also of note, when I go back and look at G\*Power it clearly indicates it is using $d_z$ instead of $d$ (obviously, no one besides me would ignore that little subscript!)
+Basically $d_z$ is simply the mean of the distribution that results from calculating within sample differences (post-test value - pre-test value for each sample) divided by it's standard deviation. In Matlab, if we compare our second distribution, which has had both a mean and standard deviation of 1, to 0, we're essentially using an effect size, $d_z$, of 1. Also of note, when I go back and look at G\*Power it clearly indicates it is using $d_z$ instead of $d$ (obviously, no one besides me would ignore that little subscript!)
 
 To see if we can replicate this behavior in Matlab, we change:
 
@@ -183,13 +181,13 @@ to this:
 is_different(i) = ttest(s2,0,'alpha',alpha);
 ``` 
 
-Note, this isn't doing anything with correlation yet. We're not subtracting the two groups, we're simply seeing if we use a $d_z = 1$ in our simulations if we see the same boost in power that we are getting in G\*Power. As a reminder, "*is_different*" is tracking whether random samplings of our distributions result in a positive statistical test (rejection of the null hypothesis) when we know there should be a positive statistical test because we've specified the true distributions. How often this happens, which ideally would be all the time, is our statistical power.
+Note, this isn't doing anything with correlation yet. We're not subtracting the two groups, we're simply seeing if we use a $d_z = 1$ in our simulations if we see the same boost in power that we are getting in G\*Power. As a reminder, "*is_different*" is tracking whether random samplings of our distributions result in a positive statistical test (rejection of the null hypothesis) when we know there should be a positive statistical test because we've specified the true distributions. How often this happens - which ideally would be all the time - is our statistical power.
 
 The figure below shows our increase in power from using an effect size that is based on the original distributions ($d=1$) versus one that is based on the distribution resulting from the differences ($d_z = 1$).
 
 <figure>
 <img src="fig5.svg" width="600px">
-<figcaption>Power analysis with two different effect sizes, both of which are equal to 1. $d_z$ describes a distribution relative to a constant and $d$ describes the relationship between two separate distributions.
+<figcaption>Power analysis with two different effect sizes, both of which are equal to 1. $d_z$ describes a distribution relative to a constant and $d$ describes the relationship between two separate distributions. Note that for equal effect sizes the power is different for a given group size (discussed below).
 </figcaption>
 </figure>
 
@@ -203,13 +201,13 @@ Note the authors use different notation where $d_z$ is referred to as $d_{RM}$ f
 
 It is a bit surprising that no derivation is given of this equation or an equation that links standard deviations (equation 7).
 
-Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated that pre and post test samples are, the more subtracting them will reduce variance and thus increase the effect size.
+Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated the pre and post-test values within sample are, the more subtracting them will reduce variance and thus increase the effect size.
 
 ## Equal effect sizes, different t-statistics ##
 
-One thing to be careful of is that equal effect sizes does not mean equal test statistics. Indeed, at the beginning of this post I specified equal effect sizes (values of 1), but got very different sample sizes (34 vs. 10) needed to get my desired power. This can also be seen in the previous figure where we show power as a function of group size for the two effect sizes. Thus, it is important to remember that for different types of effect sizes, equal values does not mean equal statistical results (i.e. equal t-statistics).
+One thing to be careful of is that equal effect sizes does not mean equal test statistics. Indeed, at the beginning of this post I specified equal effect sizes (values of 1), but got very different sample sizes (34 vs. 10) for my desired power. This can also be seen in the previous figure where we show power as a function of group size for the two effect sizes. Thus, it is important to remember that for different types of effect sizes, equal values does not mean equal statistical results (i.e. equal t-statistics).
 
-I think this comes from comparing a single distribution to a fixed value, which we might think of as being more robust than comparing that same distribution not to a fixed value, but to a distribution with its own standard deviation. Here's something I ran into recently.
+This equal-but-different might throw off your intuition. The figure below shows an example of an issue I saw recently in my own work:
 
 <figure>
 <img src="fig6.svg" width="600px">
