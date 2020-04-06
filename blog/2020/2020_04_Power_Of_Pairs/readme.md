@@ -201,7 +201,7 @@ Note the authors use different notation where $d_z$ is referred to as $d_{RM}$ f
 
 It is a bit surprising that no derivation is given of this equation or an equation that links standard deviations (equation 7).
 
-Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated the pre and post-test values within sample are, the more subtracting them will reduce variance and thus increase the effect size.
+Note, as the correlation increases the denominator of the equation gets larger, increasing the resulting effect size, $d_z$, for the paired case. A correlation value of 0.5 results in equal effect sizes. Big picture, the more correlated the pre and post-test values within sample are, the more subtracting them will reduce variance and thus increase the effect size.
 
 ## Equal effect sizes, different t-statistics ##
 
@@ -215,7 +215,7 @@ This equal-but-different might throw off your intuition. The figure below shows 
 </figcaption>
 </figure>
 
-In the above figure, we have two distributions. If we compare the blue distribution to the red and to the line (a constant), we might expect that it is more likely we'll get a low p-value when comparing to the red distribution (p1) than the line. However, even though the effect size is larger in the red case, on average the p-value is lower when comparing to the line (p2). This example highlights that you can't directly compare different effect sizes, when the type of the effect size is different.
+In the above figure, we have two distributions. If we compare the blue distribution to the red or to the line (a constant), we might expect that it is more likely we'll get a low p-value when comparing to the red distribution (p1) than the line. However, even though the effect size is larger in the red case, on average the p-value is lower when comparing to the line (p2). This example highlights that you can't directly compare different effect sizes, when the type of the effect size is different.
 
 I ran into this exact example recently when comparing normalized data. A group was being compared to controls (value = 1) and to another group, that had a mean less than 1. However, statistically, it was more likely that the original group was different than 1 than it was that it was different than the second group, even though the second group had a mean less than 1.
 
@@ -227,11 +227,13 @@ and for the paired test is:
 
 $$ t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} = d_z*\sqrt{n} $$
 
-These equations say that if $d_z = d$, then the statistic from the paired test will be $\sqrt{2}$ or ~40 larger than the unpaired test. Note, there is not a linear mapping between the t-statistic and a p-value and/or power, and I think you actually tend to get a larger boost than 40% for a p-value or power. The big picture here is that you get an advantage for equal effect sizes if you are comparing to a constant than if you are comparing to a second distribution.
+These equations say that if $d_z = d$, then the statistic from the paired test will be $\sqrt{2}$ or ~40 larger than the unpaired test. Note, there is not a linear mapping between the t-statistic and a p-value and/or power, and I think you actually tend to get a larger boost than 40% for a p-value or power. Of course, paired tests are something you either have or you don't, and in general you shouldn't be choosing your type of test after you've collected your data. What's important to note here is that your intuitions about differences may be off if you're comparing one statistical test that has two distributions, and another statistical test which has only one distribution that's being compared to a constant. 
 
 ## Simulating Correlations ##
 
-So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems with the simulations that I don't think are super important to discuss. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back and to perhaps try a different approach or work on something related but slightly tangential.
+So at the beginning of this post my intention was simply to simulate correlations and show the improvement in power as a function of the underlying correlation. Then I ran into some problems with the simulations that I don't think are super important to discuss but that were proving to be a real road block. After taking some time away from the problem the approach was much more obvious. Perhaps the lesson to learn there is that if you run into a road block sometimes it helps to take a step back and to perhaps try a different approach or work on something related but slightly tangential.
+
+The following is based on [this question](https://math.stackexchange.com/questions/446093/generate-correlated-normal-random-variables)
 
 The setup for creating correlated normal distributions is as follows:
 
@@ -245,15 +247,15 @@ Above we had determined that simply switching from a unpaired to a paired t-test
 
 <figure>
 <img src="fig8.svg" width="600px">
-<figcaption>In this figure we verify that we're able to correctly simulate correlations in data. We're using $\rho$ = 0.5 which should result in $d_z$ being equal to $d$. Unlike my initial efforts where I simply swapped functions and the resulting power curves for paired and unpaired testing overlapped, here a correlation in the data has been successfully added so that the correlated data matches what we would expect if we had instead analytically converted to $d_z$.
+<figcaption>In this figure we verify that we're able to correctly simulate correlations in data. We're using $\rho$ = 0.5 which should result in $d_z$ being equal to $d$. Unlike my initial efforts where I simply swapped functions and the resulting power curves for paired and unpaired testing were essentially the same, here a correlation in the data has been successfully added so that the correlated data matches what we would expect if we had instead analytically converted to $d_z$.
 </figcaption>
 </figure>
 
 This means that if we weren't aware of the equation to convert $d$ to $d_z$, we could simply simulate our correlation and compute the resulting power.
 
-## Is the Equation Correct ##
+## Is the Equation Correct? ##
 
-Being reasonably certain that our simulations of correlation are correct, we can use these simulations to check the analytical solution that translates $d$ to $d_z$. To do this we'll calculate $d_z$ on our data while varying the correlation between our two groups which themselves will have a fixed effect size of $d=1$.
+Being reasonably certain that our simulations of correlation are correct, we can use these simulations to check the analytical solution that translates $d$ to $d_z$. To do this we'll calculate $d_z$ on our data while varying the correlation between our two groups which themselves will have a fixed effect size of $d=1$ (although you could presumably use a different value and get similar results).
 
 If we rearrange variables that equate $d_z$ and $d$ we get:
 
@@ -263,11 +265,11 @@ Plotting $\rho$ versus the right hand side of the equation yields the following 
 
 <figure>
 <img src="fig9.svg" width="600px">
-<figcaption>Plot of $\rho$ versus a ratio of the effect sizes, which should yield an identity line. Deviations from this identity line are observed for low correlation values and small group sizes.
+<figcaption>Plot of $\rho$ versus a ratio of the effect sizes, which should yield an identity line. Deviations from this identity line are observed for low correlation values and small group sizes. Each point is the average result of 10000 simulations.
 </figcaption>
 </figure>
 
-Note, our simulations deviate from what should be a 1 to 1 relationship at low correlations and for low group sizes. The right panel shows this in more detail. This suggests that the equivalency equation above may only be true as $n\to\infty$. Alternatively, and I think less likely, this may be some strange artifact of the computer's random number generation.
+Note, our simulations deviate from what should be a 1 to 1 relationship at low correlations and for low group sizes. The right panel shows this in more detail. This suggests that the equivalency equation above may only be true as $n\to\infty$. Note, assuming I'm interpreting the graphs correctly, for a given value of $d$ and $\rho$ the analytical formula may be underestimating the resulting $d_z$.
 
 ## Brief Summary of Points ##
 
