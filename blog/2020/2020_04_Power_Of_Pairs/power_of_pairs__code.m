@@ -357,10 +357,10 @@ mean1 = 0;
 mean2 = 1;
 std_dev = 1;
 
-rhos = [0.01 0.05:0.05:0.95 0.99];
+rhos = -0.95:0.05:0.95;
 n_sims = 10000;
 
-group_sizes = [10 20 30 60 100 200];
+group_sizes = [10 20 30 200];
 
 
 n_groups = length(group_sizes);
@@ -375,10 +375,16 @@ for k = 1:n_groups
     for j = 1:n_rhos
         rho = rhos(j);
         fprintf('Running rho: %g\n',rho);
-        r1 = mean1 + std_dev*randn(n_sims*group_size,1);
-        r0 = mean2 + std_dev*randn(n_sims*group_size,1);
-        r2 = rho*r1 + sqrt(1-rho^2)*r0;
-        r2 = r2 - mean(r2) + mean2;
+        
+        %rewrote according to equations ...
+        
+        X1 = randn(n_sims*group_size,1);
+        X2 = randn(n_sims*group_size,1);
+        X3 = rho.*X1 + sqrt(1-rho.^2).*X2;
+        
+        r1 = mean1 + std_dev.*X1;
+        r2 = mean2 + std_dev.*X3;
+
         I2 = 0;
 
         temp_dz = zeros(1,n_sims);
@@ -387,6 +393,17 @@ for k = 1:n_groups
             I2 = I2 + group_size;
             s1 = r1(I1:I2);
             s2 = r2(I1:I2);
+            
+            %{
+            %Gives basically the same result
+            X1 = randn(group_size,1);
+            X2 = randn(group_size,1);
+            X3 = rho.*X1 + sqrt(1-rho.^2).*X2;
+
+            s1 = mean1 + std_dev.*X1;
+            s2 = mean2 + std_dev.*X3;
+            %}
+            
             s3 = s2-s1;
             temp_dz(i) = mean(s3)/std(s3);
         end
@@ -399,7 +416,7 @@ clf
 subplot(1,2,1)
 plot(rhos,-0.5./dz.^2+1,'-o')
 hold on
-plot([0 1],[0 1],'k')
+plot([-1 1],[-1 1],'k')
 hold off
 axis square
 ylabel('$\frac{-0.5*d}{d_z^2} + 1$','Interpreter','latex')
@@ -407,19 +424,17 @@ ylabel('$\frac{-0.5*d}{d_z^2} + 1$','Interpreter','latex')
 %ylabel('-0.5./dz.^2 + 1')
 xlabel('$\rho$','Interpreter','latex')
 legend(legend_strs)
-title('$\rho$ versus $d$ ratio - should be equal','Interpreter','latex')
+title(sprintf('$\\rho$ versus $d$ ratio\nshould be equal'),'Interpreter','latex')
 set(gca,'FontSize',18)
 
 
 subplot(1,2,2)
-plot(rhos,-0.5./dz.^2+1,'-o')
-hold on
-plot([0 1],[0 1],'k')
-hold off
-axis square
+target = -0.5./dz.^2+1;
+plot(rhos,target - rhos,'-o')
 ylabel('$\frac{-0.5*d}{d_z^2} + 1$','Interpreter','latex')
 xlabel('$\rho$','Interpreter','latex')
-set(gca,'ylim',[0 0.3],'xlim',[0 0.3],'FontSize',18)
+set('FontSize',18)
+
 title('zoomed in')
 
 % d_z = d/sqrt(2*(1-rho));
@@ -429,12 +444,54 @@ title('zoomed in')
 
 
 
+%% 10 - an example of plots with difference
+%-----------------------------------------------
+mean1 = 1;
+mean2 = 1.3;
+rho = 0.8;
+std_dev1 = 0.4;
+std_dev2 = 0.3;
+n_samples = 10;
+X1 = randn(n_samples,1);
+X2 = randn(n_samples,1);
+X3 = rho.*X1 + sqrt(1-rho.^2).*X2;
+
+d1 = mean1 + std_dev1.*X1;
+d2 = mean2 + std_dev2.*X3;
+
+figure(10)
+clf
+avg_data = {d1 d2};
+r = sl.plot.stats.boxPlot(avg_data);
+r.design.jim_std();
+r.h_axes.YLim(1) = 0;
+r.setHandlePropValue('h_box','FaceColor',[0.85 0.85 0.85],'EdgeColor','none')
+r.setLabels({'baseline','after nap'})
+r.h_axes.FontSize = 20;
+ylabel('Awesomeness')
+r2 = r; %save for later
+
+yyaxis right
+r = sl.plot.stats.boxPlot(100*(d2-d1)./d1);
+r.design.jim_std();
+% r.h_axes.YLim(1) = 0;
+r.setHandlePropValue('h_box','FaceColor',[0.85 0.85 0.85],'EdgeColor','none')
+%This must occur before label changing ...
+r.setXCenters(3.5);
+r.setLabels({'%'},'other_result',r2)
+r.h_axes.FontSize = 20;
+ylabel('Percent Change')
+plt = gca;
+plt.YAxis(2).Color = 'k';
+set(gca,'xlim',[0.5 4])
 
 
 
 
 
-%% 10 - the broken correlation code
+
+
+%% 11 - the broken correlation code
 %-------------------------------------------
 alpha = 0.05;
 mean1 = 0;
@@ -533,11 +590,15 @@ subplot(1,2,2)
 [~,I] = min(abs(corr_values-0.7));
 plot(pct_different(I,:),'o')
 
-r = [-0.99 -0.90 -0.80 -0.70 -0.60 -0.50 -0.40 -0.30 -0.20 -0.10 0      0.1  0.2  0.3   0.4  0.5 0.6   0.7  0.8]
-es = [0.501 0.513 0.527 0.54 0.559 0.577 0.598 0.620 0.645 0.674 0.707  0.74 0.79 0.845 0.91 1   1.12  1.29 ]
+%From GraphPad
+r = [-0.99 -0.90 -0.80 -0.70 -0.60 -0.50 -0.40 -0.30 -0.20 -0.10 0      0.1  0.2  0.3   0.4  0.5 0.6   0.7];
+es = [0.501 0.513 0.527 0.54 0.559 0.577 0.598 0.620 0.645 0.674 0.707  0.74 0.79 0.845 0.91 1   1.12  1.29 ];
 
 
-
+plot(r,-0.5./es.^2 + 1,'-o');
+hold on
+plot([-1 1],[-1 1],'-k');
+hold off
 
 
 

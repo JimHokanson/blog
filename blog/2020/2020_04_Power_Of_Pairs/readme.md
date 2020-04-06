@@ -239,7 +239,7 @@ The setup for creating correlated normal distributions is as follows:
 
 1. Create standard normal ($\mu=0, \sigma=1$) distributions $X_1 $ and $X_2$
 2. Create $X_3$ where $X_3 = \rho X_1 + \sqrt{1-\rho^2}\,X_2$
-3. Compute $Y_1$ and $Y_2$ where $$ Y_1 = \mu_1  + \sigma_1 X_1, Y_2 = \mu_2 + \sigma_2 X_3$$
+3. Compute $Y_1$ and $Y_2$ where $Y_1 = \mu_1  + \sigma_1 X_1$ and $Y_2 = \mu_2 + \sigma_2 X_3$
 
 $Y_1$ and $Y_2$ will now have correlation $\rho$.
 
@@ -265,15 +265,36 @@ Plotting $\rho$ versus the right hand side of the equation yields the following 
 
 <figure>
 <img src="fig9.svg" width="600px">
-<figcaption>TODO: Fill this in.
+<figcaption>Plot of $\rho$ versus a ratio of the effect sizes, which should yield an identity line. Deviations from this identity line are observed for low correlation values and small group sizes.
 </figcaption>
 </figure>
 
-Note, our simulations deviate from what should be a 1 to 1 relationship at low correlations and for low group sizes. TODO
+Note, our simulations deviate from what should be a 1 to 1 relationship at low correlations and for low group sizes. The right panel shows this in more detail. This suggests that the equivalency equation above may only be true as $n\to\infty$. Alternatively, and I think less likely, this may be some strange artifact of the computer's random number generation.
+
+## Brief Summary of Points ##
+
+- There are multiple kinds of effect sizes. Arguably one of the best well known is Cohen's d, which is specific to the difference in two, unpaired, normal? distributions. A second effect size, $d_z$ is for the single distribution that results from calculating within subject differences.
+- For equal effect sizes $d$ and $d_z$, $d_z$ will result in a larger t-statistic and thus lower p-values and higher power for a given sample size.
+- $d_z$ can be computed from $d$ based on the correlation between the two distributions that are used to calculate $d$. The equation relating the two effect sizes may only be asymptotically correct with slight errors for low sample sizes at low correlations.
+- A relatively straightforward set of equations can be used to introduce a specific correlation between two sets of data.
 
 
 ## Conclusions ##
 
-- summary of what has been shown
-- simulations, what's next?
+When doing a power analysis to plan for the size of an experiment where paired sampling/repeated measures will occur, one can think of the effect size in terms of either the unpaired or paired data. In the former case, this is the effect size of the two group distributions (e.g. pre-test and post-test). In the latter case, this is the resulting single distribution calculated from within-subject differences.
 
+If the expected results are thought of in terms of the original two distributions, then the expected power needs to take into account the expected correlation that will occur between samples in the two groups. I've seen a bit of thinking about this online, largely in the form that correlations can be relatively high, but it still seems like it would be tough to estimate the correlation parameter in a reasonable way. Fortunately I would argue that we tend to think of the results in terms of the paired distribution. For example, if I give a drug, I might think of the average improvement that I will observe relative to the patient's own baseline. However, even this can be difficult and likely benefits from at least some prior experience, even if not with the exact same question that's being asked with the new study.
+
+Note, summary data are often published without showing the distribution of differences when paired statistical testing is used. This makes it difficult to know how much variability was reduced by using paired-differences. Technically if a p-value is reported you could back out the correlation based on what we've discussed above. Here's a plot style that I've started using for paired testing which shows not only the two original distributions, but the distributions of differences as well. One could additionally add lines between points although at times I've found this can make the plot a bit too cluttered.
+
+<figure>
+<img src="fig10.svg" width="600px">
+<figcaption>Plot format that I've used to indicate both the original distributions, and the distribution formed by taking within-subject differences.
+</figcaption>
+</figure>
+
+## What's Next ##
+
+I'm currently working on a project where I am going to try at least two different classification approaches for predicting treatment outcomes. The fundamental question that I've been thinking about for a while now is, how do you know if one classification model is better than another? This seemingly simple question has proven quite difficult to answer, which I find surprising since this is a question that should come up all the time in predictive modeling. 
+
+There are a couple of approaches that currently exist but I think they each have their own limitations. Although my focus is more so on model development using existing techniques, I'm also hoping to get the opportunity to work on statistical issues with model evaluation. You might be wondering what this has to do with paired testing. Well, one approach for model comparison that one of my mentors had suggested involved evaluating the change in performance with subject (i.e. paired testing) between the two models being compared. That approach may have had a limitation, it may have required what is known as a calibrated model. Anyway, hopefully in a year or two I'll have a followup blog post and paper that expands upon this topic.
