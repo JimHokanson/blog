@@ -1,6 +1,4 @@
-February 2020: This website is currently under development.
-
-January 19, 2020: Check out [my latest blog post](blog/2020/2020_01_running_clipboard_code_matlab/) describing some Matlab code I use to help with debugging.
+April 6, 2020: Check out [my latest blog post](blog/2020/2020_04_Power_Of_Pairs/) describing what to do, and what not to do, when simulating paired testing for power analyses. I also recently added brief summaries of my research projects which you can read about [here](research/).  
 
 # About Me #
 
