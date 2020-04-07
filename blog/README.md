@@ -1,3 +1,9 @@
+## April 6, 2020 - The (Statistical) Power of Pairs ##
+
+[article link](2020/2020_04_Power_Of_Pairs/)
+
+Nearly a year ago I began working on some simulations for a power analysis I was doing for a grant. My first attempt at simulating paired testing was a complete failure. This article describes my attempt to better understand what exactly it means to do paired testing and how to go about simulating paired testing.
+
 ## January 19, 2020 - Better Debugging in Matlab ##
 
 [article link](2020/2020_01_running_clipboard_code_matlab/)
