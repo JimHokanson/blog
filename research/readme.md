@@ -1,3 +1,5 @@
+The layout of this page will likely change and I still want to add some figures/illustrations but I figure it is best to have something up now rather than many months from now. Also ... my git-foo needs work and I was worried about losing this file in a git-merge!
+
 # My Research #
 
 Below I summarize some of the research projects that I'm currently working on or that I've worked on in the past few years. My training is in electrical and biomedical engineering, with a focus in [neural engineering](https://en.wikipedia.org/wiki/Neural_engineering). Although my recent research has focused largely on treating urgency urinary incontinence, I'm interested in urinary function/dysfunction more generally. I also hope to branch out into other organ systems at some point, with a focus on physiological testing and diagnosis/outcomes modeling. 
