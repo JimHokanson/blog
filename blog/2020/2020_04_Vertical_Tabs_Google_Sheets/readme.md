@@ -62,12 +62,17 @@ In the rest of the post I discuss approaches that I considered taking to solve t
 
 There are at least two different advertised ways of programmatically interfacing with Google Sheets.
 
-https://developers.google.com/sheets/api/reference/rest
-https://developers.google.com/apps-script
+The first approach is to use the [Sheets API](https://developers.google.com/sheets/api/reference/rest). This was the interface I was aware of before starting this project. This interface involves communication with sheets via a REST (web based) API. If I wanted to periodically backup all of my sheets using a Python program, this is the interface that I would use. If I wanted to create a website that did something fancy with Sheets data, I would use this API. But perhaps more useful in understanding when to use this API is to understand when to use the other API.
+
+The other approach is the [Apps-Script API](https://developers.google.com/apps-script). 
+
+
+-Sheets API[https://developers.google.com/sheets/api/reference/rest](https://developers.google.com/sheets/api/reference/rest)
+[https://developers.google.com/apps-script](https://developers.google.com/apps-script)
 
 
 
-- selected approach
+- selected approach and details
 - limitations
 - concluding thoughts and future directions
 
