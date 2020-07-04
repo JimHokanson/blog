@@ -2,7 +2,7 @@
 
 [article link](2020/2020_04_Vertical_Tabs_Google_Sheets/)
 
-
+I often use Google Sheets to organize information (something I hope to blog about in another post). Navigating between sheets can be difficult if a document has numerous sheets. In this post I document my efforts at creating a vertical sheet navigation system to make it easier to navigate between sheets in a document.
 
 ## April 6, 2020 - The (Statistical) Power of Pairs ##
 
