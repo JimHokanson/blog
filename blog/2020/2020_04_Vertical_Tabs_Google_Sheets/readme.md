@@ -111,7 +111,7 @@ So in other words, if we want our navigation sidebar to show that a new sheet ha
 Determining what an active sheet means involves looking at the html code using developer tools. A screen shot of the relevant element is shown below. Google's developer tools allows you to click on an element and it will navigate to where in the document the element is located. When doing this on the selected sheet tab we can see that the tab has a class name of "docs-sheet-active-tab". If you look a bit further down you can see the name of that tab is "human". Note also that the tab has a class name of "docs-sheet-tab". If we query the document for all of those tabs we can get a list of all the sheet names.
 
 <figure>
-<img src="active_sheet.png">
+<img src="active_sheet.png" width="896">
 <figcaption>A portion of the html document (representing my spreadsheet) containing the markup for the active sheet tab. This type of inspection allowed me to write code that would look for the active sheet as well as to get the sheet names.
 </figcaption>
 </figure>
