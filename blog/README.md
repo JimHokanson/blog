@@ -1,3 +1,9 @@
+## July 3, 2020 - Vertical Sheet Navigation in Google Sheets ##
+
+[article link](2020/2020_04_Vertical_Tabs_Google_Sheets/)
+
+
+
 ## April 6, 2020 - The (Statistical) Power of Pairs ##
 
 [article link](2020/2020_04_Power_Of_Pairs/)
