@@ -85,7 +85,7 @@ Now technically this may not be true, but it is quite difficult. The code that r
 Using Chrome Developer Tools one can inspect the code running on the web page. Below is a snapshot of a file called "2938944681-waffle\_js\_prod\_core.js" For reference, I have no idea what it does, other than it being something that is used by Google Sheets. The code has been [minified](https://en.wikipedia.org/wiki/Minification_(programming)) for sending it more quickly over a network (as well I suspect for quicker parsing/loading). Minification involves removing unecessary characters like white space and comments that aren't necessary for running code.
 
 <figure>
-<img src="waffle_core1.png">
+<img src="waffle_core1.png" width="696">
 <figcaption>Code presumably used for working with my sheet as sent over the network. Note the lack of whitespace as the code has been minified.
 </figcaption>
 </figure>
@@ -93,7 +93,7 @@ Using Chrome Developer Tools one can inspect the code running on the web page. B
 Developer tools can automatically insert white-spaces to "pretty-print" the code. A screenshot of the same file after this has been done is shown below. This view shows us another important aspect of the code, it has been [obfuscated](https://en.wikipedia.org/wiki/Obfuscation_(software)). In other words, no one at Google is writing a function called `taa` that works with inputs `a`, `b`, `c`, and `d`. Note, the code isn't complete gibberish, and with some effort you could probably figure out what the function does. However, the purpose of the function is not as obvious as it might be with good variable names.
 
 <figure>
-<img src="waffle_core2.png">
+<img src="waffle_core2.png" width="600">
 <figcaption>Function showing that the code has been obfuscated to discourage use by others. 
 </figcaption>
 </figure>
