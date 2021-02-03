@@ -4,7 +4,7 @@
 
 <img src="jim_photo.jpg" alt="Photo of Jim" height="300">
 
-My name is James (Jim) Hokanson. I started in January 2021 as an assistant professor in a joint department of biomedical engineering between the Medical College of Wisconsin and Marquette University. My background is in neural engineering (see below). I'm currently interested in developing new therapies to treat urological dysfunction, particularly incontinence. Additionally, I'm interested in developing new diagnostic tests to improve the therapy selection process as well as to inform new therapy development. My skillset includes electrical stimulation, physiological testing, software development and machine learning. My work includes a mixture of both clinical and pre-clinical studies.
+My name is James (Jim) Hokanson. I started January 2021 as an assistant professor in a joint department of biomedical engineering between the [Medical College of Wisconsin and Marquette University](https://mcw.marquette.edu/biomedical-engineering/). My background is in neural engineering (see below). I'm currently interested in developing new therapies to treat urological dysfunction, particularly incontinence. Additionally, I'm interested in developing new diagnostic tests to improve the therapy selection process as well as to inform new therapy development, using machine learning/data driven approaches to create new insights. My skillset includes electrical stimulation, physiological testing, software development and machine learning. My work includes a mixture of both clinical and pre-clinical studies.
 
 ## Background ##
 
