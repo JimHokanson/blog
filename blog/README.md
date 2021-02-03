@@ -2,7 +2,7 @@
 
 [article link](2020/2020_08_what_do_we_know/)
 
-How we manage scientific knowledge is a mess, at least when it comes to anatomy and physiology (in my humble opinion). I've finally taken some time to jot down some of my thoughts on the matter. I'm not optimistic about the future in this area but I figure perhaps the first step is to describe the problem. I'm not sure what the second step is.
+How we manage scientific knowledge is a mess, at least when it comes to anatomy and physiology (in my humble opinion). I've finally taken some time to jot down some of my thoughts on the matter. I'm not optimistic about the future in this area but I figure perhaps the first step in moving forward is to describe the problem. I'm not sure what the second step is.
 
 
 ## July 3, 2020 - Vertical Sheet Navigation in Google Sheets ##

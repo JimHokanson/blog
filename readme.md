@@ -1,12 +1,14 @@
-**November 20, 2020:** It's official! I will be starting January 1st as an assistant professor in [Biomedical Engineering at MCW](https://mcw.marquette.edu/biomedical-engineering/).
+**February 3, 2021:** I have a new blog post up describing an issue near and dear to me, [review articles!](blog/2020/2020_08_what_do_we_know/)
 
 # About Me #
 
 <img src="jim_photo.jpg" alt="Photo of Jim" height="300">
 
-My name is James (Jim) Hokanson. I'm currently a research scientist in biomedical engineering at Duke University working with [Drs. Warren Grill (PhD)](https://bme.duke.edu/faculty/warren-grill) and [Cindy Amundsen (MD)](https://obgyn.duke.edu/about/our-faculty/cindy-louise-amundsen-md) on treatments for urological dysfunction. You can find out more about my current research on my [research page](research).
+My name is James (Jim) Hokanson. I started in January 2021 as an assistant professor in a joint department of biomedical engineering between the Medical College of Wisconsin and Marquette University. My background is in neural engineering (see below). I'm currently interested in developing new therapies to treat urological dysfunction, particularly incontinence. Additionally, I'm interested in developing new diagnostic tests to improve the therapy selection process as well as to inform new therapy development. My skillset includes electrical stimulation, physiological testing, software development and machine learning. My work includes a mixture of both clinical and pre-clinical studies.
 
 ## Background ##
+
+My previous job was as an research scientist in biomedical engineering at Duke University working with [Drs. Warren Grill (PhD)](https://bme.duke.edu/faculty/warren-grill) and [Cindy Amundsen (MD)](https://obgyn.duke.edu/about/our-faculty/cindy-louise-amundsen-md) on treatments for urological dysfunction. You can find out more about that research on my [research page](research).
 
 As an undergraduate at Washington University in St. Louis I worked in [Dr. Dan Moran's](https://engineering.wustl.edu/Profiles/Pages/Daniel-Moran.aspx) lab where I conducted electrocorticography (ECoG) research. The ultimate goal of that work is to allow individuals with paralysis or neuromuscular disorders to control devices by extracting motor intent signals directly from the brain (using ECoG recordings).
 
@@ -18,3 +20,4 @@ You can find me elsewhere on the internet at:
 - [GitHub](https://github.com/jimhokanson)
 - [Mathworks](https://www.mathworks.com/matlabcentral/profile/authors/937359-jim-hokanson)
 - [Twitter](https://twitter.com/JimHokanson)
+- [MCW/Marquette Faculty Page](https://mcw.marquette.edu/biomedical-engineering/directory/jim-hokanson.php)
