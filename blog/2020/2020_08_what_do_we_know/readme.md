@@ -4,7 +4,7 @@
 
 In this post I write down some of my thoughts on how we currently organize scientific knowledge (with a focus on anatomy and physiology) and how this might be improved. I don't have all the answers but I wanted to get my thoughts down "on paper".
 
-I apologize in advance for the length; this is a topic I'm very passionate about. I truly hope this article resonates with at least or two of my one or two readers!
+I apologize in advance for the length; this is a topic I'm very passionate about. I truly hope this article resonates with at least one or two of my one or two readers!
 
 # What do we know? #
 
