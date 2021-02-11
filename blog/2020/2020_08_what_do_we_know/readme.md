@@ -1,6 +1,6 @@
 **Published February 2, 2021**
 
-# Intro #
+# Organizing Knowledge: Time to Change "Review" Papers - Intro #
 
 In this post I write down some of my thoughts on how we currently organize scientific knowledge (with a focus on anatomy and physiology) and how this might be improved. I don't have all the answers but I wanted to get my thoughts down "on paper".
 
