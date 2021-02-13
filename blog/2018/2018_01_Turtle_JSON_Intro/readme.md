@@ -1,5 +1,6 @@
-**Published ~January 2018**
-**Minor edits: 2/21**
+**Published 1/2018**
+
+**Minor edits: 2/2021**
 
 This post documents my experience writing a [JSON](https://en.wikipedia.org/wiki/JSON) parser in Matlab. The goal was to write a parser that made reading files of moderate size (10s to 100s of MB) not painful. Along the way I got my first exposure to within and between processor parallelization (using SIMD and openMP respectively). In particular this post was written to document some of the approaches I used to try and make parsing JSON relatively fast (using C mex).
 
