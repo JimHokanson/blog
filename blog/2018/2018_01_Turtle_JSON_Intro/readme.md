@@ -334,7 +334,7 @@ By including a '"', we ensure that we never read past the end of the JSON stream
 
 Since we are not looking for escaped characters initially, every time we encounter '"' we need to verify that it is the end of the string, and not a part of the string. This means that we need to look at the previous character and ensure that we don't see a '\\' character.
 
-By placing the '\' character between a null character and our '"' character, we do double-duty by checking for our escape character and entertaining the possibility of having encountered our sentinel '"' character. The alternative and slower approach is to have [0 '"'], and then check for both 0 and '\\' every time we encounter a '"' character.
+By placing the '\\' character between a null character and our '"' character, we do double-duty by checking for our escape character and entertaining the possibility of having encountered our sentinel '"' character. The alternative and slower approach is to have [0 '"'], and then check for both 0 and '\\' every time we encounter a '"' character.
 
 Finally, by adding sufficient characters to our buffer we ensure that we never read past the end of the stream when using SIMD.
 
