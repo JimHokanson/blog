@@ -1,3 +1,6 @@
+**Published ~January 2018**
+**Minor edits: 2/21**
+
 This post documents my experience writing a [JSON](https://en.wikipedia.org/wiki/JSON) parser in Matlab. The goal was to write a parser that made reading files of moderate size (10s to 100s of MB) not painful. Along the way I got my first exposure to within and between processor parallelization (using SIMD and openMP respectively). In particular this post was written to document some of the approaches I used to try and make parsing JSON relatively fast (using C mex).
 
 Code for this post is located at:
@@ -159,18 +162,18 @@ At some point I decided to keep track of whether or not I was parsing something 
 
 I was worried about doing this at first. Was I over-optimizing? In the end I think it made the code even cleaner and easier to follow. Here's an example of this type of code, for a string:
 
-```
+```c
 //=============================================================
 S_PARSE_STRING_IN_ARRAY:
-	INCREMENT_PARENT_SIZE;
+    INCREMENT_PARENT_SIZE;
     PROCESS_STRING
-	PROCESS_END_OF_ARRAY_VALUE;
+    PROCESS_END_OF_ARRAY_VALUE;
 
 //=============================================================
 S_PARSE_STRING_IN_KEY:
     STORE_NEXT_SIBLING_KEY_SIMPLE;
     PROCESS_STRING;
-	PROCESS_END_OF_KEY_VALUE_SIMPLE
+    PROCESS_END_OF_KEY_VALUE_SIMPLE
 
 ```
 
@@ -324,13 +327,13 @@ When reading from files, it is trivial to pad the read buffer with extra charact
 
 I found the following buffer to be useful:
 
-[0 '\' '"' 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+[0 '\\' '"' 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 
 By including a '"', we ensure that we never read past the end of the JSON stream. An alternative and slower approach is to examine every character for both '"' and 0.
 
-Since we are not looking for escaped characters initially, every time we encounter '"' we need to verify that it is the end of the string, and not a part of the string. This means that we need to look at the previous character and ensure that we don't see a '\' character.
+Since we are not looking for escaped characters initially, every time we encounter '"' we need to verify that it is the end of the string, and not a part of the string. This means that we need to look at the previous character and ensure that we don't see a '\\' character.
 
-By placing the '\' character between a null character and our '"' character, we do double-duty by checking for our escape character and entertaining the possibility of having encountered our sentinel '"' character. The alternative and slower approach is to have [0 '"'], and then check for both 0 and '\' every time we encounter a '"' character.
+By placing the '\' character between a null character and our '"' character, we do double-duty by checking for our escape character and entertaining the possibility of having encountered our sentinel '"' character. The alternative and slower approach is to have [0 '"'], and then check for both 0 and '\\' every time we encounter a '"' character.
 
 Finally, by adding sufficient characters to our buffer we ensure that we never read past the end of the stream when using SIMD.
 
