@@ -2,7 +2,7 @@
 
 I've been helping a group to get my awesome ;) JSON parser program working for MATLAB on their computers. Unfortunately compiling the program is a little bit more difficult than `mex myprogram.c`. 
 
-In this post I briefly highlight three programs that I use semi-regularly on Windows, two of which are related to compiling (not necessarily just for MATLAB), and one that my eyes appreciate.
+As part of this process I used a couple of programs that I wish someone would have told me about years ago. In this post I briefly highlight three programs that I use semi-regularly on Windows, two of which are related to compiling (not necessarily just for MATLAB), and one that my eyes appreciate.
 
 Those programs are:
 1. [Dependencies](https://github.com/lucasg/Dependencies)
@@ -15,11 +15,11 @@ Available at: [https://github.com/lucasg/Dependencies](https://github.com/lucasg
 
 This program helps you to determine what other programs on your computer your program needs to run. This has been immensely helpful for mex files (basically dll files for MATLAB), since it can easily show you files that are needed to run that are not available.
 
-For example here's a screenshot of loading a mex file (temporarily renamed to .dll) clearly showing that a thread library was missing.
+For example here's a screenshot of loading a mex file clearly showing that a thread library, "libwinpthread-1.dll", was missing.
 
 <img src="screen_01__turtle_json.png">
 
-When I had properly linked the thread library into my library (statically linked, that dependency disappeared). Thus my file was ready to distribute to other people without needing to make sure that I also sent them the thread dll. Note, the libmex and libmx files are part of MATLAB and will be properly detected when MATLAB is running (so the fact that they are missing is OK).
+When I had properly linked the thread library into my library (statically linked), that dependency disappeared. Thus my file was ready to distribute to other people without needing to make sure that I also sent them the thread dll. Note, the libmex and libmx files are part of MATLAB and will be properly detected when MATLAB is running (so the fact that they are missing is OK).
 
 <img src="screen_05_good.png">
 
@@ -27,7 +27,7 @@ One of the reasons I wanted to write this quick post is that for the longest tim
 
 <img src="HsqV3.png">
 
-One annoying feature is that warns you about a lot of libraries that are a part of Windows. I used to hate using Dependency Walker because it was clearly abandoned, but someone on that linked StackOverflow post pointed out that you can now use Dependencies instead of Dependency Walker. When reading this I felt like that person that still uses Internet Explorer because how else are you going to get on the "internet"?!?
+One annoying feature is that warns you about a lot of "missing" libraries that are actually just a part of Windows. I used to hate using Dependency Walker because it was clearly abandoned, but I knew of no alternative. I don't remember how I came across Dependencies, a replacement for Dependency Walker, but boy was I excited! At the same time, I felt like that person that still uses Internet Explorer because how else are you going to get on the "internet"?!? That's a shoutout to my dad.... Why hadn't anyone told me earlier?
 
 # Windows Path Editor #
 
@@ -49,13 +49,13 @@ The program tells you which folders no longer exist (not shown in the above scre
 
 # PangoBright #
 
-I saved the best for last. If you feel like your monitors are constantly showering you with an unnecessary number of lumens (?, candela?) this program can easily reduce the screen brightness. 
+I saved the best for last. If you feel like your monitors are constantly showering you with an unnecessary number of lumens (?, candela?) this program can easily reduce the screen brightness. When you run it hides itself in the lower right on the task bar.
 
 <img src="pango1.png">
 
-Every time I use the program my eyes thank me. I have only two gripes. One, I think sometimes it quits randomly. Also, when taking screenshots the brightness of the image is hard to interpret because your screenshot is dark and then it is further darkened by the running program. Thus when I take screenshots I usually set the brightness back at 100% temporarily.
+Every time I use the program my eyes thank me. I have only two gripes. One, I think sometimes it quits randomly. Also, when taking screenshots the brightness of the image is hard to interpret because your screenshot is dark (because of the program running) and then it is darkened again by the running program. Thus when I take screenshots I usually set the brightness back at 100% temporarily.
 
-Now, you may be wondering Jim, why don't you just adjust the brightness of your monitors. For any montior ninjas out there, this may be a valid option. If you're like me where touching any button besides the power button on the monitor gets you nervous, you may want to give this small program a try.
+Now, you may be wondering, Jim, why don't you just adjust the brightness of your monitors. For any montior ninjas out there, this may be a valid option. If you're like me where touching any button besides the power button on the monitor gets you nervous, you may want to give this small program a try.
 
 A final note, all 3 of these programs just run locally without installation. I've thus created an "apps" folder on my desktop where these programs live.
 
