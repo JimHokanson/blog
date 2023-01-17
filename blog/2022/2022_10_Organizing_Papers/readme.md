@@ -48,7 +48,7 @@ Within these entries I sort by year, then by last name of the first author. Any 
 
 Here is a screenshot of all this in action:
 
-<img src="first_5_columns.png">
+<img src="first_5_columns.png" style="padding:1px;border:thin solid black;">
 
 
 ## Values for Y/N Columns ##
@@ -72,7 +72,7 @@ After identifying the paper, the next 5 columns are typically the following:
 
 Here is an example screenshot:
 
-<img src="next_5_columns.png">
+<img src="next_5_columns.png" style="padding:1px;border:thin solid black;">
 
 ## Other Aspects of Within Sheet Organization ##
 
@@ -84,17 +84,17 @@ Additional columns are much more variable, although I tend to have the following
 
 Again, it is important to note that these columns tend to be flexible. Often I will add columns as I am reading papers and realize there is something I want to track. I also like to break out these sorts of sections by color to help with my organization (see screenshots below).
 
-<img src="group.png">
+<img src="group.png" style="padding:1px;border:thin solid black;">
 
-<img src="location.png">
+<img src="location.png" style="padding:1px;border:thin solid black;">
 
-<img src="analysis.png">
+<img src="analysis.png" style="padding:1px;border:thin solid black;">
 
 Here are some example screenshots:
 
 **Important Note**: My sheets are far from perfect, and many have blank entries or don't follow the format above. Here is an old sheet in a bit of a different format. At some point if I am doing more work with this topic I may rearrange things a bit, and that's OK!
 
-<img src="aa.png">
+<img src="aa.png" style="padding:1px;border:thin solid black;">
 
 # Usage #
 
