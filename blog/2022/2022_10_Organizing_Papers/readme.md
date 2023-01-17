@@ -48,7 +48,9 @@ Within these entries I sort by year, then by last name of the first author. Any 
 
 Here is a screenshot of all this in action:
 
-<img src="first_5_columns_wb.png">
+<img src="first_6_columns_wb.png">
+
+**Figure 1**: First 6 columns of most of my documents. Notice the various ways of doing author name formatting. Often times the "PMID" column will be "PMID or DOI" and will occasionally have ISBN numbers as well for chapters. 
 
 
 ## Values for Y/N Columns ##
@@ -60,7 +62,7 @@ Values for many of the following columns can take on one of the following values
 - **"-"** : This is used to indicate no. It is visible but not visually overpowering which makes it easier to see the yes entries. For many sheets this is most prevalent answer.
 - **&lt;additional detail&gt;** : Many entries could be interpreted as yes or no, but often it is helpful to add additional detail. For example, when documenting whether a paper is a review or not, valid entries include "Y" but also "systematic", "meta-analysis", etc.
 
-## First 5 Info Columns ##
+## Next 5 Columns ##
 
 After identifying the paper, the next 5 columns are typically the following:
 
@@ -74,6 +76,8 @@ Here is an example screenshot:
 
 <img src="next_5_columns_wb.png">
 
+**Figure 2**: These 5 columns tend to immediately follow the first 6 columns. Notice that in some cases I copy directly from the document, which I try to indicate with the ue of quotes. None of these papers are reviews; I use the "-" character as to indicate "no", which in general tends to make it easier to understand things.
+
 ## Other Aspects of Within Sheet Organization ##
 
 Additional columns are much more variable, although I tend to have the following "topic areas". These include:
@@ -86,9 +90,15 @@ Again, it is important to note that these columns tend to be flexible. Often I w
 
 <img src="group_wb.png">
 
+**Figure 3**: An example of documenting the subjects involved in a study. Where possible I try and use more detail, in this case numbers, rather than simply "Y" or "N"
+
 <img src="location_wb.png">
 
+**Figure 4**: Another grouping example, this one documenting stimulation location for "pudendal" nerve stimulation. Ideally I would be more proactive with my use of the "-" character to indicate that the various locations were not stimulated.
+
 <img src="analysis_wb.png">
+
+**Figure 5**: Another grouping example, again where "-" should probably be used more. Note, I try not to use "-" unless I have explicitly confirmed the absence of something. A blank space by comparison means the value hasn't been explicitly logged one way or the other.
 
 Here are some example screenshots:
 
@@ -96,27 +106,95 @@ Here are some example screenshots:
 
 <img src="aa_wb.png">
 
-# Usage #
+**Figure 6**: One of my older sheets with a different format.
 
-- data entry with colors
-- do a search and add relevant papers
-- read papers past to future
-- add columns as necessary
-- break off sheets/reorganize as necessary
-- don't always use when not reviewing a topic
-- reviewing a paper
+
+# Adding Entries #
+
+I tend not to be very good about reading individual papers. To "stay current" on papers I get email notifications from Google Scholar about new papers. I also occasionally remember to skim through journals for new articles. In both cases however I rarely read more than the abstract and will often simply download papers of interest to read at a later date.
+
+Instead, most of my deep reading of papers tends to come from:
+- reviewing a paper or grant
+- inspired from a question from ongoing research
+- writing a paper
+- spontaneously wondering about some topic and doing a deep dive (I do this alot ...)
+
+The process of working with sheets can be broken down into two distinct processes, adding entries and entering additional data. I tend to do these two tasks seprately.
+
+When I'm reviewing a paper or reading a really interesting paper, I'll often first go through the references and find ones related to the topic of interest. These are then added to my sheet.
+
+<img src="missing_papers.png">
+
+**Figure 7**: An example of papers that I have logged as being relevant to the topic at hand, but where I have not entered in all of the baseline information.
+
+Note, I initially colored the entire row green to indicate a missing paper. This caused problems when I started adding colored columns to denote different sections, as undoing the row color would impact the dividers. I then switched to simply highlighting the first 3 columns. However, it is pretty easy to see which rows are incomplete and I've largely stopped highlighting these rows.
+
+Adding the title can be a bit of work, particularly if trying to copy from PDFs. Occasionally if I'm in a hurry I will simply enter into the title something like the citing paper's author and year so that at a later point in time I can go back and find the specific paper being referenced.
+
+Some entries are also tough to find. In those cases the "journal" entry may contain:
+
+- name of the relevant conference and abstract page info
+- name of book and page numbers for a particular chapter
+- I may also enter "requested", with a date, if I couldn't find the entry and made a request to my libary
+- etc.
+
+Other approaches to adding papers include searching Pubmed or Google Scholar for topics, or occasionally I will simply search my personal library of papers (i.e., search my Zotero library). 
+
+Depending on how I'm feeling, I will then go ahead and add the fully entry. As of right now, adding information for the full entry (adding journal, PMID, date added, as well as ensuring authors and title are correct) indicates that I have that particular paper in my library. As a reminder, I do have a column that indicates if I have the paper, which would theoretically allow me to track papers in my library even if someone else (that I shared the document with) adds the full entry.
+
+I find this whole process to be relatively mindless and something I can and often do while watching TV. Remember, in this case the goal is not to read papers, it is simply to create a "reading list" of papers and to ensure that I have the papers in my library. This makes it easier for me to focus when I'm reading papers.
+
+# Adding Detailed Paper Information #
+
+This step unfortunately is generally not possible while multi-tasking.
+
+Rather than reading papers randomly, I often read by topic, reading papers from one of my sheets. I find it most useful to start at the beginning or at some earlier point of my choosing (i.e., might start reading papers from 2000 or 2010, depending on the topic, as some older papers can be quite a slog). I find this approach useful because it recreates, to some extent, how the papers came into existence. If instead I were to read in reverse chronological order, I have less of a base of knowledge to draw upon. Reading in chronological order I am better able to understand what was done, as well as see ideas and concepts develop.
+
+Note, if I am trying to quickly get caught up on a topic sometimes it can be helpful to read a recent review paper. There are always exceptions to the rule!
+
+As I'm reading I will inevitably find papers I've missed. Again, depending on my mood, I may first go back and read the old paper, or I may simply add a partial entry in my list. I will rarely however add a full entry to my list (check if the paper is in my library, download it if not, add all of the first 6 columns to my list). Adding the partial entry is menat to be quick and not distract too much from the process of reading.
 
 # Multiple Sheets #
 
-- subsets - tracking a particular feature rather than generic
-- see also/links - helpful for 
-- vertical sheets app
+Thus far we have largely focused on single sheets in a document, or potentially having two sheets, one for animals and one for humans, as the type of information logged is often very different between the two.
+
+As I'm documenting a topic, I will occasionally hit upon a subset of the topic that I want to track in more detail. For example, for sacral neurmodulation, I may be interested in understanding factors that are associated with treatment success, or surgical best practices, or improvements to the way the therapy is delivered (e.g., tined lead, MRI compatibility, curved stylet, etc.). These topics are then added as additional sheets in the document. Ideally in these instances the new sheet has more than 1 column of new information, as otherwise it could simply be a column in the original sheet.
+
+Another instance where I have multiple sheets is for a generic topic that has many specific sub-topics. We've already encountered this with drugs, where originally I had one document with multiple sheets about different drugs. Other notable examples of this include testing, where the sheets in a document are different tests related to the same overall type of testing (e.g., urethral motor testing), and anatomy, where sheets will focus on different anatomical components (e.g., urethra, bladder, puendal nerve, pelvic nerve, etc.)
+ 
+All of these examples use roughly the same format as outlined above. However, as is hopefully clear by now, I sometimes deviate from this setup. For example, in drugs it is common for me to have a sheet with very specific drug names and descriptions of what they do. Another example is a table that documents the type of motor or sensory responses observed from stimulation of different spinal levels. Technically this could be documented in a more traditional format, but sometimes I prefer a more compact format. Again, if I want to track something, I will, without too much worry about sticking to a particular format.
+
+One challenge with my approach is that it can be hard to find particular entries. Occasionally I will open up a document looking for a particular topic, e.g., urethral instability, and it won't be in that document. Once I find the document with the topic I go back to the original document and create ... a link! I was pretty excited about this particular "invention." One of the first sheets in many documents is a links page that describes sheets related to the current document, with links to the relevant sheets. Some of these link sheets also serve as tables of contents, describing the intentions of the other sheets in the document.
+
+Finally, some documents have LOTS of sheets. Unfortunately Google Sheets does not support vertical tabs. I wrote a javascript add-on that will bring up a vertical list of sheets. Clicking on a sheet name will navigate to that sheet. More info on this is in a [previous blog post](../../2020/2020_04_Vertical_Tabs_Google_Sheets/). Here's what that add-on looks like for my sacral neuromodululation document:
+
+<img src="gs_add_on.png">
+
+**Figure 8**: Screenshot of my vertical sheets add-on. Clicking on a sheet navigates to that sheet. See referenced blog post on how to setup.
 
 # Future Directions What's Missing #
+
+This system is far from perfect, but I've found it helps pretty well with paper recall. The following are a few final thoughts on what could be improved further.
+
+**Better Entry Adding:**
+Adding entries, particularly for systematic searches, takes work. I've created a script that takes a Pubmed ID and send the first 6 columns to the clipboard for pasting into a document. I'm also working on creating scripts that will take a set of documents, whether from a Pubmed search or from a Zotero search and add them to a particular sheet. This is low priority for me and is not yet public.
+
+Currently it is possible to have a paper in multiple locations, which can lead to some duplication. I try not to worry about this but it does bug me a bit. I could imagine that a program specifically designed for this type of work might support different views, where each view only showed particular papers, and in the process of filtering also added additional columns specific to that filter. For example, if one was looking at predictive models for sacral neuromodulation (the filter), additional columns could describe the modeling approaches used, what was targeted specifically with the models, etc.
+
+**Attaching figures with markup to cells**
+For a while I've wanted to support pop-up images in cells. The full vision is to have a cell that when clicked on, would bring up an image or set of images demonstrating some phenomenon. Google Sheets does support embedding drawings into cells, but my impression is that the drawings have to be made first. Below is a demonstration of the type of image that would be linked from the sheet, ideally with real editing software to track metadata. 
+
+<img src="figure_markup.png">
+
+**Figure 9**: Hypothetical figure markup program that ideally would be easily attached to cells in a document. The app would support easy logging of meta data that could be searched (e.g., bring up all real urodyanmics traces with EMG recording).
+
+**
+
 
 - easier to add entries
 - images as thumbnails or with markup
 - coverage (where is my document)
 - could work better as a dedicated program - if column is true, then add another sheet with other things that are tracked.
-
-
+- check papers in library from paper
+- mesh
+- export
