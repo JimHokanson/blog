@@ -172,7 +172,8 @@ Finally, some documents have LOTS of sheets. Unfortunately Google Sheets does no
 
 **Figure 8**: Screenshot of my vertical sheets add-on. Clicking on a sheet navigates to that sheet. See referenced blog post on how to setup.
 
-# Future Directions What's Missing #
+
+# Issues and Future Directions #
 
 This system is far from perfect, but I've found it helps pretty well with paper recall. The following are a few final thoughts on what could be improved further.
 
@@ -182,19 +183,41 @@ Adding entries, particularly for systematic searches, takes work. I've created a
 Currently it is possible to have a paper in multiple locations, which can lead to some duplication. I try not to worry about this but it does bug me a bit. I could imagine that a program specifically designed for this type of work might support different views, where each view only showed particular papers, and in the process of filtering also added additional columns specific to that filter. For example, if one was looking at predictive models for sacral neuromodulation (the filter), additional columns could describe the modeling approaches used, what was targeted specifically with the models, etc.
 
 **Attaching figures with markup to cells**
-For a while I've wanted to support pop-up images in cells. The full vision is to have a cell that when clicked on, would bring up an image or set of images demonstrating some phenomenon. Google Sheets does support embedding drawings into cells, but my impression is that the drawings have to be made first. Below is a demonstration of the type of image that would be linked from the sheet, ideally with real editing software to track metadata. 
+For a while I've wanted to support pop-up images in cells. This would make it easy to include an image that summarizes a finding, rather than having to rely on text. Google Sheets does support embedding drawings into cells, but my impression is that the drawings have to be made first. As a bonus, the image would be part of an image library that would also support markup (for understanding the figure), as well as adding metadata for searching. 
 
 <img src="figure_markup.png">
 
 **Figure 9**: Hypothetical figure markup program that ideally would be easily attached to cells in a document. The app would support easy logging of meta data that could be searched (e.g., bring up all real urodyanmics traces with EMG recording).
 
-**
+**Related documents and MESH support**
 
+The entries on a page form a collection from which it should be possible to identify related documents. Many of the content recommendation systems I've seen are prompted by single words or by single papers. My gut feeling is that a set of papers would be a better way of identifying related material.
 
-- easier to add entries
-- images as thumbnails or with markup
-- coverage (where is my document)
-- could work better as a dedicated program - if column is true, then add another sheet with other things that are tracked.
-- check papers in library from paper
-- mesh
-- export
+Three ways of implementing this relatedness metric are:
+- MESH terms
+- citation mapping
+- NLP analysis of content
+
+MESH or [Medical Subject Headings](https://en.wikipedia.org/wiki/Medical_Subject_Headings) are a set of very specific words that are used to describe papers as well as clinical trials. The following is an example of the MESH terms for "Somatic innervation of the human bulbocavernosus muscle" (PMID: 10363763)
+
+<img src="pubmed_mesh.png">
+
+**Figure 10**: MESH terms for a particular Pubmed ID. The terms can be found at the bottom of an entry's page, and are also available via Pubmed's web APIs (Entrez tools). 
+
+I'm skipping over some of the intricacies of MESH but the general idea is that by finding popular MESH terms in a set of papers it may be possible to find similar papers.
+
+The second approach would be to use citation mapping. More specifically it should be possible to find papers commonly cited by a set of documents (common older papers), as well as documents that cite a subset of the documents (a newer paper). Unfortunately doing this requires access to good citation data. I've long wished that a public database of citations was available, but I'm not aware of ones that exist. [Clarviate](https://en.wikipedia.org/wiki/Clarivate), the company that calculates impact factors, offers citation databases, but only to those that pay. My guess is that it would be against their terms of service to build a service, that is available to the public, that makes it easy to get citation graphs/maps for papers. Note I could be wrong here ....
+
+Finally, another approach could involve some sort of natural language processing or NLP. In words words, use AI to process papers and "magically" infer relatedness. Compared to MESH and citations, I am a bit skeptical of this approach, but with recent advances in AI, who knows.
+
+**Vendor lock-in/out**
+
+One thing that gets me nervous about this approach is the potential for vendor lock-in, or perhaps more likely, lock-out (getting kicked out of my account). There are stories floating around on the web that Google will occasionally ban people for potentially silly reasons, or automated (read: AI) reasons that are not accurate, and that some people lose access to their accounts forever.
+
+On my TODO list is to build in support for mass exporting of these files to my local computer. I've started working with the `gspread` Google Sheets Python library, and it shouldn't take that long to traverse a directory and export all sheets to local Excel documents. Note, although Excel is proprietary, the Excel document format is actually an open standard that any program could theoretically read. Additionally, the real win in this case is that the files are backed up locally, rather than the switching of formats. 
+
+# Concluding Thoughts #
+
+My system is far from perfect but I think it works pretty well. The image library proposal above is one of a few ideas I have regarding how to improve our ability to keep on top of the scientific literature. If I could ever figure out how to get funding for this work I would. Lately there seems to be a proliferation of programs in this space although none that I have found that are worth using. 
+
+I'd love to make my documents publicly available, although some of the comments are specific to my interpretation of the material, and some of my comments are not so kind! Also, in some ways I view my work in this area as potentially being advantageous for future projects. On a related note, much of this material could be wrapped into review articles, but review articles are critically undervalued, and often incomplete. As my career progresses I'm strongly considering trying to work with specific journals to create "living" review articles that receive Pubmed IDs (a sign of being official), but that are versioned in such a way that they can be updated (with significant material reuse), to handle new information and omissions. To be clear though, this is low priority. Our current scientific system rewards novelty and innovation at the expense of knowledge integration/consolidation (in my opinion).
