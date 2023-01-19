@@ -1,6 +1,6 @@
-# Organizing Papers/Knowledge Using Google Sheets #
+**Published January 18, 2023**
 
-**Oct. 22, 2022**
+# Organizing Papers/Knowledge Using Google Sheets #
 
 In this post I'll describe how I organize papers/knowledge for keeping track of the scientific papers I read. As I described in more detail in a [previous post](../../2020/2020_08_what_do_we_know/), there are a ton of papers on "science" and the rate of accrual of papers seems to be ever increasing. I also described how I think most people in most fields do a poor job of both: 1) staying up to date on new papers as well as 2) fully understanding what has already been published. This is not necessarily due to personal failures. When nearly everyone is awful at something, it suggests the system itself might need to be changed. However this post is not about what changes we may want to make (see linked post above), this post is about how I try and stay on top of the scientific literature. I am by no means perfect, and I will highlight some ideas I have on further improvements at the end, but my system has been honed over the past ~10 years and I think it is worth sharing.
 

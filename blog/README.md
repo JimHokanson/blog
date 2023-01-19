@@ -1,3 +1,9 @@
+## January 18, 2023 - Organizing Science Papers ##
+
+[article link](2022/2022_10_Organizing_Papers)
+
+If you read a bunch of papers and then forget the details later on, this post is for you. In it I describe my approach to keeping track of the papers that I've read.
+
 ## February 2, 2021 - A New Type of Review "Paper" ##
 
 [article link](2020/2020_08_what_do_we_know/)
