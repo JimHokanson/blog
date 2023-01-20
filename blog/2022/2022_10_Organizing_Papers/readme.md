@@ -76,7 +76,7 @@ Here is an example screenshot:
 
 <img src="next_5_columns_wb.png">
 
-**Figure 2**: These 5 columns tend to immediately follow the first 6 columns. Notice that in some cases I copy directly from the document, which I try to indicate with the ue of quotes. None of the papers in this example are reviews; I use the "-" character to indicate "no", which in general tends to make it easier to understand things.
+**Figure 2**: These 5 columns tend to immediately follow the first 6 columns. Notice that in some cases I copy directly from the document, which I try to indicate with the use of quotes. None of the papers in this example are reviews; I use the "-" character to indicate "no", which in general tends to make it easier to understand things.
 
 ## Other Aspects of Within Sheet Organization ##
 
