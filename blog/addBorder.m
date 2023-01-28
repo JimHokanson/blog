@@ -1,5 +1,7 @@
 function addBorder()
 
+%   Pads image with 2 pixel black border
+
 [file_names, file_root] = uigetfile({'*.png'},'Pick some images', 'MultiSelect', 'on');
 
 if ~iscell(file_names)
