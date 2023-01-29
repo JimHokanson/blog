@@ -8,7 +8,7 @@ As I started my postdoc I was hoping to avoid doing anything related to parsing 
 
 # LabChart #
 
-Most of my work as a graduate student focused on multi-channel, or at the time what we called high channel count (~30 - 150), signals. Now high channel count might mean thousands of signals (electrode channels). Transitioning to my postdoc we were only going to be recording from a handful of signals, generally 3 - 4 signals, maybe 10 at most. Rather than the more esoteric neuroscience software we had largely been using, we transitioned to a rather neat bit of software called [LabChart](https://www.adinstruments.com/products/labchart) by [ADInstruments](https://www.adinstruments.com/).
+Most of my work as a graduate student focused on multi-channel, or at the time what we called high channel count (~30 - 150), signals. In 2023 high channel count might mean thousands of signals (electrode channels); boy how things change! Transitioning to my postdoc we were only going to be recording from a handful of signals, generally 3 - 4 signals, maybe 10 at most. Rather than the more esoteric neuroscience software we had largely been using, we transitioned to a rather neat bit of software called [LabChart](https://www.adinstruments.com/products/labchart) by [ADInstruments](https://www.adinstruments.com/).
 
 The main aspects of a LabChart file include signals and comments. Signals have a particular sampling rate, a name, and associated units. Comments are associated with a particular time and have an ID associated with them. Different periods of recording, know as blocks or records, can be created with different signals active during each period. This structure of signals, or as I refer to them, time-series signals, along with associated comments is a relatively simple and common pattern present in many data acquisition devices. I'll note this is different than my graduate school work which tended to focus on the occurence of events (neural action potentials) that occurred at specific non-regular times, or what I refer to as point-processes. I've written software to make it easier to work with time-series signals (links below).
 
@@ -92,5 +92,10 @@ Perhaps one day an enterprising student in my lab will write that code ;) ....
 **Figure reference:**
 Son, H. S., Moon, S. Y., Kwon, J. & Kim, J. H. Effect of β3‐adrenoceptor agonist on the micromotion of bilateral major pelvic ganglion‐excised rat bladder. Neurourology and Urodynamics nau.25127 (2023) doi:10.1002/nau.25127.
 
+# Other Links #
+
+Labchart Server
+MATLAB standard library
+Plotting - blog posts and code
 
 
