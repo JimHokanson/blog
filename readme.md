@@ -1,4 +1,4 @@
-**January 19, 2023:** After a long break I finally have another post, this one on [how I keep track of papers that I read](blog/2022/2022_10_Organizing_Papers/)
+**January 19, 2023:** After a long break I finally have another post, this one on [how I keep track of papers that I read](blog/2023/2023_01_Organizing_Papers/)
 
 # About Me #
 
