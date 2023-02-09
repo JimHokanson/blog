@@ -4,9 +4,16 @@ function addBorder()
 
 [file_names, file_root] = uigetfile({'*.png'},'Pick some images', 'MultiSelect', 'on');
 
+if isnumeric(file_names)
+   return 
+end
+
+
 if ~iscell(file_names)
     file_names = {file_names};
 end
+
+BORDER_WIDTH = 2;
 
 for i = 1:length(file_names)
     [~,file_name_no_ext,ext] = fileparts(file_names{i});
@@ -19,10 +26,10 @@ for i = 1:length(file_names)
     %
     %
     sz = size(imdata);
-    sz(1) = sz(1) + 4;
-    sz(2) = sz(2) + 4;
+    sz(1) = sz(1) + 2*BORDER_WIDTH;
+    sz(2) = sz(2) + 2*BORDER_WIDTH;
     im2 = zeros(sz,'uint8');
-    im2(3:end-2,3:end-2,:) = imdata;
+    im2(3:end-BORDER_WIDTH,3:end-BORDER_WIDTH,:) = imdata;
     imwrite(im2,file_path)
 end
 
