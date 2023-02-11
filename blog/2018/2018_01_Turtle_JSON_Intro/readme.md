@@ -1,11 +1,16 @@
+# A Fast and Flexible JSON Parser Written From Scratch for MATLAB #
+
 **Published 1/2018**
 
-**Minor edits: 2/2021**
+**Minor edits: 2/2021, 2/2023**
 
 This post documents my experience writing a [JSON](https://en.wikipedia.org/wiki/JSON) parser in Matlab. The goal was to write a parser that made reading files of moderate size (10s to 100s of MB) not painful. Along the way I got my first exposure to within and between processor parallelization (using SIMD and openMP respectively). In particular this post was written to document some of the approaches I used to try and make parsing JSON relatively fast (using C mex).
 
 Code for this post is located at:
 [https://github.com/JimHokanson/turtle_json](https://github.com/JimHokanson/turtle_json)
+
+Performance evaluation is described at:
+[https://jimhokanson.com/blog/2018/2018_08_Turtle_JSON_speed/](https://jimhokanson.com/blog/2018/2018_08_Turtle_JSON_speed/)
 
 # Introduction #
 
@@ -402,5 +407,8 @@ Here are some additional things that could make this code go faster, as well as 
 # Concluding Thoughts #
 
 Even though I could make the code slightly faster, I'm ready to move on. At this point the parser is useable (i.e. it doesn't take 10s of seconds to load a 75 MB file). On my 2016 1.1 GHz m3 Macbook that 75 MB file parses in about 0.7 seconds (versus 0.73s for the mat file). On my i5-3570 3.4 GHz processor (released in Quarter 2 of 2012) it takes only 0.3 seconds, which is actually faster than the 0.55s it takes to read in the same data as a mat file (using '-v6').
+
+More on performance here:
+[https://jimhokanson.com/blog/2018/2018_08_Turtle_JSON_speed/](https://jimhokanson.com/blog/2018/2018_08_Turtle_JSON_speed/)
 
 I'm not entirely convinced of the utility of using JSON for scientific data exchange, especially compared to HDF5. Perhaps it allows easier editing of meta-data, but it requires a lot of extra processing to parse. The one feature that I think is really missing from this parser is the ability to work with schemas. Without schemas, there can be a lot of extra work on the user's end to verify that the data are delivered as expected.
