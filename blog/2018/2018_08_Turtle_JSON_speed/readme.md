@@ -1,10 +1,14 @@
-# Turtle JSON Speed #
+# Performance of my MATLAB JSON Parser: Turtle JSON #
 
-Finished: 2018-10-25
+**Finished: 2018-10-25**
+
+**Edits: 2023-02-11**
 
 In a previous article I documented [a JSON parser that I wrote in C for Matlab](../2018_01_Turtle_JSON_Intro).
 
-The previous article focused on techniques I used to make the parser fast, but didn't include any performance information. For those writing performant C code, that post might be interesting, but I realized that many people probably wanted to know how just how fast (or slow!) the parser really is, and how well the parser performs relative to other Matlab JSON parsers.
+The previous article focused on techniques I used to make the parser fast, but didn't include any performance information. For those writing performant C code, that post might be interesting, but I realized that many people probably wanted to know how just how fast (or slow!) the parser really is, and how well the parser performs relative to other Matlab JSON parsers. 
+
+**If you're using MATLAB's built-in JSON parser, the answer is that you could see speed ups in the 10-100x range.**
 
 This post contains one main test indicating how long it takes to read a JSON structure into Matlab objects. I've included a variety of JSON files that I've found over the web. These files encompass a variety of sizes and types (e.g. files with mostly strings, files with lots of objects, lots of numbers, etc.).
 
@@ -27,13 +31,13 @@ The files were found online at various places. They can all [be found here.](htt
 
 Of note:
 
-1. 1.json - This is a relatively well known test file from https://github.com/kostya/benchmarks/tree/master/json
+1. 1.json - This is a relatively well known test file from [https://github.com/kostya/benchmarks/tree/master/json](https://github.com/kostya/benchmarks/tree/master/json)
 2. XJ30\_NaCl500mM4uL6h\_10m45x10s40s_Ea.json - This is a a file generated for analysis of worm (C. Elegans) movement and was the main motivator for writing this code. I will be referencing it again later on.
 
 ## The Main Test ##
 
 All files were tested using run\_bench.m found at:
-https://github.com/JimHokanson/turtle_json_benchmark/
+[https://github.com/JimHokanson/turtle_json_benchmark/](https://github.com/JimHokanson/turtle_json_benchmark/)
 
 Files were read from disk and parsed into a Matlab structure. For those requiring an input string, rather than a file name, the file was first read into memory and then passed to the parsing function. For the files supporting a file name as input, the file name was passed directly to the parser. In both cases the timing process included the time to read the file (all from various SSDs).
 
@@ -55,9 +59,9 @@ Parse times have been computed in 3 different environments:
 
 Each dot corresponds to the parse time of a single file normalized to the time it took Turtle JSON to parse the same file. A value of 1 indicates the same execution time. A value less than 1 indicates that the other parser runs faster. A value greater than 1 indicates that the other parser runs slower than Turtle JSON. For example, a value of 10 indicates that the other parser takes 10x as long to run as Turtle JSON.
 
-The figures also display some variation on the x-axis. The location on the x-axis is log-scaled by how long it took Turtle JSON to parse the file, with the fastest parse times on the left and the slowest parse times on the right. Put another way, values on the left only took milliseconds to parse, and values to the right took seconds to parse. Again, in this instance parsing refers not only to an abstract representation of the JSON, but also conversion of the JSON into Matlab structures/arrays/values.
+The figures also display some variation on the x-axis. **The location on the x-axis is log-scaled by how long it took Turtle JSON to parse the file, with the fastest parse times on the left and the slowest parse times on the right.** Put another way, values on the left only took milliseconds to parse, and values to the right took seconds to parse. Again, in this instance parsing refers not only to an abstract representation of the JSON, but also conversion of the JSON into Matlab structures/arrays/values.
 
-Here's the parse time results from my computer named Turtle. Turtle JSON was named after this computer and as my attempt at humor in honor of all the "fast" JSON parser names.
+Here's the parse time results from my computer named Turtle. Turtle JSON was named after this computer and as my attempt at humor in honor of all the "fast" JSON parser names that exist out there such as "RapidJSON" and 
 
 ![Turtle Computer Times](Turtle_Comp_TJ_Bench.svg)
 
