@@ -40,7 +40,7 @@ The main interface relies on a C [mex](https://www.mathworks.com/help/matlab/cal
 
 &lt;repo\_root&gt;/+adi/private/sdk_mex.cpp
 
-The code itself is fairly simple, and is probably a good starting point for those just learning how to do this work. That being said, there may be better ways of doing this (discussed below). Here's a snippet of the code. The basic idea is we pass in a numeric function option, and based on that value we call different functions of the SDK library interface (ADInstruments functions). For mex, the number of inputs to the function call can be variable. Based on the function call we interpret the inputs to the mex call differently. For example, if requesting the number of ticks (number of samples of fastest channel) in a record, the 3rd input after the function option and the file handle is the record we wish to know about (starting and stopping recordings creates new blocks).
+The code itself is fairly simple, and is probably a good starting point for those just learning how to do this work. That being said, there may be better ways of doing this (discussed below). Here's a snippet of the code. The basic idea is we pass in a numeric function option, and based on that value we call different functions of the SDK library interface (ADInstruments functions). For mex, the number of inputs to the function call can be variable. Based on the function call we interpret the inputs to the mex call differently. For example, if requesting the number of ticks (number of samples of fastest channel) in a record (function_option  == 3), the next input should be the file handle, and the 3rd input should be the record you want to know about (where the first record is 0).
 
 <img src="mex_code_snippet.png">
 
@@ -72,7 +72,7 @@ In 2019 MATLAB introduced an [analog to loadlibrary() for C++](https://blogs.mat
 
 In discussion with ADInstruments reps, they were aware that the performance of scrolling (to review data, not to collect it) within LabChart was not exactly great. A few years later they introduced [LabChart Lightning](https://www.adinstruments.com/products/labchart/lightning). I have not personally used LabChart Lightning, although I am assuming the scrolling performance when reviewing data is better. This "upgrading by replacing" is interesting to me; I'm not sure if there is a name for it (maybe planned obsolescence?). I recently found out that THE major supplier of urology diagnostic testing equipment (specifically urodynamics), a company called Laborie, created a new system, that in my impression is not backwards compatible with the old system. My impression is that this has two benefits, for the company. First, it is an opportunity to shed old baggage, starting fresh rather than needing to know the particulars of the old system. Second, presumably it is an opportunity to convince people that they need to upgrade rather than simply keeping or fixing their current system. Unfortunately this often means more work developing software to work with the new file types.
 
-I actually rarely work directly with my ADInstruments code. Instead, I have code that wraps my code and provides additional functionality. Much of this is specific to my work, and thus does not belong in the ADInstruments repository. However some of it is a bit generic and should probably be moved into the ADInstruments repository. Two "features" in particular come to mind. First, by default when an object is displayed in MATLAB, which in this case might be a file, record, or channel, the properties are displayed. I find this to be super helpful for understanding objects and is something I have actually replicated in Python (another potential blog post). However, the methods are not displayed, and require extra work to display information on the available methods. As most people that work with MATLAB are not familiar with object-oriented programming, I think automatically displaying help on the classes methods would be helpful. Below is a screenshot of the display of a class in the MATLAB window, which uses my code to automatically display the methods. As can be seen the documentation of the methods of the displayed class needs improvement. Clicking on the methods blue links (name, period, and colon) will display more information or open up the file for editing at that method. There is a lot of code that goes into making this work which is why I've generally been hesitant (too lazy really) to port it to project repositories.
+I actually rarely work directly with my ADInstruments code. Instead, I have code that wraps my code and provides additional functionality. Much of this is specific to my work, and thus does not belong in the ADInstruments repository. However some of it is a bit generic and should probably be moved into the ADInstruments repository. Two "features" in particular come to mind. First, by default when an object is displayed in MATLAB, which in this case might be a file, record, or channel, the properties are displayed. I find this to be super helpful for understanding objects and is something I have actually replicated in Python (another potential blog post). However, the methods are not displayed, and require extra work to display information on the available methods. As most people that work with MATLAB are not familiar with object-oriented programming, I think automatically displaying help on the classes methods would be helpful. Below is a screenshot of the display of a class in the MATLAB window, which uses my code to automatically display the methods. As can be seen the documentation of the methods of the displayed class needs improvement. Regardless, clicking on the methods blue links (name, period, and colon) will display more information or open up the file for editing at that method. Again, keep in mind the whole methods bit shown below is not normally shown for most MATLAB classes. There is a lot of code that goes into making this work which is why I've generally been hesitant (too lazy really) to port it to project repositories.
 
 <img src="class_methods.png">
 
@@ -82,7 +82,7 @@ The following is the screenshot that motivated this posting. There is more to th
 
 <img src="b3_screenshot.png">
 
-Ideally one day this could simply be generated using the following call in MATLAB (or Python):
+Ideally one day this could simply be generated using the following call in MATLAB (or Python), which to be clear does not yet exist:
 
 ```
 file_path = 'my_file_path';
@@ -93,14 +93,14 @@ channels = {'Pves'}
 h = file.plot(record,time_range,channels)
 ```
 
-Perhaps one day an enterprising student in my lab will write that code ;) ....
+Perhaps one day an enterprising student in my lab will write that code ;)
 
 **Figure reference:**
 Son, H. S., Moon, S. Y., Kwon, J. & Kim, J. H. Effect of β3‐adrenoceptor agonist on the micromotion of bilateral major pelvic ganglion‐excised rat bladder. Neurourology and Urodynamics nau.25127 (2023) doi:10.1002/nau.25127.
 
 # Other Links #
 
-- [LabChart Server](https://github.com/JimHokanson/labchart_server_matlab) - this contains code that can be used to control LabChart from MATLAB, and can extra data from LabChart while it is running (for pseudo realtime control)
+- [LabChart Server](https://github.com/JimHokanson/labchart_server_matlab) - this contains code that can be used to control LabChart from MATLAB, and can extract data from LabChart while it is running (for pseudo realtime control)
 - [MATLAB standard library](https://github.com/JimHokanson/matlab_standard_library) - this is the main library I add basic MATLAB code to, like the class display code.
 - [plotBig](https://github.com/JimHokanson/plotBig_Matlab) - this plots large amounts of data in MATLAB very quickly. Some blog posts on this include:
 	- [streaming](https://jimhokanson.com/blog/2019/2019_07_stream_plotting_matlab/)
