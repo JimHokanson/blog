@@ -1,3 +1,7 @@
+## July 6, 2024 - Reading LabChart files in MATLAB (and Python) ##
+
+Have you ever used a program and wished there was an easier way to read its files for analysis, rather than using awkward export routines? This post discusses my efforts at writing code to load LabChart files using their SDK.
+
 ## January 18, 2023 - Organizing Science Papers ##
 
 [article link](2023/2023_01_Organizing_Papers)
