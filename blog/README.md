@@ -2,6 +2,8 @@
 
 [article link](2024/2024_05__sas_reader_matlab)
 
+I had a project which required analyzing data sent to me as SAS binary files. How hard could it be to read them into MATLAB? One shaved yak later ....
+
 ## July 6, 2024 - Reading LabChart files in MATLAB (and Python) ##
 
 [article link](2023/2023_02__ADInstruments_SDK)

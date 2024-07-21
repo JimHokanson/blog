@@ -2,7 +2,7 @@
 
 In the following blog post I will describe my thoughts related to writing MATLAB code that can load SAS binary data files, i.e., those with the ".sas7bdat" extension.
 
-Part of this is self-documentation of my endeavors. However I also found the whole experience quite interesting as unlike many other file formats I work with, the SAS format is quite popular and is "supported" by some quite popular packages (Pandas for Python, Haven for R). It was interesting to see the chaotic mess that is supporting a non-documented file format. Thoughts on partaking in this "experience" are shared below.
+Part of this is self-documentation of my endeavors. However I also found the whole experience quite interesting as unlike many other file formats I work with, the SAS format is quite popular and is "supported" by some quite popular packages (Pandas for Python, Haven for R). It was interesting to see the chaotic mess that is supporting a non-documented file format. Thoughts on partaking in this "experience" are shared below, along with some details on the parser itself.
 
 # Introduction #
 
@@ -10,14 +10,13 @@ I'm currently working on a project that involves something called a data coordin
 
 As part of a project I'm working on I asked to see some of the files the DCC was working with. Being (good?, true?) statisticians they sent me some data as SAS binary data files in the .sas7bdat format. They asked me whether I would prefer it if they exported the data as CSV files instead. Trying to get the data quickly, and figuring I could get any code to work ;) I declined their offer to export the files. One relatively quick "data use agreement" later I was logging onto a SharePoint server to download my data.
 
-I was hoping that the [Mathworks File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/) would have a solution for loading these files into MATLAB. Unfortunately that was not the case. The only thing I could find was [this code](https://www.mathworks.com/matlabcentral/fileexchange/15835-import-data-from-sas) which uses ActiveX to load the SAS file into Excel, saves the resulting Excel file, and then uses standard MATLAB functionality to load the Excel file; not ideal. (Update) Actually it appears that code doesn't really work, and instead the author recommends installing MySQL as a bridge for MATLAB [eeeek](https://www.mathworks.com/matlabcentral/fileexchange/13069-the-twain-shall-meet-facilitating-data-exchange-between-sas-and-matlab).
-A similar search of GitHub, which I often search in addition to the File Exchange, failed to find any results.
+I was hoping that the [Mathworks File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/) would have a solution for loading these files into MATLAB. Unfortunately that was not the case. The only thing I could find was [this code](https://www.mathworks.com/matlabcentral/fileexchange/15835-import-data-from-sas) which uses ActiveX to load the SAS file into Excel, saves the resulting Excel file, and then uses standard MATLAB functionality to load the Excel file; not ideal. (Update) Actually it appears that code doesn't really work, and instead the author recommends installing MySQL as a bridge for MATLAB, [eeeek](https://www.mathworks.com/matlabcentral/fileexchange/13069-the-twain-shall-meet-facilitating-data-exchange-between-sas-and-matlab) (although props to the author for the workaround). A similar search of GitHub, which I often search in addition to the File Exchange, failed to find any results.
 
 Recently MATLAB has been strengthening its ability to interface with Python. I figured perhaps I would try loading my file in Python. If that worked I would then write a wrapper to load the file in MATLAB, by calling Python. Note that unlike the Excel approach above MATLAB has a way of sharing memory (transferring memory?) between Python, as opposed to writing and reading a file from disk. 
 
-A quick Google search suggested that Pandas, the "default" table loader in Python supported reading SAS files. I pointed Pandas at my file (maybe 1 GB in size?) and ... waited. After maybe 30 seconds I quit the process. After looking at the Pandas SAS code that looked functional but not exactly designed for performance, I decided that maybe I wanted to spend some of my free time [shaving yet another Yak](https://seths.blog/2005/03/dont_shave_that/), or in this case, writing yet another MATLAB parser. 
+A quick Google search suggested that Pandas, the "default" table loader in Python, supported reading SAS files. I pointed Pandas at my file (maybe 1 GB in size?) and ... waited. After maybe 30 seconds I quit the process. After looking at the Pandas SAS code that looked functional but not exactly designed for performance, I decided that maybe I wanted to spend some of my free time [shaving yet another Yak](https://seths.blog/2005/03/dont_shave_that/), or in this case, writing yet another MATLAB parser. 
 
-Keep in mind, the CSV exporting from the DCC was still an option, but how hard code this be ....
+Keep in mind, the CSV exporting from the DCC was still an option, but how hard could this be ....
 
 # The Unlikely(?) Hero #
 
@@ -27,12 +26,12 @@ It is impossible to describe adequately the excitement, surprise, and awe readin
 
 Here's the opening text. 
 
-```
+<blockquote>
 The SAS7BDAT file is a binary database storage file. At the time of this writing, no description of the SAS7BDAT file format was publicly available. Hence, users who wish to read and manipulate these files were required to obtain a license for the SAS software, or third party software with support for SAS7BDAT files. The purpose of this document is to promote interoperability between SAS and other popular statistical software packages,
 especially R (http://www.r-project.org/).
 
 The information below was deduced by examining the contents of many SAS7BDAT databases downloaded freely from internet resources (see data/sas7bdat.sources.RData). No guarantee is made regarding its accuracy. No SAS software, nor any other software requiring the purchase of a license was used.
-```
+</blockquote>
 
 Beautiful!!!!
 
