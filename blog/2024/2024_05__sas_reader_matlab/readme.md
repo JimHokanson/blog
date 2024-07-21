@@ -30,6 +30,8 @@ Here's the opening text.
 The SAS7BDAT file is a binary database storage file. At the time of this writing, no description of the SAS7BDAT file format was publicly available. Hence, users who wish to read and manipulate these files were required to obtain a license for the SAS software, or third party software with support for SAS7BDAT files. The purpose of this document is to promote interoperability between SAS and other popular statistical software packages,
 especially R (http://www.r-project.org/).
 
+<br>
+<br>
 
 The information below was deduced by examining the contents of many SAS7BDAT databases downloaded freely from internet resources (see data/sas7bdat.sources.RData). No guarantee is made regarding its accuracy. No SAS software, nor any other software requiring the purchase of a license was used.
 </blockquote>
@@ -78,7 +80,7 @@ Earlier I mentioned that part of the impetus for creating a MATLAB parser was th
 
 **The following was written before I had completely implemented my parser. I'm keeping it for now but I'll specify an additional issue that can be a HUGE time sink**
 
-** Note, I almost did not include the "Old Thoughts" section as it is a very dry read. You may want to skip it ....**
+** Note, I almost did not include the "Old Thoughts" section as it is a very dry read. You may want to skip it .... **
 
 ## Old Thoughts ##
 
@@ -132,7 +134,7 @@ More on character encoding can be found here: [https://en.wikipedia.org/wiki/Cha
 
 MATLAB has a function called *native2unicode()* which takes in raw bytes and converts them to UTF-16. You need to specify the encoding used in the file, which in this case is stored as a property of the binary SAS file. Alternatively, you can simply ignore the encoding, and convert the bytes to strings. However, this has the potential of returning incorrect characters. This latter approach was what I was using as a temporary hack. It also led to decent, albeit potentially incorrect, performance.
 
-MATLAB's *native2unicode()* function only accepts a 1-d vector of characters. This makes some sense as for some encodings a variable number of bytes becomes a character. This means that for any given set of bytes, for some encodings, you don't know the final length of the string, as the first character may be only byte and the next character may require 3 bytes. This means that to convert a matrix of bytes, where each row (or column) represents data for a different string (i.e., a new row/entry in our table), you need to loop through the entries and convert them, one at a time, from raw bytes to a string.
+MATLAB's *native2unicode()* function only accepts a 1-d vector of characters. This makes some sense as for some encodings a variable number of bytes becomes a character. This means that for any given set of bytes, for some encodings, you don't know the final length of the string, as the first character may be only  one byte and the next character may require 3 bytes. This means that to convert a matrix of bytes, where each row (or column) represents data for a different string (i.e., a new row/entry in our table), you need to loop through the entries and convert them, one at a time, from raw bytes to a string. Note MATLAB could do this looping internally but my guess is they think this is a rare use case and also would be confusing to most users.
  
 Thus, the old code looked something like this (with no encoding support and thus likely incorrect characters in the output):
 ```
@@ -149,7 +151,6 @@ column_data = string(column_data);
 
 %I might have initialized and set strings rather than working 
 %with a cell array and converting to a string later
-
 ```
 
 It turns out this looping behavior made parsing my test file go from roughly 10s to roughly 50s.
@@ -179,11 +180,11 @@ else
 end    
 ```
 
-Using this approach the parsing time is back down around 10s (for my test file) AND is always correct for all files (although it may be slower than necessary for formats that I haven't done the mapping for -- which is fixable but just takes some effort). Note to this has only been implemented for 1-byte character maps.
+Using this approach the parsing time is back down around 10s (for my test file) AND is always correct for all files (although it may be slower than necessary for formats that I haven't done the mapping for -- which is fixable but just takes some effort). Note this has only been implemented for 1-byte character maps.
 
 This whole process is good, but can we get faster than 10s for our large file? Ideally we would be loading a 1 GB file in under 1 second.
 
-In looking into this I re-discovered a pain point in trying to parse files quickly, that is **string allocation.** Creating the string arrays takes a large portion (50-60%?) of that 10s parsing time. The reason the process is so slow is not because of some computational complexity, it is because of memory management. Put another way, MATLAB, and I assume most languages, allocates a specific chunk of memory for each string. Thus for an array of strings, each string has its own specific memory allocation. This is different than a numeric matrix which is one single chunk of memory. The overhead of memory allocation per string is not huge, but when you have 20 million strings per column with multiple columns, this adds up. Above I mentioned briefly that I wrote a fast JSON parser. For that pareser it was memory allocation, particularly for strings, that really slowed things down. In theory it would be possible to write a string array data type that stores all of the strings in one big chunk of memory, but I doubt MATLAB is ever going to implement. 
+In looking into this I re-discovered a pain point in trying to parse files quickly, that is **string allocation.** Creating the string arrays takes a large portion (50-60%?) of that 10s parsing time. The reason the process is so slow is not because of some computational complexity, it is because of memory management. Put another way, MATLAB, and I assume most languages, allocates a specific chunk of memory for each string. Thus for an array of strings, each string has its own specific memory allocation. This is different than a numeric matrix which is one single chunk of memory. The overhead of memory allocation per string is not huge, but when you have 20 million strings per column with multiple columns, this adds up. Above I mentioned briefly that I wrote a fast JSON parser. For that pareser it was memory allocation, particularly for strings, that really slowed things down. In theory it would be possible to write a string array data type that stores all of the strings in one big chunk of memory, but I doubt MATLAB is ever going to implement that. 
 
 So in summary the biggest pain points are in converting bytes to characters/strings (which I improved, somewhat), and in memory allocation for strings (which I guess is just good to be aware of). I'll note one of the columns in the test file is essentially a subject ID number that if stored as a number (and not a string) would meaningfully reduce the loading time -- i.e., sometimes you can speed up loading by using alternate formats when saving a file. 
 
@@ -202,8 +203,8 @@ The three files tested are:
 
 Performance on file "fts0003.sas7bdat":
 - MATLAB: 2.66 s total
-- Parso: 22 s parsing, 101 s total
-- Pandas: 1.84 s parsing, 4.94 s total
+- Parso: 22 s parsing, 101 s total (converting the Java variables to MATLAB variables)
+- Pandas: 1.84 s parsing, 4.94 s total (converting the Python variables to MATLAB variables)
 
 Performance on file 2 "numeric_1000000_2.sas7bdat":
 - MATLAB: 0.058s total
@@ -212,10 +213,10 @@ Performance on file 2 "numeric_1000000_2.sas7bdat":
 
 Performance on file 3 "m_a_calories.sas7bdat":
 - MATLAB: 10s total
-- Parso: After 3 minutes I got an out of memory error in Java. The memory error is fixable but as the parse error occurred while still parsing the file, and not in the extremely slow part of converting Java entries to MATLAB data types, we're looking at a total parse time of north of 10 minutes (very rough estimate)
+- Parso: After 3 minutes I got an out of memory error in Java. The memory error is fixable but as the parse error occurred while still parsing the file, and not in the extremely slow part of converting Java entries to MATLAB data types, we're looking at a total parse time north of 10 minutes (very rough estimate)
 - Pandas: After 32 minutes I quit the process
 
-When writing this MATLAB released a new version, 2024a. As part of this release MATLAB now supports converting from a Pandas dataframe to a MATLAB table. In the above testing I wrote a function that does this, which is definitely suboptimal. 
+When writing this MATLAB released a new version, 2024a. As part of this release MATLAB now supports converting from a Pandas dataframe to a MATLAB table. In the above testing I wrote a function that does this, which is definitely suboptimal. It turns out the "slow" part above was in my conversion code from a Pandas dataframe to a MATLAB dataframe.
 
 On a different computer I got the following times for the 3rd file (with 2024a):
 - MATLAB - 20 s total
@@ -226,11 +227,11 @@ Note the MATLAB time is a bit slower, likely due to slower memory on that comput
 
 # File Structure #
 
-Below is a rough outline of the file layout/structure.
+Below is a rough outline of the file layout/structure of a sas7bdat file.
 
 <img src="sas_file_format.png">
 
-I had intended on documenting this in more detail but at this point I've run out of steam. There are a couple of things that are noteworthy about this structure. First, important properties of the file, such as most of the column details (names, labels, etc.) are stored as "subheaders" on pages, rather than in the main file header. This means that as you are parsing "data" you might encounter general file processing instructions. Another unexpected formatting issue that I ran into involves uncompressed data. Often the uncompressed data rxows are stored in one contiguous spot on the page, separate from the subheaders. However in certain circumstances these uncompressed data rows are stored in the subheaders along with compressed data.
+I had intended on documenting this in more detail but at this point I've run out of steam. There are a couple of things that are noteworthy about this structure. First, important properties of the file, such as most of the column details (names, labels, etc.) are stored as "subheaders" on pages, rather than in the main file header. This means that as you are parsing "data" you might encounter general file processing instructions. Another unexpected formatting issue that I ran into involves uncompressed data. Often the uncompressed data rows are stored in one contiguous spot on the page, separate from the subheaders. However in certain circumstances these uncompressed data rows are stored in the subheaders along with compressed data.
 
 At some point I would love to contribute back to the official documentation but at this point I'm exhausted :/
 
@@ -242,13 +243,13 @@ If this was something I was doing professionally I would put a bit more effort i
 
 # Final Thoughts #
 
-It is nice to now have this code working in MATLAB. Parsing CSV files can have its own pains, particularly for large files. Looking back it is not clear whether or not asking the DCC for CSV files would have been the better approach. It may have been as even with the SAS files the first thing I did was divide it up into chunks, by subject ID, and store those using MATLAB's MAT format.
+It is nice to now have this code working in MATLAB. Parsing CSV files can have its own pains, particularly for large files. Looking back it is not clear whether or not asking the DCC for CSV files would have been the better approach. It may have been as even with the SAS files the first thing I did was divide it up into chunks, by subject ID, and store those using MATLAB’s MAT format. I could have done the same with huge CSV files. I'll note most of the work on this project was done on nights (mostly, while "watching" TV with my wife) and weekends, for fun, as it would be hard to justify working on this during normal work hours.
 
-I am a bit disappointed with myself for not more fully documenting the file format and updating the online documentation. I had also envisioned myself doing a quick scan of the more commonly used libraries out there which currently have bugs and providing some feedback on how to fix their code. At this point though I need to move on, especially as my job rewards my code development efforts somewhere between the amounts of 0 and not-at-all. For reference, largely to myself, these coding efforts were largely conducted after work hours (which for me lately has also been work hours) and took probably about 60 - 80 hours (very rough guess) to implement over the course of 4 months.
+I am a bit disappointed with myself for not more fully documenting the file format and updating the online documentation. I had also envisioned myself doing a quick scan of the more commonly used libraries out there which currently have bugs and providing some feedback on how to fix their code. At this point though I need to move on, especially as my job rewards my code development efforts somewhere between the amounts of 0 and not-at-all. For reference, largely to myself, these coding efforts took probably about 60 - 80 hours (very rough guess) to implement over the course of 4 months.
 
 # Appendix: Stepping Through Code #
 
-IntelliJ IDEA turned out to be quite useful for stepping through Parso code to understand it. In particular, IDEA supports debugging libraries that are not a part of your local code. I took photos [in the blog repo](https://github.com/JimHokanson/blog/tree/master/blog/2024/2024_05__sas_reader_matlab) on how this was setup. I've also included a bare bones wrapper below.
+IntelliJ IDEA turned out to be quite useful for stepping through Parso code to understand it. In particular, IDEA supports debugging libraries that are not a part of your local code. In particular Parso is distributed via [Maven](https://en.wikipedia.org/wiki/Apache_Maven) which I am aware of but was definitely not comfortable trying to work with. The big issue was how to get a Java project setup that could debug a Maven based external dependency. I took screenshots [in the blog repo](https://github.com/JimHokanson/blog/tree/master/blog/2024/2024_05__sas_reader_matlab) on how this was setup. I've also included a bare bones wrapper below.
 
 ```java
 
