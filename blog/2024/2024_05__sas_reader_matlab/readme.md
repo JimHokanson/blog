@@ -249,7 +249,7 @@ I am a bit disappointed with myself for not more fully documenting the file form
 
 # Appendix: Stepping Through Code #
 
-IntelliJ IDEA turned out to be quite useful for stepping through Parso code to understand it. In particular, IDEA supports debugging libraries that are not a part of your local code. In particular Parso is distributed via [Maven](https://en.wikipedia.org/wiki/Apache_Maven) which I am aware of but was definitely not comfortable trying to work with. The big issue was how to get a Java project setup that could debug a Maven based external dependency. I took screenshots [in the blog repo](https://github.com/JimHokanson/blog/tree/master/blog/2024/2024_05__sas_reader_matlab) on how this was setup. I've also included a bare bones wrapper below.
+IntelliJ IDEA turned out to be quite useful for stepping through Parso code to understand it. In particular, IDEA supports debugging libraries that are not a part of your local code. Parso is distributed/built via [Maven](https://en.wikipedia.org/wiki/Apache_Maven) which I am aware of but was definitely not comfortable trying to work with. The big issue was how to get a Java project setup that could debug a Maven based external dependency. I took screenshots [in the blog repo](https://github.com/JimHokanson/blog/tree/master/blog/2024/2024_05__sas_reader_matlab) on how this was setup. I've also included a bare bones wrapper below.
 
 ```java
 
