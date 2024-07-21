@@ -1,4 +1,4 @@
-** July 21, 2024 **
+**July 21, 2024**
 
 I have a new blog post about writing a SAS parser for MATLAB. I also recently wrote about the development of code to read LabChart files into MATLAB (and Python). Check them out [here](blog).
 
