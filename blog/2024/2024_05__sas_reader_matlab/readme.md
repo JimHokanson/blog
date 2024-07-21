@@ -30,6 +30,7 @@ Here's the opening text.
 The SAS7BDAT file is a binary database storage file. At the time of this writing, no description of the SAS7BDAT file format was publicly available. Hence, users who wish to read and manipulate these files were required to obtain a license for the SAS software, or third party software with support for SAS7BDAT files. The purpose of this document is to promote interoperability between SAS and other popular statistical software packages,
 especially R (http://www.r-project.org/).
 
+
 The information below was deduced by examining the contents of many SAS7BDAT databases downloaded freely from internet resources (see data/sas7bdat.sources.RData). No guarantee is made regarding its accuracy. No SAS software, nor any other software requiring the purchase of a license was used.
 </blockquote>
 
@@ -49,7 +50,7 @@ For what it is worth I think the most "correct" parser is called [Parso](https:/
 
 # Differences in functionality #
 
-The following is my attempt to briefly document major differences in functionality. It is important to note that these SAS files are basically data tables, i.e., a big spreadsheet with column names and rows of values.
+The following is my attempt to briefly document major differences in functionality across parsers. It is important to note that these SAS files are basically data tables, i.e., a big spreadsheet with column names and rows of values.
 
 A lot of differences in functionality between programs involve parsing quality. In particular there are many differences in terms of support for:
 
@@ -58,7 +59,7 @@ A lot of differences in functionality between programs involve parsing quality. 
 - different string encodings
 - hiding entries (rows) that have been "deleted" but are still in the file
 
-Most of these issues arise because they were not covered in Matt's documentation and no one bothered to pass that information back to him when they figured it out. The middle two are a bit more complicated because of the large variety of options available. As an example, one column I loaded had the datetime format of "MINGUO" which is a Taiwanese datetime format. I hadn't added support for that format yet. It took only a few minutes to add support but without a comprehensive list often you add new entries as they come up in new files. Other than perhaps the Parso SAS parser I haven't seen any systematic effort to generate different test files that support all of the possible column formats. Even Parso may be incomplete; it is tough to tell as they don't exactly discuss how they made their parser and what the test files are doing.
+Most of these issues arise because they were not covered in Matt's documentation and no one bothered to pass that information back to him when they figured it out. The middle two are a bit more complicated because of the large variety of options available. As an example, one column I loaded had the datetime format of "MINGUO" which is a Taiwanese datetime format. When I saw a file with this format I hadn't yet added support for that format. It took only a few minutes to add support but without a comprehensive list often you add new entries as they come up in new files. Other than perhaps the Parso SAS parser I haven't seen any systematic effort to generate different test files that support all of the possible column formats. Even Parso may be incomplete; it is tough to tell as they don't exactly discuss how they made their parser and what the test files are doing.
 
 The second big issue, besides parser accuracy, is the interface. Big issues here include support, or lack there of, for:
 
@@ -67,7 +68,7 @@ The second big issue, besides parser accuracy, is the interface. Big issues here
 - reading only certain rows (e.g., rows 100 to 200)
 - including or excluding specific columns
 
-Most parsers appeared to be pretty bad in this area. That being said, I'm sure many of the people writing the parsers felt like they were doing a good job just loading the file and figured at least now the user could do most of these things in post processing. I know I would generally feel that way. Unfortunately now I had GB sized files so all of a sudden I found myself a bit more interested in supporting being able to load only a part of the file. 
+Most parsers appeared to be pretty bad in this area. That being said, I'm sure many of the people writing the parsers felt like they were doing a good job just loading the file and figured at least now the user could do most of these things in post processing. I know I would generally feel that way. Unfortunately now I had GB sized files so all of a sudden I found myself a bit more interested in supporting the ability for users to load only a part of the file. 
 
 # Performance #
 
@@ -76,6 +77,8 @@ Most parsers appeared to be pretty bad in this area. That being said, I'm sure m
 Earlier I mentioned that part of the impetus for creating a MATLAB parser was the extremely slow performance of the Pandas parser. I previously created a JSON parser where I tried really hard to get [good performance](https://jimhokanson.com/blog/2018/2018_08_Turtle_JSON_speed/). Here my goal was simply to get decent performance. This turned out to be pretty easy (or so I thought, see below).
 
 **The following was written before I had completely implemented my parser. I'm keeping it for now but I'll specify an additional issue that can be a HUGE time sink**
+
+** Note, I almost did not include the "Old Thoughts" section as it is a very dry read. You may want to skip it ....**
 
 ## Old Thoughts ##
 
