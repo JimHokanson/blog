@@ -1,10 +1,10 @@
-**January 19, 2023:** After a long break I finally have another post, this one on [how I keep track of papers that I read](blog/2023/2023_01_Organizing_Papers/)
+**July 6, 2024:** After a long break I finally have another post, this one on the development of code to read LabChart files into MATLAB (and Python)
 
 # About Me #
 
 <img src="jim_photo.jpg" alt="Photo of Jim" height="300">
 
-My name is James (Jim) Hokanson. I started January 2021 as an assistant professor in a joint department of biomedical engineering between the [Medical College of Wisconsin and Marquette University](https://mcw.marquette.edu/biomedical-engineering/). My background is in neural engineering (see below). I'm currently interested in developing new therapies to treat urological dysfunction, particularly incontinence. Additionally, I'm interested in developing new diagnostic tests to improve the therapy selection process as well as to inform new therapy development, using machine learning/data driven approaches to create new insights. My skillset includes electrical stimulation, physiological testing, software development and machine learning. My work includes a mixture of both clinical and pre-clinical studies.
+My name is James (Jim) Hokanson. I am an assistant professor in a joint department of biomedical engineering between the [Medical College of Wisconsin and Marquette University](https://mcw.marquette.edu/biomedical-engineering/). My background is in neural engineering (see below). I'm interested in developing new therapies to treat urological dysfunction, particularly urgency urinary incontinence. I'm also interested in developing new diagnostic tests to improve the therapy selection process as well as to inform new therapy development, using machine learning/data driven approaches to create new insights. My skillset includes electrical stimulation, physiological testing, software development and machine learning. My work includes a mixture of both clinical and pre-clinical studies. I'm passionate about improving women's pelvic health 
 
 ## Background ##
 
