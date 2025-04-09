@@ -1,6 +1,8 @@
-**July 21, 2024**
+**April 8, 2025**
 
-I have a new blog post about writing a SAS parser for MATLAB. I also recently wrote about the development of code to read LabChart files into MATLAB (and Python). Check them out [here](blog).
+[Link to my slides](presentations/2025_04__Duke_AI_Jim_online_version.pptx) discussing the use of prediction modeling with a specific focus on the field of benign urology. Note the second half of my talk is not available online but I'm happy to discuss any aspects of it via email/zoom.
+
+I also have a new post that will hopefully be coming soon about using MATLAB to load Spike2 files. If that is something that you may benefit from using send an email to me and I can point you to the code base.
 
 # About Me #
 
